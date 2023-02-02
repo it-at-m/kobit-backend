@@ -16,7 +16,9 @@ Die KoBITApp ist nutzerzentriert, niederschwelliges Angebot, Beitrag zur Digital
 
 The documentation project is built with technologies we use in our projects:
 
-* *write here the list of used technologies*
+* *Java JDK  11.0.10*
+* *SpringBoot 2.7.5*
+* *Maven Apache Version: 3.8.1*
 
 ## Roadmap
 
