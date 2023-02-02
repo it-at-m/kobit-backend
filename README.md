@@ -64,8 +64,8 @@ See the backend System and Software Requirements: https://github.com/it-at-m/kob
 
 ## Roadmap
 
-* In the immediate future 1-2 months from now: improving the user interface
-* In the nearterm future 2-9 months from now: developing a CMS for admin users
+* In the immediate future now: improving the user interface
+* In the nearterm future weeks from now: developing a CMS for admin users
 * In the midterm future 4-6 months from now: analytics and insights
 * In the longterm future 12-24 months from now: implentation of an AI Chatbot assistent
 
