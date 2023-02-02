@@ -1,6 +1,6 @@
 # KoBITApp Backend
 
-### Description English:
+### Description English
 
 **Summary**
 
