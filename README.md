@@ -12,9 +12,19 @@ What to adjust:
 ## ------- end to remove -------
 <!-- add Project Logo, if existing -->
 
-# repo or project name
+# KoBITApp
 
-*Add a description from your project here.*
+DE
+
+Die KoBITApp hilft dem Nutzer, der ein Problem/Konflikt hat, indem sie eine Übersicht über die Anlaufstellen gibt, Unterstützung der richtigen Anlaufstellen in der jeweiligen Situation bietet und zentral Informationen und Reflektionsmöglichkeit rund um das Thema Konflikte bietet.
+
+Die KoBITApp ist nutzerzentriert, niederschwelliges Angebot, Beitrag zur Digitalisierung
+
+EN
+
+The KoBITApp helps an employee who has a problem/conflict by providing an overview of the employer contact points, offering support for the right employer contact points in the respective situation, and centrally providing information and opportunities for reflection on the topic of conflicts.
+
+The KoBITApp is user-centric, low-threshold offering, contribution to digitalization.
 
 
 ### Built With
