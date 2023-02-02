@@ -22,14 +22,12 @@ The documentation project is built with technologies we use in our projects:
 
 ## Roadmap
 
-*if you have a ROADMAP for your project add this here*
-
-
-See the [open issues](#) for a full list of proposed features (and known issues).
-
+In the immediate future 1-2 months from now: improving the user interface
+In the nearterm future 2-9 months from now: developing a CMS for admin users
+In the longterm future 12-24 months from now: implentation of an AI Chatbot assistent
 
 ## Set up
-*how can i start and fly this project*
+Installation can be found in the backend wiki under Installation: https://github.com/it-at-m/kobit-backend/wiki/Installation
 
 ## Documentation
 *what insights do you have to tell*
