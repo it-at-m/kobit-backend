@@ -32,7 +32,7 @@ See the backend System and Software Requirements: https://github.com/it-at-m/kob
 Installation can be found in the backend wiki under Installation: https://github.com/it-at-m/kobit-backend/wiki/Installation
 
 ## Documentation
-*what insights do you have to tell*
+Backend developer documentation can be found in the backend wiki: https://github.com/it-at-m/kobit-backend/wiki
 
 ## Contributing
 
