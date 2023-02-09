@@ -1,0 +1,76 @@
+spring:
+  application.name: @project.artifactId@
+  banner.location: banner.txt
+  mail:
+    host: ${SMTP_HOST}
+    port: ${SMTP_PORT}
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          allow8bitmime: true
+          auth: false
+      starttls:
+        enable: true
+  session:
+    timeout: ${SESSION_TIMEOUT}
+  datasource:
+    jpa:
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.PostgreSQL95Dialect
+  jpa:
+    database: default
+    hibernate:
+      ddl-auto: validate
+
+kobit:
+  mail:
+    from: ${NO_REPLY_MAIL}
+
+server:
+  port: 8080
+  error:
+    include-exception: false
+    include-stacktrace: never
+    whitelabel:
+      enabled: false
+
+security:
+  oauth2:
+    resource:
+      jwk:
+        key-set-uri: ${KEY_URI}
+      user-info-uri: ${USER_URI}
+      prefer-token-info: false
+    client:
+      client-id: ${CLIENT_ID}
+
+springdoc:
+  swagger-ui:
+    csrf:
+      enabled: true
+    path: /swagger-ui.html
+  api-docs:
+    path: /api/docs
+
+# Config for spring actuator endpoints
+management:
+  server.port: ${server.port}
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure:
+        include: health, info, prometheus
+      path-mapping:
+        prometheus: metrics
+  endpoint:
+    health.enabled: true
+    info.enabled: true
+    prometheus.enabled: true
+info.application.name: @project.artifactId@
+info.application.version: @project.version@
+
+tomcat:
+  gracefulshutdown:
+    enabled: false

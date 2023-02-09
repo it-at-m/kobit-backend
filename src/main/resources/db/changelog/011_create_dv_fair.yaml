@@ -1,0 +1,135 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: ex.schuetze
+      preConditions:
+        onError: CONTINUE
+        onFail: CONTINUE
+        not:
+          tableExists:
+            tableName: step
+      changes:
+        - createTable:
+            tableName: step
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: header
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: text
+              - column:
+                  name: has_next
+                  type: boolean
+                  constraints:
+                    nullable: false
+                  defaultValue: t
+              - column:
+                  name: position
+                  type: integer
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 2
+      author: ex.schuetze
+      preConditions:
+        onError: CONTINUE
+        onFail: CONTINUE
+        not:
+          tableExists:
+            tableName: tab
+      changes:
+        - createTable:
+            tableName: tab
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: step_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: FK_STEP_ID
+                    references: step(id)
+              - column:
+                  name: header
+                  type: text
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 3
+      author: ex.schuetze
+      preConditions:
+        onError: CONTINUE
+        onFail: CONTINUE
+        not:
+          tableExists:
+            tableName: optional_text
+      changes:
+        - createTable:
+            tableName: optional_text
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: step_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: FK_STEP_ID
+                    references: step(id)
+              - column:
+                  name: text
+                  type: text
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 4
+      author: ex.schuetze
+      preConditions:
+        onError: CONTINUE
+        onFail: CONTINUE
+        not:
+          tableExists:
+            tableName: possible_solution
+      changes:
+        - createTable:
+            tableName: possible_solution
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: header
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: text
+                  type: text
+              - column:
+                  name: tab_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: FK_TAB_ID
+                    references: tab(id)

@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - property:
+      name: uuid_type
+      value: uuid
+      dbms: postgresql
+  - property:
+      name: uuid_type
+      value: uuid
+      dbms: h2
+  - property:
+      name: uuid_function
+      value: random_uuid()
+      dbms: h2
+  - property:
+      name: uuid_function
+      value: uuid_generate_v4()
+      dbms: postgresql
+  - changeSet:
+      id: 1
+      author: ex.schuetze
+      dbms: postgresql
+      changes:
+        - sql:
+            comment: Enable uuid module for generation
+            sql: create extension if not exists "uuid-ossp";

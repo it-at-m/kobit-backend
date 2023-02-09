@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: ex.schuetze
+      preConditions:
+        onError: CONTINUE
+        onFail: CONTINUE
+        not:
+          tableExists:
+            tableName: quote
+      changes:
+        - createTable:
+            tableName: quote
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: quote
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: author
+                  type: varchar(256)
+                  constraints:
+                    nullable: false
