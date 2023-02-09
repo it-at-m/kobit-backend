@@ -57,7 +57,8 @@ class ContactPointManipulationServiceTest {
                         null, "test", "tes", "test test", "t", contacts, competences, linkViews);
         var contactPoint = view.toContactPoint();
         contactPoint.setId(id);
-        when(contactPointRepository.getReferenceById(any())).thenThrow(EntityNotFoundException.class);
+        when(contactPointRepository.getReferenceById(any()))
+                .thenThrow(EntityNotFoundException.class);
         when(linkService.getLinksByContactPointId(id)).thenReturn(List.of());
         when(contactService.getContactsByContactPointId(id)).thenReturn(List.of());
         when(contactPointRepository.save(any())).thenReturn(contactPoint);
