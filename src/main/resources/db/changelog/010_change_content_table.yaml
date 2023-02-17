@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: ex.schuetze
+      preConditions:
+        onError: CONTINUE
+        onFail: CONTINUE
+        tableExists:
+          tableName: site
+      changes:
+        - dropTable:
+            tableName: site
+  - changeSet:
+      id: 2
+      author: ex.schuetze
+      preConditions:
+        onError: CONTINUE
+        onFail: CONTINUE
+        not:
+          tableExists:
+            tableName: content_item
+      changes:
+        - createTable:
+            tableName: content_item
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: page_type
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: content
+                  type: text
+                  constraints:
+                    nullable: false

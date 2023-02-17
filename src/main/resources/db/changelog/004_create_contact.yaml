@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: ex.schuetze
+      preConditions:
+        onError: CONTINUE
+        onFail: CONTINUE
+        not:
+          tableExists:
+            tableName: contact
+      changes:
+        - createTable:
+            tableName: contact
+            columns:
+              - column:
+                  name: contact_point_id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: PK_CONTACT
+                    nullable: false
+                    foreignKeyName: FK_CONTACTPOINT_ID
+                    references: contact_point(id)
+              - column:
+                  name: email
+                  type: varchar(320)
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: PK_CONTACT
+                    nullable: false

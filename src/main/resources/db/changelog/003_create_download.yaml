@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: ex.schuetze
+      preConditions:
+        onError: CONTINUE
+        onFail: CONTINUE
+        not:
+          tableExists:
+            tableName: download
+      changes:
+        - createTable:
+            tableName: download
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: url
+                  type: varchar(2048)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: text
+                  constraints:
+                    nullable: false

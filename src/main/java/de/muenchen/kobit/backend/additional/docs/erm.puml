@@ -1,0 +1,61 @@
+@startuml
+
+class Step{
+id: UUID
+---
+position: Integer
+}
+
+class Tab {
+id: UUID
+---
+stepId: UUID
+header: String
+}
+
+class PossibleSolution {
+id: UUID
+---
+tabId: UUID
+header: String
+solutionText: String
+}
+
+class OptionalText {
+id: UUID
+---
+position: Integer
+text: String
+}
+
+Step "1" --> "n" Tab
+Step "1" --> "n" OptionalText
+Tab "1"-->"n" PossibleSolution
+
+enum PageType {
+    DOWNLOADS,
+    FAQ,
+    GLOSSARY,
+    PREVENTION,
+    DV_FAIR,
+    NAVIGATOR,
+    BASICS
+}
+
+class ContentItem {
+id: UUID
+---
+pageType: PageType
+content: String
+}
+
+class TextItem {
+id:UUID
+---
+pageType: PageType
+header: String
+entry: String
+link: URL?
+}
+
+@enduml

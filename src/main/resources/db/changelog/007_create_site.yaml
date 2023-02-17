@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: ex.schuetze
+      preConditions:
+        onError: CONTINUE
+        onFail: CONTINUE
+        not:
+          tableExists:
+            tableName: site
+      changes:
+        - createTable:
+            tableName: site
+            columns:
+              - column:
+                  # The name of the page
+                  name: id
+                  type: varchar(256)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: content
+                  type: text
+                  constraints:
+                    nullable: false

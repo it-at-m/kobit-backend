@@ -1,0 +1,24 @@
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+KKKKKKKKK    KKKKKKK                 BBBBBBBBBBBBBBBBB   IIIIIIIIIITTTTTTTTTTTTTTTTTTTTTTT
+K:::::::K    K:::::K                 B::::::::::::::::B  I::::::::IT:::::::::::::::::::::T
+K:::::::K    K:::::K                 B::::::BBBBBB:::::B I::::::::IT:::::::::::::::::::::T
+K:::::::K   K::::::K                 BB:::::B     B:::::BII::::::IIT:::::TT:::::::TT:::::T
+KK::::::K  K:::::KKK   ooooooooooo     B::::B     B:::::B  I::::I  TTTTTT  T:::::T  TTTTTT
+  K:::::K K:::::K    oo:::::::::::oo   B::::B     B:::::B  I::::I          T:::::T
+  K::::::K:::::K    o:::::::::::::::o  B::::BBBBBB:::::B   I::::I          T:::::T
+  K:::::::::::K     o:::::ooooo:::::o  B:::::::::::::BB    I::::I          T:::::T
+  K:::::::::::K     o::::o     o::::o  B::::BBBBBB:::::B   I::::I          T:::::T
+  K::::::K:::::K    o::::o     o::::o  B::::B     B:::::B  I::::I          T:::::T
+  K:::::K K:::::K   o::::o     o::::o  B::::B     B:::::B  I::::I          T:::::T
+KK::::::K  K:::::KKKo::::o     o::::o  B::::B     B:::::B  I::::I          T:::::T
+K:::::::K   K::::::Ko:::::ooooo:::::oBB:::::BBBBBB::::::BII::::::II      TT:::::::TT
+K:::::::K    K:::::Ko:::::::::::::::oB:::::::::::::::::B I::::::::I      T:::::::::T
+K:::::::K    K:::::K oo:::::::::::oo B::::::::::::::::B  I::::::::I      T:::::::::T
+KKKKKKKKK    KKKKKKK   ooooooooooo   BBBBBBBBBBBBBBBBB   IIIIIIIIII      TTTTTTTTTTT
+
+
+ Application Name    : ${spring.application.name}
+ Spring Boot Version : ${spring-boot.formatted-version}
+---------------------------------------------------------------------------------------------------------------------------------------------------
