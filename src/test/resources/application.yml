@@ -43,17 +43,12 @@ tomcat:
   gracefulshutdown:
     enabled: false
 
-# Define the keycloak development realm here
-realm: KM55
-
 security:
-  logging:
-    requests: all
   oauth2:
     resource:
       jwk:
-        key-set-uri: https://ssodev.muenchen.de/auth/realms/${realm}/protocol/openid-connect/certs
-      user-info-uri: https://ssodev.muenchen.de/auth/realms/${realm}/protocol/openid-connect/userinfo
+        key-set-uri: ${KEY_URI}
+      user-info-uri: ${USER_URI}
       prefer-token-info: false
     client:
-      client-id: kobit
+      client-id: ${CLIENT_ID}
