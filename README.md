@@ -10,7 +10,7 @@ Conflict Resolution Web Application for government organisations and businesses
 
 The KoBITApp helps an employee who has a problem/conflict by providing an overview of the employer contact points, offering support for the right employer contact points in the respective situation, and centrally providing information and opportunities for reflection on the topic of conflicts.
 
-The KoBITApp is user-centric, low-threshold offering, contribution to digitalization.
+The KoBITApp is user-centric, low-threshold offering, contribution to digitization.
 
 **Framework**
 
@@ -79,6 +79,8 @@ Backend developer documentation can be found in the backend wiki: https://github
 
 ## Contributing
 
+See [CONTRIBUTING](CONTRIBUTING.md).
+
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
 If you have a suggestion that would make this better, please open an issue with the tag "enhancement", fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
@@ -104,4 +106,3 @@ Distributed under the MIT License. See [LICENSE](LICENSE) file for more informat
 ## Contact
 
 it@M - opensource@muenchen.de
-

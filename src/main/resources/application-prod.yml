@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: ${DATABASE_ADDRESS}
+    username: ${DATABASE_USERNAME}
+    password: ${database-secret-prod}
+  liquibase:
+    default-schema: ${DATABASE_SCHEMA}
+  jpa:
+    properties:
+      hibernate:
+        default_schema: ${DATABASE_SCHEMA}

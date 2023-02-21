@@ -1,0 +1,84 @@
+@startuml
+
+class Anlaufstelle {
+    id: UUID
+    ----
+    Name: String
+    Kürzel: String
+    Beschreibung: String
+    Kontakt: Kontakt
+    Link: Link
+    Referat: Referat
+}
+
+class Kompetenzen {
+    anlaufstellenID: UUID
+    Kompetenz: Kompetenz
+}
+
+enum Kompetenz {
+    MITARBEITER, DISKRIMINIERUNG, ...
+}
+
+'Kontakte trotz eines Feldes als extra Tabelle um mehrere Mail Adressen abdecken zu können.
+class Kontakt {
+    anlaufstellenID: UUID
+    E-Mail: String
+}
+
+enum Referat {
+    POR, KVR, ...
+}
+
+class Link {
+    id: UUID
+    ---
+    URL: String
+    Name: String
+    inDownloads: boolean
+}
+
+class Downloads {
+    id: UUID
+    ---
+    URL: String
+    Name: String
+}
+enum DatenTyp {
+    PDF, docx, Website, ...
+}
+
+class FAQGlossar {
+    id: String
+    ---
+    Überschreift: String
+    Antwort: String
+    Referat: Referat
+}
+
+class Seiten {
+    id: SeitenTyp
+    ---
+    Inhalt: Text (HTML))
+}
+enum SeitenTyp {
+Grundsätze für Führung und Zusammenarbeit, Konfliktprävention
+}
+
+class Zitate {
+    id: number,
+    ---
+    Zitat: String,
+    Author: String
+}
+
+Anlaufstelle "1"-->"n" Kontakt
+Anlaufstelle "1"-->"n" Link
+Anlaufstelle "1"-->"n" Kompetenzen
+Kompetenzen --> Kompetenz
+Link --> DatenTyp
+Kontakt --> Referat
+FAQGlossar --> Referat
+Seiten --> SeitenTyp
+
+@enduml

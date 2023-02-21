@@ -1,0 +1,40 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: ex.schuetze
+      preConditions:
+        onError: CONTINUE
+        onFail: CONTINUE
+        not:
+          tableExists:
+            tableName: text_item
+      changes:
+        - createTable:
+            tableName: text_item
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: page_type
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: header
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: entry
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: link
+                  type: varchar
+                  constraints:
+                    nullable: true

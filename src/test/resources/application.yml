@@ -1,0 +1,54 @@
+spring:
+  mail:
+    host: localhost
+    port: 3025
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          allow8bitmime: true
+          auth: false
+      starttls:
+        enable: true
+
+server:
+  port: 8080
+  error:
+    include-exception: false
+    include-stacktrace: never
+    whitelabel:
+      enabled: false
+
+springdoc:
+  swagger-ui:
+    csrf:
+      enabled: true
+
+# Config for spring actuator endpoints
+management:
+  server.port: ${server.port}
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure:
+        include: health, info, prometheus
+      path-mapping:
+        prometheus: metrics
+  endpoint:
+    health.enabled: true
+    info.enabled: true
+    prometheus.enabled: true
+
+tomcat:
+  gracefulshutdown:
+    enabled: false
+
+security:
+  oauth2:
+    resource:
+      jwk:
+        key-set-uri: ${KEY_URI}
+      user-info-uri: ${USER_URI}
+      prefer-token-info: false
+    client:
+      client-id: ${CLIENT_ID}

@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: ex.schuetze
+      preConditions:
+        onError: CONTINUE
+        onFail: CONTINUE
+        not:
+          tableExists:
+            tableName: competence
+      changes:
+        - createTable:
+            tableName: competence
+            columns:
+              - column:
+                  name: contact_point_id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: PK_COMPETENCE
+                    nullable: false
+                    foreignKeyName: FK_CONTACTPOINT_ID
+                    references: contact_point(id)
+              - column:
+                  name: competence
+                  type: varchar(256)
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: PK_COMPETENCE
+                    nullable: false
