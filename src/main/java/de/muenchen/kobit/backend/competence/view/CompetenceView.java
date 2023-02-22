@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class CompetenceView {
+public class CompetenceView implements Comparable<CompetenceView> {
 
     private Competence competence;
     private String germanDescription;
@@ -17,5 +17,10 @@ public class CompetenceView {
         this.competence = competence;
         this.germanDescription = germanDescription;
         this.shortDescription = shortDescription;
+    }
+
+    @Override
+    public int compareTo(CompetenceView o) {
+        return germanDescription.compareTo(o.getGermanDescription());
     }
 }
