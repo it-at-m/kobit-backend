@@ -2,6 +2,7 @@ package de.muenchen.kobit.backend.decisiontree.service;
 
 import de.muenchen.kobit.backend.competence.Competence;
 import de.muenchen.kobit.backend.competence.service.CompetenceService;
+import de.muenchen.kobit.backend.competence.view.CompetenceView;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
 import de.muenchen.kobit.backend.decisiontree.branches.DiscriminationBranch;
 import de.muenchen.kobit.backend.decisiontree.branches.HealthIssuesBranch;
@@ -10,6 +11,8 @@ import de.muenchen.kobit.backend.decisiontree.branches.Root;
 import de.muenchen.kobit.backend.decisiontree.branches.WorkConflictBranch;
 import de.muenchen.kobit.backend.decisiontree.view.DecisionContactPointWrapper;
 import de.muenchen.kobit.backend.decisiontree.view.DecisionPoint;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -74,7 +77,11 @@ public class DecisionTreeService {
     }
 
     public DecisionContactPointWrapper getRoot() {
-        return new DecisionContactPointWrapper(root.getRootOptions());
+        var t = root.getRootOptions();
+        final List<CompetenceView> options = new ArrayList<>(t.getAnswerOptions());
+        Collections.sort(options);
+        return new DecisionContactPointWrapper(
+                new DecisionPoint(t.getCompetence(), t.getQuestion(), options));
     }
 
     private DecisionPoint getNextDecisionPointOrNull(
