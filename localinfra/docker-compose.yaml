@@ -47,3 +47,7 @@ services:
       - ./keycloak:/docker-entrypoint-initdb.d
     ports:
       - "8888:8080"
+  mail:
+    image: bytemark/smtp
+    ports:
+      - "25:25"
