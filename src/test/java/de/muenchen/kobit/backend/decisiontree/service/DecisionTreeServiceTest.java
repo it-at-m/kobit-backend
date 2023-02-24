@@ -108,4 +108,70 @@ class DecisionTreeServiceTest {
         assertThat(result.getDecisionPoint()).isEqualTo(null);
         assertThat(result.getContactPoints()).isEqualTo(contactPoints);
     }
+
+    @Test
+    void getNextDecisionPointOrContactPointsTest_end_umlaut_sorted_alphabetical() {
+        var id = UUID.randomUUID();
+        var contactPoints = new ArrayList<ContactPointView>();
+        contactPoints.add(
+                new ContactPointView(
+                        id, "mtest", "mtest", "test", "test", List.of(), List.of(), List.of()));
+        contactPoints.add(
+                new ContactPointView(
+                        id, "test", "test", "test", "test", List.of(), List.of(), List.of()));
+        contactPoints.add(
+                new ContactPointView(
+                        id, "ätest", "ätest", "test", "test", List.of(), List.of(), List.of()));
+        contactPoints.add(
+                new ContactPointView(
+                        id, "ötest", "ötest", "test", "test", List.of(), List.of(), List.of()));
+        contactPoints.add(
+                new ContactPointView(
+                        id, "ptest", "ptest", "test", "test", List.of(), List.of(), List.of()));
+        contactPoints.add(
+                new ContactPointView(
+                        id, "atest", "atest", "test", "test", List.of(), List.of(), List.of()));
+
+        var contactPointsAlphabetical = new ArrayList<ContactPointView>();
+        contactPointsAlphabetical.add(
+                new ContactPointView(
+                        id, "atest", "atest", "test", "test", List.of(), List.of(), List.of()));
+        contactPointsAlphabetical.add(
+                new ContactPointView(
+                        id, "ätest", "ätest", "test", "test", List.of(), List.of(), List.of()));
+        contactPointsAlphabetical.add(
+                new ContactPointView(
+                        id, "mtest", "mtest", "test", "test", List.of(), List.of(), List.of()));
+        contactPointsAlphabetical.add(
+                new ContactPointView(
+                        id, "ötest", "ötest", "test", "test", List.of(), List.of(), List.of()));
+        contactPointsAlphabetical.add(
+                new ContactPointView(
+                        id, "ptest", "ptest", "test", "test", List.of(), List.of(), List.of()));
+        contactPointsAlphabetical.add(
+                new ContactPointView(
+                        id, "test", "test", "test", "test", List.of(), List.of(), List.of()));
+
+        List<Competence> competences = List.of(Competence.ANTI_DEMOCRACY);
+        when(competenceService.findAllContactPointsForCompetences(competences))
+                .thenReturn(contactPoints);
+        var result = decisionTreeService.getNextDecisionPointOrContactPoints(competences);
+        verify(healthIssuesBranch, never()).getNextNode(any());
+        verify(mobbingBranch, never()).getNextNode(any());
+        verify(discriminationBranch, never()).getNextNode(any());
+        verify(workConflictBranch, never()).getNextNode(any());
+        assertThat(result.getDecisionPoint()).isEqualTo(null);
+        assertThat(result.getContactPoints().get(0).getShortCut())
+                .isEqualTo(contactPointsAlphabetical.get(0).getShortCut());
+        assertThat(result.getContactPoints().get(1).getShortCut())
+                .isEqualTo(contactPointsAlphabetical.get(1).getShortCut());
+        assertThat(result.getContactPoints().get(2).getShortCut())
+                .isEqualTo(contactPointsAlphabetical.get(2).getShortCut());
+        assertThat(result.getContactPoints().get(3).getShortCut())
+                .isEqualTo(contactPointsAlphabetical.get(3).getShortCut());
+        assertThat(result.getContactPoints().get(4).getShortCut())
+                .isEqualTo(contactPointsAlphabetical.get(4).getShortCut());
+        assertThat(result.getContactPoints().get(5).getShortCut())
+                .isEqualTo(contactPointsAlphabetical.get(5).getShortCut());
+    }
 }
