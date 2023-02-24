@@ -13,7 +13,8 @@ import de.muenchen.kobit.backend.decisiontree.view.DecisionContactPointWrapper;
 import de.muenchen.kobit.backend.decisiontree.view.DecisionPoint;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
+import java.text.Collator;
+import java.util.Locale;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -104,9 +105,10 @@ public class DecisionTreeService {
         return selectedCompetences.get(selectedCompetences.size() - 1);
     }
 
-    private static List<ContactPointView> orderAlphabetically(
-            List<ContactPointView> contactPointViews) {
-        contactPointViews.sort(Comparator.comparing(ContactPointView::getShortCut));
+    private static List<ContactPointView> orderAlphabetically(List<ContactPointView> contactPointViews) {
+        Collator collator = Collator.getInstance(Locale.GERMAN);
+        contactPointViews.sort((c1, c2) -> collator.compare(c1.getShortCut(), c2.getShortCut()));
         return contactPointViews;
     }
+
 }
