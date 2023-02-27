@@ -32,7 +32,7 @@ Prerequisite digital accessibility and mobile-first
 
 **Zusammenfassung**
 
-Konfliktbegleitungs Web Application für für staatliche Organisationen und Unternehmen
+Konfliktbegleitungs Web Application für staatliche Organisationen und Unternehmen
 
 Die KoBITApp hilft dem Nutzer, der ein Problem/Konflikt hat, indem sie eine Übersicht über die Anlaufstellen gibt, Unterstützung der richtigen Anlaufstellen in der jeweiligen Situation bietet und zentral Informationen und Reflektionsmöglichkeit rund um das Thema Konflikte bietet.
 
@@ -69,7 +69,7 @@ See the backend System and Software Requirements: https://github.com/it-at-m/kob
 * In the immediate future now: improving the user interface
 * In the nearterm future weeks from now: developing a CMS for admin users
 * In the midterm future 4-6 months from now: analytics and insights
-* In the longterm future 12-24 months from now: implentation of an AI Chatbot assistent
+* In the longterm future 12-24 months from now: implementation of an AI Chatbot assistent
 
 ## Set up
 Installation can be found in the backend wiki under Installation: https://github.com/it-at-m/kobit-backend/wiki/Installation

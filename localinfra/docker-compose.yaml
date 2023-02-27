@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  postgresql:
+    image: 'postgres:15.1'
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_PASSWORD: kobit-local
+      POSTGRES_USER: kobit
+      POSTGRES_DB: kobit_local
+    volumes:
+      - ./postgres:/var/lib/postgres/data
+  postgresql_keycloak:
+    image: 'postgres:15.1'
+    ports:
+      - '5433:5432'
+    environment:
+      POSTGRES_PASSWORD: kobit-local
+      POSTGRES_USER: bn_keycloak
+      POSTGRES_DB: bitnami_keycloak
+    volumes:
+      - ./postgres/keycloak:/var/lib/postgres/data
+  pgadmin4:
+    image: dpage/pgadmin4:6.18
+    depends_on:
+      - postgresql
+    environment:
+      PGADMIN_DEFAULT_PASSWORD: kobit-local
+      PGADMIN_DEFAULT_EMAIL: kobit@local.com
+    ports:
+      - '80:80'
+    volumes:
+      - ./pgadmin:/var/lib/pgadmin
+  keycloak:
+    image: bitnami/keycloak:18.0.2
+    environment:
+      KEYCLOAK_ADMIN_USER: kobit
+      KEYCLOAK_ADMIN_PASSWORD: kobit-local
+      KEYCLOAK_DATABASE_HOST: host.docker.internal
+      KEYCLOAK_DATABASE_PORT: 5433
+      KEYCLOAK_DATABASE_USER: bn_keycloak
+      KEYCLOAK_DATABASE_PASSWORD: kobit-local
+    depends_on:
+      - postgresql_keycloak
+    volumes:
+      - ./keycloak:/docker-entrypoint-initdb.d
+    ports:
+      - "8888:8080"
+  mail:
+    image: bytemark/smtp
+    ports:
+      - "25:25"
