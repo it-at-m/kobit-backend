@@ -22,14 +22,12 @@ public class TreeController {
         this.decisionTreeService = decisionTreeService;
     }
 
-    @GetMapping("/start")
-    public DecisionContactPointWrapper getDecisionTreeStart() {
-        return decisionTreeService.getRoot();
-    }
-
     @PostMapping(value = "/next")
     public DecisionContactPointWrapper getNextDecisionOrContactPoints(
             @RequestBody List<Competence> competences) {
+        if(competences.isEmpty()) {
+            return decisionTreeService.getRoot();
+        }
         return decisionTreeService.getNextDecisionPointOrContactPoints(competences);
     }
 }
