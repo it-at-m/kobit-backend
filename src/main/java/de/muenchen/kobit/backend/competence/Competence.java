@@ -54,14 +54,14 @@ public enum Competence {
     OPPOSITE_OTHER_TEAM("teamübergreifend", ""),
 
     // Stress
-    STRESS_LOW("Geringe Belastung", ""),
-    STRESS_MEDIUM("Mittlere Belastung", ""),
-    STRESS_HIGH("Hohe Belastung", ""),
+    STRESS_LOW("gering", ""),
+    STRESS_MEDIUM("mittel", ""),
+    STRESS_HIGH("hoch", ""),
 
     // Escalation Level
-    ESCALATION_LOW("Gering verschärft", ""),
-    ESCALATION_MEDIUM("Mittel verschärft", ""),
-    ESCALATION_HIGH("Hoch verschärft", ""),
+    ESCALATION_LOW("gering", ""),
+    ESCALATION_MEDIUM("mittel", ""),
+    ESCALATION_HIGH("hoch", ""),
 
     // reasons of discrimination
     ETHNIC_RACIAL(
