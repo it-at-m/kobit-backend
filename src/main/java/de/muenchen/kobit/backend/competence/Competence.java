@@ -29,8 +29,8 @@ public enum Competence {
                     + " angedroht wird."),
     PRIVATE_PROBLEMS(
             "Privates Problem",
-            "Familiäre und partnerschaftliche Probleme, schwere Erkrankungen, Verlust,"
-                    + " Überforderungen im Alltag, Umbruchsituationen."),
+            "Familiäres und partnerschaftliches Problem, schwere Erkrankung, Verlust,"
+                    + " Überforderung im Alltag, Umbruchsituation."),
     HEALTH_PROBLEMS("Gesundheitliches Problem", ""),
     ANTI_DEMOCRACY(
             "Demokratiefeindlichkeit", "Einstellung/Haltung, die sich gegen Demokratie richtet."),
