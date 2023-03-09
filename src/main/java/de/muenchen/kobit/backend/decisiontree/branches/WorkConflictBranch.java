@@ -90,25 +90,25 @@ public class WorkConflictBranch {
                     Competence.STRESS_HIGH,
                     escalationIndex,
                     List.of(
-                            Competence.ESCALATION_HIGH.toCompetenceView(),
+                            Competence.ESCALATION_LOW.toCompetenceView(),
                             Competence.ESCALATION_MEDIUM.toCompetenceView(),
-                            Competence.ESCALATION_LOW.toCompetenceView()));
+                            Competence.ESCALATION_HIGH.toCompetenceView()));
     private final DecisionPoint n10 =
             new DecisionPoint(
                     Competence.STRESS_MEDIUM,
                     escalationIndex,
                     List.of(
-                            Competence.ESCALATION_HIGH.toCompetenceView(),
+                            Competence.ESCALATION_LOW.toCompetenceView(),
                             Competence.ESCALATION_MEDIUM.toCompetenceView(),
-                            Competence.ESCALATION_LOW.toCompetenceView()));
+                            Competence.ESCALATION_HIGH.toCompetenceView()));
     private final DecisionPoint n11 =
             new DecisionPoint(
                     Competence.STRESS_LOW,
                     escalationIndex,
                     List.of(
-                            Competence.ESCALATION_HIGH.toCompetenceView(),
+                            Competence.ESCALATION_LOW.toCompetenceView(),
                             Competence.ESCALATION_MEDIUM.toCompetenceView(),
-                            Competence.ESCALATION_LOW.toCompetenceView()));
+                            Competence.ESCALATION_HIGH.toCompetenceView()));
 
     private final HashMap<Competence, DecisionPoint> branchMap = new HashMap<>();
 

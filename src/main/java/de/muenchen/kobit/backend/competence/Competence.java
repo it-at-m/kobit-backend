@@ -28,12 +28,12 @@ public enum Competence {
                     + " einer früheren häuslichen Gemeinschaft oder Beziehung verübt, versucht oder"
                     + " angedroht wird."),
     PRIVATE_PROBLEMS(
-            "Private Probleme",
-            "Familiäre und partnerschaftliche Probleme, schwere Erkrankungen, Verlust,"
-                    + " Überforderungen im Alltag, Umbruchsituationen"),
-    HEALTH_PROBLEMS("Gesundheitliche Probleme", ""),
+            "Privates Problem",
+            "Familiäres und partnerschaftliches Problem, schwere Erkrankung, Verlust,"
+                    + " Überforderung im Alltag, Umbruchsituation."),
+    HEALTH_PROBLEMS("Gesundheitliches Problem", ""),
     ANTI_DEMOCRACY(
-            "Demokratiefeindlichkeit", "Einstellung/Haltung, die sich gegen Demokratie richtet"),
+            "Demokratiefeindlichkeit", "Einstellung/Haltung, die sich gegen Demokratie richtet."),
 
     // own role
     EMPLOYEE("Mitarbeiter*in", ""),
@@ -54,14 +54,14 @@ public enum Competence {
     OPPOSITE_OTHER_TEAM("teamübergreifend", ""),
 
     // Stress
-    STRESS_LOW("Geringe Belastung", ""),
-    STRESS_MEDIUM("Mittlere Belastung", ""),
-    STRESS_HIGH("Hohe Belastung", ""),
+    STRESS_LOW("gering", ""),
+    STRESS_MEDIUM("mittel", ""),
+    STRESS_HIGH("hoch", ""),
 
     // Escalation Level
-    ESCALATION_LOW("Gering verschärft", ""),
-    ESCALATION_MEDIUM("Mittel verschärft", ""),
-    ESCALATION_HIGH("Hoch verschärft", ""),
+    ESCALATION_LOW("gering", ""),
+    ESCALATION_MEDIUM("mittel", ""),
+    ESCALATION_HIGH("hoch", ""),
 
     // reasons of discrimination
     ETHNIC_RACIAL(
@@ -76,14 +76,14 @@ public enum Competence {
     LGBTIQ("LGBTIQ*", ""),
 
     // Health Issues
-    ADDICTION("Suchtprobleme", ""),
-    PHYSICAL("körperliche Probleme", ""),
-    PSYCHOLOGICAL("psychische Probleme", "");
+    ADDICTION("Suchtproblem", ""),
+    PHYSICAL("körperliches Problem", ""),
+    PSYCHOLOGICAL("psychisches Problem", "");
 
     public final String germanDescription;
     public final String shortDescription;
 
-    private Competence(String germanDescription, String shortDescription) {
+    Competence(String germanDescription, String shortDescription) {
         this.germanDescription = germanDescription;
         this.shortDescription = shortDescription;
     }
