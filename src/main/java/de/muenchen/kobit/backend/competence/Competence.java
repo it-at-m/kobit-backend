@@ -28,12 +28,12 @@ public enum Competence {
                     + " einer früheren häuslichen Gemeinschaft oder Beziehung verübt, versucht oder"
                     + " angedroht wird."),
     PRIVATE_PROBLEMS(
-            "Private Probleme",
+            "Privates Problem",
             "Familiäre und partnerschaftliche Probleme, schwere Erkrankungen, Verlust,"
-                    + " Überforderungen im Alltag, Umbruchsituationen"),
-    HEALTH_PROBLEMS("Gesundheitliche Probleme", ""),
+                    + " Überforderungen im Alltag, Umbruchsituationen."),
+    HEALTH_PROBLEMS("Gesundheitliches Problem", ""),
     ANTI_DEMOCRACY(
-            "Demokratiefeindlichkeit", "Einstellung/Haltung, die sich gegen Demokratie richtet"),
+            "Demokratiefeindlichkeit", "Einstellung/Haltung, die sich gegen Demokratie richtet."),
 
     // own role
     EMPLOYEE("Mitarbeiter*in", ""),
@@ -76,14 +76,14 @@ public enum Competence {
     LGBTIQ("LGBTIQ*", ""),
 
     // Health Issues
-    ADDICTION("Suchtprobleme", ""),
-    PHYSICAL("körperliche Probleme", ""),
-    PSYCHOLOGICAL("psychische Probleme", "");
+    ADDICTION("Suchtproblem", ""),
+    PHYSICAL("körperliches Problem", ""),
+    PSYCHOLOGICAL("psychisches Problem", "");
 
     public final String germanDescription;
     public final String shortDescription;
 
-    private Competence(String germanDescription, String shortDescription) {
+    Competence(String germanDescription, String shortDescription) {
         this.germanDescription = germanDescription;
         this.shortDescription = shortDescription;
     }
