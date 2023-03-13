@@ -31,6 +31,7 @@ public class UserDataResolver {
     }
 
     private static User mapDetailsToUser(HashMap<String, Object> details) {
+        log.debug(String.valueOf(details));
         return new User(details.get(TOKEN_EMAIL).toString());
     }
 }
