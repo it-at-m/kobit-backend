@@ -8,7 +8,7 @@
     <springProperty scope="context" name="springAppName" source="spring.application.name"/>
 
 
-    <springProfile name="dev,local,test,demo,prod">
+    <springProfile name="dev,local,prod">
 
         <!-- Log appender -->
         <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -52,7 +52,7 @@
     </springProfile>
 
 
-    <springProfile name="prod">
+    <springProfile name="test,demo">
 
         <!-- Log appender -->
         <appender name="JSON_STDOUT" class="ch.qos.logback.core.ConsoleAppender">
