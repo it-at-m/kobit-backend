@@ -19,5 +19,4 @@ public class AdminController {
     boolean isUserAdmin() {
         return adminService.isUserAdmin();
     }
-
 }

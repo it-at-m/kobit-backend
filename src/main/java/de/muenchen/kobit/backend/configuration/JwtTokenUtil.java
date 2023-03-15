@@ -2,13 +2,12 @@ package de.muenchen.kobit.backend.configuration;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
@@ -42,7 +41,7 @@ public class JwtTokenUtil {
 
     private JsonNode getRoleNode(byte[] body) throws IOException {
         JsonNode node = objectMapper.readTree(body);
-        if(node.get(RESOURCE_FIELD).has(KOBIT_FIELD)){
+        if (node.get(RESOURCE_FIELD).has(KOBIT_FIELD)) {
             return node.get(RESOURCE_FIELD).get(KOBIT_FIELD).get(ROLES_FIELD);
         }
         return objectMapper.readTree("");
@@ -55,5 +54,4 @@ public class JwtTokenUtil {
     private String getTokenBody(String token) {
         return token.split("\\.")[1];
     }
-
 }

@@ -1,9 +1,8 @@
 package de.muenchen.kobit.backend.admin.service;
 
 import de.muenchen.kobit.backend.user.service.UserDataResolver;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class AdminService {
@@ -19,36 +18,22 @@ public class AdminService {
     }
 
     public boolean isUserAdmin() {
-        return getUserRoles()
-                .stream()
-                .anyMatch(it ->
-                        it.equals(DEPARTMENT_ADMIN) || it.equals(KOBIT_ADMIN)
-                );
+        return getUserRoles().stream()
+                .anyMatch(it -> it.equals(DEPARTMENT_ADMIN) || it.equals(KOBIT_ADMIN));
     }
 
     public boolean isUserKobitAdmin() {
-        return getUserRoles()
-                .stream()
-                .anyMatch(it ->
-                        it.equals(KOBIT_ADMIN)
-                );
+        return getUserRoles().stream().anyMatch(it -> it.equals(KOBIT_ADMIN));
     }
 
     public boolean isUserKobitAdmin(List<String> userRoles) {
-        return userRoles
-                .stream()
-                .anyMatch(it ->
-                        it.equals(KOBIT_ADMIN)
-                );
+        return userRoles.stream().anyMatch(it -> it.equals(KOBIT_ADMIN));
     }
 
     public boolean isUserDepartmentAdmin() {
         List<String> userRoles = getUserRoles();
-        return userRoles
-                .stream()
-                .anyMatch(it ->
-                        it.equals(DEPARTMENT_ADMIN)
-                ) || isUserKobitAdmin(userRoles);
+        return userRoles.stream().anyMatch(it -> it.equals(DEPARTMENT_ADMIN))
+                || isUserKobitAdmin(userRoles);
     }
 
     private List<String> getUserRoles() {
