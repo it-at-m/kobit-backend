@@ -34,6 +34,9 @@ public class SecurityConfiguration extends ResourceServerConfigurerAdapter {
     @Value("${security.oauth2.client.client-id}")
     private String resourceId;
 
+    private static final String KOBIT_ADMIN = "lhm-ab-kobit-zentraleradmin";
+    private static final String DEPARTMENT_ADMIN = "lhm-ab-kobit-bereichsadmin";
+
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
         resources.resourceId(null);
@@ -44,19 +47,14 @@ public class SecurityConfiguration extends ResourceServerConfigurerAdapter {
         http.antMatcher("/**")
                 .authorizeRequests()
                 // allow access to /actuator/info
-                .antMatchers("/actuator/info")
-                .permitAll()
+                .antMatchers("/actuator/info").permitAll()
                 // permit swagger
-                .antMatchers("/swagger-ui/**", "/api/docs/**")
-                .permitAll()
+                .antMatchers("/swagger-ui/**", "/api/docs/**").permitAll()
                 // allow access to /actuator/health for OpenShift Health Check
-                .antMatchers("/actuator/health")
-                .permitAll()
+                .antMatchers("/actuator/health").permitAll()
                 // allow access to /actuator/metrics for Prometheus monitoring in OpenShift
-                .antMatchers("/actuator/metrics")
-                .permitAll()
-                .antMatchers("/**")
-                .authenticated();
+                .antMatchers("/actuator/metrics").permitAll()
+                .antMatchers("/**").authenticated();
     }
 
     @Bean

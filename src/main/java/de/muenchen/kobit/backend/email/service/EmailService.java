@@ -2,6 +2,7 @@ package de.muenchen.kobit.backend.email.service;
 
 import de.muenchen.kobit.backend.email.model.Email;
 import de.muenchen.kobit.backend.email.model.SenderMailAddress;
+import de.muenchen.kobit.backend.user.model.User;
 import de.muenchen.kobit.backend.user.service.UserDataResolver;
 import java.util.List;
 import java.util.Objects;
@@ -31,6 +32,10 @@ public class EmailService {
 
     public SenderMailAddress getMailOfUser() {
         return new SenderMailAddress(userDataResolver.getCurrentUser().getEmail());
+    }
+
+    public User getUser() {
+        return userDataResolver.getCurrentUser();
     }
 
     public void sendEmail(Email email) throws SendFailedException {
