@@ -34,9 +34,6 @@ public class SecurityConfiguration extends ResourceServerConfigurerAdapter {
     @Value("${security.oauth2.client.client-id}")
     private String resourceId;
 
-    private static final String KOBIT_ADMIN = "lhm-ab-kobit-zentraleradmin";
-    private static final String DEPARTMENT_ADMIN = "lhm-ab-kobit-bereichsadmin";
-
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
         resources.resourceId(null);
