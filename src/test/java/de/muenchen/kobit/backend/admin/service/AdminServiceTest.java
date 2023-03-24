@@ -1,7 +1,12 @@
 package de.muenchen.kobit.backend.admin.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import de.muenchen.kobit.backend.user.model.User;
 import de.muenchen.kobit.backend.user.service.UserDataResolver;
+import java.util.List;
 import lombok.val;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,12 +14,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.context.SecurityContextHolder;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AdminServiceTest {
@@ -25,8 +24,7 @@ class AdminServiceTest {
 
     private final UserDataResolver userDataResolver = mock(UserDataResolver.class);
 
-    @MockBean
-    SecurityContextHolder securityContextHolder;
+    @MockBean SecurityContextHolder securityContextHolder;
 
     private AdminService adminService;
 

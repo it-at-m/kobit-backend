@@ -4,15 +4,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.muenchen.kobit.backend.user.model.User;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j
@@ -22,7 +21,6 @@ public class UserDataResolver {
     private static final String RESOURCE_FIELD = "resource_access";
     private static final String KOBIT_FIELD = "kobit";
     private static final String ROLES_FIELD = "roles";
-
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -44,7 +42,8 @@ public class UserDataResolver {
         }
     }
 
-    private static List<String> getRoles(Map<String, Object> tokenDetails) throws JsonProcessingException {
+    private static List<String> getRoles(Map<String, Object> tokenDetails)
+            throws JsonProcessingException {
         final JsonNode roleNode = jsonNodeOfRoles(mapTokenToJson(tokenDetails));
         final List<String> roles = new ArrayList<>();
         if (roleNode.isArray()) {
@@ -55,7 +54,8 @@ public class UserDataResolver {
         return roles;
     }
 
-    private static JsonNode mapTokenToJson(Map<String, Object> tokenDetails) throws JsonProcessingException {
+    private static JsonNode mapTokenToJson(Map<String, Object> tokenDetails)
+            throws JsonProcessingException {
         return objectMapper.readTree(String.valueOf(tokenDetails.get(RESOURCE_FIELD)));
     }
 

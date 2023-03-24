@@ -8,7 +8,7 @@ public class AuthUtils {
 
     private static final String TOKEN_USER_NAME = "user_name";
 
-    private AuthUtils(){}
+    private AuthUtils() {}
 
     public static String getUserName() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

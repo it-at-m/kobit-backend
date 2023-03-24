@@ -16,9 +16,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
-/**
- * The central class for configuration of all security aspects.
- */
+/** The central class for configuration of all security aspects. */
 @Configuration
 @Profile("!no-security")
 @EnableWebSecurity
@@ -53,10 +51,12 @@ public class SecurityConfiguration {
                 .permitAll()
                 .antMatchers("/**")
                 .authenticated()
-                .and().oauth2ResourceServer().jwt()
-                .jwtAuthenticationConverter(new JwtUserInfoAuthenticationConverter(
-                        new UserInfoAuthoritiesService(userInfoUri, templateBuilder)
-                ));
+                .and()
+                .oauth2ResourceServer()
+                .jwt()
+                .jwtAuthenticationConverter(
+                        new JwtUserInfoAuthenticationConverter(
+                                new UserInfoAuthoritiesService(userInfoUri, templateBuilder)));
         return http.build();
     }
 }

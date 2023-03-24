@@ -5,17 +5,19 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 
-public class JwtUserInfoAuthenticationConverter implements Converter<Jwt, AbstractAuthenticationToken> {
+public class JwtUserInfoAuthenticationConverter
+        implements Converter<Jwt, AbstractAuthenticationToken> {
 
     private final UserInfoAuthoritiesService userInfoAuthoritiesService;
 
-    public JwtUserInfoAuthenticationConverter(UserInfoAuthoritiesService userInfoAuthoritiesService) {
+    public JwtUserInfoAuthenticationConverter(
+            UserInfoAuthoritiesService userInfoAuthoritiesService) {
         this.userInfoAuthoritiesService = userInfoAuthoritiesService;
     }
 
     @Override
     public AbstractAuthenticationToken convert(Jwt source) {
-        return new JwtAuthenticationToken(source, userInfoAuthoritiesService.loadAuthorities(source));
+        return new JwtAuthenticationToken(
+                source, userInfoAuthoritiesService.loadAuthorities(source));
     }
-
 }
