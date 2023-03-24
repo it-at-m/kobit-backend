@@ -26,7 +26,7 @@ public class AdminService {
         return getUserRoles().stream().anyMatch(it -> it.equals(KOBIT_ADMIN));
     }
 
-    public boolean isUserKobitAdmin(List<String> userRoles) {
+    private boolean isUserKobitAdmin(List<String> userRoles) {
         return userRoles.stream().anyMatch(it -> it.equals(KOBIT_ADMIN));
     }
 
