@@ -14,10 +14,10 @@
         <java.version>11</java.version>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <spring.boot.version>2.7.6</spring.boot.version>
+        <spring.boot.version>2.7.10</spring.boot.version>
         <spring.cloud.version>2021.0.5</spring.cloud.version>
-        <open.api.version>1.6.13</open.api.version>
-        <logstash.logback.version>7.2</logstash.logback.version>
+        <open.api.version>1.6.15</open.api.version>
+        <logstash.logback.version>7.3</logstash.logback.version>
         <caffeine.version>3.1.2</caffeine.version>
         <apache.commons.validator>1.7</apache.commons.validator>
     </properties>
@@ -97,12 +97,16 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.security.oauth.boot</groupId>
-            <artifactId>spring-security-oauth2-autoconfigure</artifactId>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-client</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-oauth2-client</artifactId>
+            <artifactId>spring-security-oauth2-resource-server</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-jose</artifactId>
         </dependency>
 
 
@@ -150,12 +154,12 @@
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
-            <version>4.18.0</version>
+            <version>4.20.0</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.5.1</version>
+            <version>42.5.4</version>
         </dependency>
 
 
@@ -210,13 +214,13 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>4.8.0</version>
+            <version>5.2.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
-            <version>1.12.19</version>
+            <version>1.14.2</version>
         </dependency>
 
         <!-- Logging -->

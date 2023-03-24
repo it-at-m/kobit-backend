@@ -5,42 +5,36 @@
 package de.muenchen.kobit.backend.configuration;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
+import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.oauth2.client.OAuth2ClientContext;
-import org.springframework.security.oauth2.client.OAuth2RestTemplate;
-import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
-import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
-import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+import org.springframework.security.web.SecurityFilterChain;
 
 /** The central class for configuration of all security aspects. */
 @Configuration
 @Profile("!no-security")
-@EnableResourceServer
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-public class SecurityConfiguration extends ResourceServerConfigurerAdapter {
+@Import(RestTemplateAutoConfiguration.class)
+public class SecurityConfiguration {
+
+    private final RestTemplateBuilder templateBuilder;
 
     @Value("${security.oauth2.resource.user-info-uri}")
     private String userInfoUri;
 
-    @Value("${security.oauth2.client.client-id}")
-    private String resourceId;
-
-    @Override
-    public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-        resources.resourceId(null);
+    public SecurityConfiguration(RestTemplateBuilder templateBuilder) {
+        this.templateBuilder = templateBuilder;
     }
 
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.antMatcher("/**")
                 .authorizeRequests()
                 // allow access to /actuator/info
@@ -56,18 +50,13 @@ public class SecurityConfiguration extends ResourceServerConfigurerAdapter {
                 .antMatchers("/actuator/metrics")
                 .permitAll()
                 .antMatchers("/**")
-                .authenticated();
-    }
-
-    @Bean
-    public OAuth2RestTemplate oauth2RestTemplate(
-            OAuth2ProtectedResourceDetails resource, OAuth2ClientContext context) {
-        return new OAuth2RestTemplate(resource, context);
-    }
-
-    @Bean
-    @Primary
-    public UserInfoTokenServices tokenServices() {
-        return new CustomUserInfoTokenServices(userInfoUri, resourceId);
+                .authenticated()
+                .and()
+                .oauth2ResourceServer()
+                .jwt()
+                .jwtAuthenticationConverter(
+                        new JwtUserInfoAuthenticationConverter(
+                                new UserInfoAuthoritiesService(userInfoUri, templateBuilder)));
+        return http.build();
     }
 }

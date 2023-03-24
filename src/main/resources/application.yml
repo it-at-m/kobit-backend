@@ -23,6 +23,11 @@ spring:
     database: default
     hibernate:
       ddl-auto: validate
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${KEY_URI}
 
 kobit:
   mail:
@@ -37,14 +42,11 @@ server:
       enabled: false
 
 security:
+  logging:
+    requests: none
   oauth2:
     resource:
-      jwk:
-        key-set-uri: ${KEY_URI}
       user-info-uri: ${USER_URI}
-      prefer-token-info: false
-    client:
-      client-id: ${CLIENT_ID}
 
 springdoc:
   swagger-ui:

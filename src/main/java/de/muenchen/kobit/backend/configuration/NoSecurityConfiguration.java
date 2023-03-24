@@ -4,27 +4,20 @@
  */
 package de.muenchen.kobit.backend.configuration;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
-import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
-import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @Profile("no-security")
-@EnableResourceServer
 @EnableWebSecurity
-public class NoSecurityConfiguration extends ResourceServerConfigurerAdapter {
+public class NoSecurityConfiguration {
 
-    @Override
-    public void configure(ResourceServerSecurityConfigurer resources) {
-        resources.resourceId(null);
-    }
-
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.headers()
                 .frameOptions()
                 .disable()
@@ -36,5 +29,7 @@ public class NoSecurityConfiguration extends ResourceServerConfigurerAdapter {
                 .and()
                 .csrf()
                 .disable();
+
+        return http.build();
     }
 }
