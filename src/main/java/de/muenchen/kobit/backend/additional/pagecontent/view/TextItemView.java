@@ -1,5 +1,6 @@
 package de.muenchen.kobit.backend.additional.pagecontent.view;
 import java.net.MalformedURLException;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import de.muenchen.kobit.backend.additional.pagecontent.model.PageType;
@@ -10,11 +11,22 @@ import java.net.URL;
 @NoArgsConstructor
 public class TextItemView {
 
+    private UUID uuid;
+
     private String header;
 
     private String entry;
 
     private URL link;
+
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
 
     public String getHeader() {
         return header;
@@ -47,8 +59,10 @@ public class TextItemView {
     }
 
     public TextItem toTextItem(PageType pageType) throws MalformedURLException {
-        return new TextItem(pageType, header, entry, link != null ? link.toString() : null);
+        return new TextItem(uuid, pageType, header, entry, link);
     }
+
+
 
 
     public static TextItemView toView(TextItem textItem) {

@@ -70,16 +70,13 @@ public class TextItem {
         this.link = link;
     }
 
-    public TextItem(PageType pageType, String header, String entry, String link) throws MalformedURLException {
-        this.uuid = UUID.randomUUID();
+    public TextItem(UUID uuid, PageType pageType, String header, String entry, URL link) {
+        this.uuid = uuid;
         this.pageType = pageType;
         this.header = header;
         this.entry = entry;
-        this.link = (link != null) ? new URL(link) : null;
+        this.link = link;
     }
-
-
-
 
     public TextItem() {
         // Required by JPA
