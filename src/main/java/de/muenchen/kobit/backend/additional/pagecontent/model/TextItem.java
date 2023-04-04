@@ -1,45 +1,41 @@
 package de.muenchen.kobit.backend.additional.pagecontent.model;
 
 import de.muenchen.kobit.backend.additional.pagecontent.view.TextItemView;
+
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.UUID;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "text_item")
 public class TextItem {
 
-    @Id
-    @NotNull
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    private UUID id;
 
-    @NotNull
+    @Id
+    @Column(name = "id", unique = true, nullable = false)
+    private UUID uuid;
+
     @Enumerated(EnumType.STRING)
+    @Column(name = "page_type")
     private PageType pageType;
 
-    @NotNull private String header;
+    @Column(name = "header", columnDefinition = "TEXT")
+    private String header;
 
-    @NotNull private String entry;
+    @Column(name = "entry", columnDefinition = "TEXT")
+    private String entry;
 
+    @Column(name = "link")
     private URL link;
 
-    public UUID getId() {
-        return id;
+    public UUID getUuid() {
+        return uuid;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public PageType getPageType() {
@@ -74,14 +70,29 @@ public class TextItem {
         this.link = link;
     }
 
-    public TextItem(PageType pageType, String header, String entry, URL link) {
+    public TextItem(PageType pageType, String header, String entry, String link) throws MalformedURLException {
+        this.uuid = UUID.randomUUID();
         this.pageType = pageType;
         this.header = header;
         this.entry = entry;
-        this.link = link;
+        this.link = (link != null) ? new URL(link) : null;
+    }
+
+
+
+
+    public TextItem() {
+        // Required by JPA
     }
 
     public TextItemView toView() {
-        return new TextItemView(header, entry, link);
+        TextItemView view = new TextItemView();
+        view.setHeader(header);
+        view.setEntry(entry);
+
+        view.setLink(link != null ? link.toString() : null);
+
+        return view;
     }
+
 }
