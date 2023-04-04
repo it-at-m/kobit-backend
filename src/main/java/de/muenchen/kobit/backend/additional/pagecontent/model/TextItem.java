@@ -1,17 +1,12 @@
 package de.muenchen.kobit.backend.additional.pagecontent.model;
-
 import de.muenchen.kobit.backend.additional.pagecontent.view.TextItemView;
-
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.UUID;
-
 import javax.persistence.*;
 
 @Entity
 @Table(name = "text_item")
 public class TextItem {
-
 
     @Id
     @Column(name = "id", unique = true, nullable = false)

@@ -1,11 +1,11 @@
 package de.muenchen.kobit.backend.additional.pagecontent.view;
+import de.muenchen.kobit.backend.additional.pagecontent.model.PageType;
+import de.muenchen.kobit.backend.additional.pagecontent.model.TextItem;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import de.muenchen.kobit.backend.additional.pagecontent.model.PageType;
-import de.muenchen.kobit.backend.additional.pagecontent.model.TextItem;
-import java.net.URL;
 
 @AllArgsConstructor
 @NoArgsConstructor

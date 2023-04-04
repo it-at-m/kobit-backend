@@ -11,9 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collections;
 import org.springframework.web.bind.annotation.*;
 
-
-
-
 @RestController
 @RequestMapping("/additional")
 public class AdditionalController {
