@@ -62,9 +62,6 @@ public class TextItemView {
         return new TextItem(uuid, pageType, header, entry, link);
     }
 
-
-
-
     public static TextItemView toView(TextItem textItem) {
         TextItemView view = new TextItemView();
         view.setHeader(textItem.getHeader());
