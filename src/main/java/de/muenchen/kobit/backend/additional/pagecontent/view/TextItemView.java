@@ -1,4 +1,5 @@
 package de.muenchen.kobit.backend.additional.pagecontent.view;
+
 import de.muenchen.kobit.backend.additional.pagecontent.model.PageType;
 import de.muenchen.kobit.backend.additional.pagecontent.model.TextItem;
 import java.net.MalformedURLException;
@@ -18,7 +19,6 @@ public class TextItemView {
     private String entry;
 
     private URL link;
-
 
     public UUID getUuid() {
         return uuid;

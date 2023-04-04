@@ -1,4 +1,5 @@
 package de.muenchen.kobit.backend.additional.pagecontent.model;
+
 import de.muenchen.kobit.backend.additional.pagecontent.view.TextItemView;
 import java.net.URL;
 import java.util.UUID;
@@ -86,5 +87,4 @@ public class TextItem {
 
         return view;
     }
-
 }
