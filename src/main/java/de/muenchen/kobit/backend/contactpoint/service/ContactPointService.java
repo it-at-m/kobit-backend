@@ -4,6 +4,7 @@ import de.muenchen.kobit.backend.contact.service.ContactPointToViewMapper;
 import de.muenchen.kobit.backend.contactpoint.ContactPointNotFoundException;
 import de.muenchen.kobit.backend.contactpoint.model.ContactPoint;
 import de.muenchen.kobit.backend.contactpoint.repository.ContactPointRepository;
+import de.muenchen.kobit.backend.contactpoint.view.ContactPointList;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
 import java.util.List;
 import java.util.Objects;
@@ -23,6 +24,11 @@ public class ContactPointService {
         Objects.requireNonNull(repo);
         this.repo = repo;
         this.mapper = mapper;
+    }
+
+    @Transactional
+    public List<ContactPointList> getContactPointList() {
+        return repo.findAll().stream().map(ContactPoint::toListView).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)

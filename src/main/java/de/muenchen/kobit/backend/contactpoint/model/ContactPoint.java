@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import de.muenchen.kobit.backend.contactpoint.view.ContactPointList;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,5 +44,9 @@ public class ContactPoint {
         this.description = description;
         this.shortCut = shortCut;
         this.department = department;
+    }
+
+    public ContactPointList toListView() {
+        return new ContactPointList(id, name, shortCut);
     }
 }

@@ -64,9 +64,8 @@ public class DecisionTreeService {
                                         new IllegalStateException(
                                                 "This should not have happened! There need to be"
                                                         + " at least one competence selected!"));
-        DecisionPoint result;
         Competence lastSelectedDecision = getLastElement(selectedCompetences);
-        result = getNextDecisionPointOrNull(lastSelectedDecision, rootSelection);
+        DecisionPoint result = getNextDecisionPointOrNull(lastSelectedDecision, rootSelection);
         if (result == null) {
             return new DecisionContactPointWrapper(
                     orderAlphabetically(

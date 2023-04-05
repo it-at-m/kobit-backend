@@ -5,6 +5,7 @@ import de.muenchen.kobit.backend.contactpoint.service.ContactPointCreationServic
 import de.muenchen.kobit.backend.contactpoint.service.ContactPointDeletionService;
 import de.muenchen.kobit.backend.contactpoint.service.ContactPointManipulationService;
 import de.muenchen.kobit.backend.contactpoint.service.ContactPointService;
+import de.muenchen.kobit.backend.contactpoint.view.ContactPointList;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
 import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
 import java.util.List;
@@ -42,6 +43,11 @@ public class ContactPointController {
         return ResponseEntity.ok(contactPoints);
     }
 
+    @GetMapping("/a")
+    public List<ContactPointList> getContactPointList() {
+        return contactPointService.getContactPointList();
+    }
+
     @GetMapping("/anlaufstellen/{id}")
     public ResponseEntity<ContactPointView> getContactPointById(@PathVariable UUID id) {
         Optional<ContactPointView> contactPoint = contactPointService.findById(id);
@@ -62,14 +68,14 @@ public class ContactPointController {
         return creationService.createContactPoint(view);
     }
 
-    @PutMapping("/anlaufstellen")
-    public ContactPointView setContactPoint(@RequestBody ContactPointView view)
+    @PutMapping("/anlaufstellen/{id}")
+    public ContactPointView setContactPoint(@PathVariable("id") UUID id, @RequestBody ContactPointView view)
             throws ContactPointValidationException {
         return manipulationService.updateContactPoint(view);
     }
 
-    @DeleteMapping("/anlaufstellen")
-    public void deleteContactPoint(@RequestParam UUID id) {
+    @DeleteMapping("/anlaufstellen/{id}")
+    public void deleteContactPoint(@PathVariable("id") UUID id) {
         deletionService.deleteContactPointView(id);
     }
 }
