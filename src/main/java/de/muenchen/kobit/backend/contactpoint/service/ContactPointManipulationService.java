@@ -15,16 +15,13 @@ import de.muenchen.kobit.backend.links.view.LinkView;
 import de.muenchen.kobit.backend.validation.Validator;
 import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
 import de.muenchen.kobit.backend.validation.exception.InvalidContactPointException;
-import org.owasp.html.HtmlPolicyBuilder;
-import org.owasp.html.PolicyFactory;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import javax.persistence.EntityNotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ContactPointManipulationService {
@@ -74,7 +71,8 @@ public class ContactPointManipulationService {
 
     private void validateId(UUID contactPointId, UUID pathID) throws InvalidContactPointException {
         if (contactPointId != pathID) {
-            throw new InvalidContactPointException("PathId and Id in the ContactPointView were not identical!");
+            throw new InvalidContactPointException(
+                    "PathId and Id in the ContactPointView were not identical!");
         }
     }
 
@@ -88,8 +86,7 @@ public class ContactPointManipulationService {
 
     private ContactPoint createOrUpdateContactPoint(ContactPointView contactPointView, UUID id) {
         try {
-            ContactPoint contactPointToUpdate =
-                    contactPointRepository.getReferenceById(id);
+            ContactPoint contactPointToUpdate = contactPointRepository.getReferenceById(id);
             contactPointToUpdate.setName(contactPointView.getName());
             contactPointToUpdate.setShortCut(contactPointView.getShortCut());
             contactPointToUpdate.setDescription(contactPointView.getDescription());
