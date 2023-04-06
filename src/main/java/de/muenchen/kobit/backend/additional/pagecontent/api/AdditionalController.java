@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @RestController
 @RequestMapping("/additional")
@@ -28,6 +29,7 @@ public class AdditionalController {
     }
 
     @PostMapping("/{pageType}")
+    @PreAuthorize("hasAuthority('KOBIT_ADMIN')")
     public ItemWrapper createTextItem(
             @PathVariable PageType pageType, @RequestBody TextItem textItem) {
         if (pageType == PageType.GLOSSARY || pageType == PageType.DOWNLOADS) {
@@ -42,6 +44,7 @@ public class AdditionalController {
     }
 
     @PutMapping("/{pageType}/{itemId}")
+    @PreAuthorize("hasAuthority('KOBIT_ADMIN')")
     public ItemWrapper updateTextItem(
             @PathVariable PageType pageType,
             @PathVariable UUID itemId,
@@ -58,6 +61,7 @@ public class AdditionalController {
     }
 
     @DeleteMapping("/{pageType}/{itemId}")
+    @PreAuthorize("hasAuthority('KOBIT_ADMIN')")
     public void deleteTextItem(@PathVariable PageType pageType, @PathVariable UUID itemId) {
         if (pageType == PageType.GLOSSARY || pageType == PageType.DOWNLOADS) {
             itemService.deleteTextItem(itemId);
