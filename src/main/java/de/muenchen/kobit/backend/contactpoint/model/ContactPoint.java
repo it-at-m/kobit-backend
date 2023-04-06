@@ -4,6 +4,7 @@ import java.util.UUID;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -13,6 +14,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.owasp.html.HtmlPolicyBuilder;
+import org.owasp.html.PolicyFactory;
 
 @Setter
 @Getter
@@ -38,6 +41,17 @@ public class ContactPoint {
 
     @NotNull private String description;
     private String department;
+
+    @PrePersist
+    public void sanitizeDescription() {
+        final PolicyFactory policy = new HtmlPolicyBuilder()
+                .allowElements("a")
+                .allowUrlProtocols("https", "http")
+                .allowAttributes("href").onElements("a")
+                .requireRelNofollowOnLinks()
+                .toFactory();
+        setDepartment(policy.sanitize(this.description));
+    }
 
     public ContactPoint(String name, String shortCut, String description, String department) {
         this.name = name;
