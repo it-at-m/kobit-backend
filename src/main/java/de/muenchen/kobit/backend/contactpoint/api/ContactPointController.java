@@ -69,7 +69,8 @@ public class ContactPointController {
     }
 
     @PutMapping("/anlaufstellen/{id}")
-    public ContactPointView setContactPoint(@PathVariable("id") UUID id, @RequestBody ContactPointView view)
+    public ContactPointView setContactPoint(
+            @PathVariable("id") UUID id, @RequestBody ContactPointView view)
             throws ContactPointValidationException {
         return manipulationService.updateContactPoint(view);
     }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 public class ValidateCompetence implements Validator {
     @Override
     public void validate(ContactPointView contactPointView) throws InvalidCompetenceException {
+
         if (contactPointView.getCompetences() == null) {
             throw new InvalidCompetenceException("Competences can not be null!");
         }

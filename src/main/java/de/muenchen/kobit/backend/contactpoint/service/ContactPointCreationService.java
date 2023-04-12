@@ -45,14 +45,24 @@ public class ContactPointCreationService {
     @Transactional
     public ContactPointView createContactPoint(ContactPointView contactPointView)
             throws ContactPointValidationException {
+        /*
+        if (contactPointView.getContact() == null) {
+            contactPointView.setContact(Collections.emptyList());
+        }*/
+        if (contactPointView.getLinks() == null) {
+            contactPointView.setLinks(Collections.emptyList());
+        }
+
         for (Validator validator : validators) {
             validator.validate(contactPointView);
         }
+
         ContactPoint newContactPoint = createNewContactPoint(contactPointView);
         UUID id = newContactPoint.getId();
         List<ContactView> newContact = createContacts(id, contactPointView.getContact());
         List<LinkView> newLinks = createLinks(id, contactPointView.getLinks());
-        List<Competence> newCompetences = createCompetencesIfPresent(id, contactPointView.getCompetences());
+        List<Competence> newCompetences =
+                createCompetencesIfPresent(id, contactPointView.getCompetences());
         return new ContactPointView(
                 newContactPoint.getId(),
                 newContactPoint.getName(),
@@ -70,15 +80,10 @@ public class ContactPointCreationService {
 
     // Saves the list of given ContactPoints, if the List is empty, an empty list will be returned
     private List<Competence> createCompetencesIfPresent(UUID id, List<Competence> competences) {
-        if(competences != null) {
-            for (Competence competence : competences) {
-                competenceService.createCompetenceToContactPoint(id, competence);
-            }
-            return competences;
-        }else {
-            return Collections.emptyList();
+        for (Competence competence : competences) {
+            competenceService.createCompetenceToContactPoint(id, competence);
         }
-
+        return competences;
     }
 
     private List<LinkView> createLinks(UUID id, List<LinkView> views) {
@@ -91,6 +96,7 @@ public class ContactPointCreationService {
 
     private List<ContactView> createContacts(UUID id, List<ContactView> contacts) {
         List<Contact> savedContacts = new ArrayList<>();
+
         for (ContactView contact : contacts) {
             savedContacts.add(contactService.createContact(new Contact(id, contact.getEmail())));
         }
