@@ -77,5 +77,4 @@ class ContactPointCreationServiceTest {
         assertThat(resultView.getContact().get(0).getEmail()).isEqualTo(contacts.get(0).getEmail());
         assertThat(resultView.getLinks().get(0).getContactPointId()).isEqualTo(id);
     }
-
 }

@@ -113,5 +113,4 @@ public class ContactPointCreationService {
         }
         return savedContacts.stream().map(Contact::toView).collect(Collectors.toList());
     }
-
 }
