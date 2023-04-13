@@ -80,6 +80,14 @@ public class ContactPointCreationService {
 
     // Saves the list of given ContactPoints, if the List is empty, an empty list will be returned
     private List<Competence> createCompetencesIfPresent(UUID id, List<Competence> competences) {
+        if (competences != null) {
+            for (Competence competence : competences) {
+                competenceService.createCompetenceToContactPoint(id, competence);
+            }
+            return competences;
+        } else {
+            return Collections.emptyList();
+        }
         for (Competence competence : competences) {
             competenceService.createCompetenceToContactPoint(id, competence);
         }

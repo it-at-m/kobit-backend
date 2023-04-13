@@ -38,12 +38,6 @@ public class ContactPointController {
     }
 
     @GetMapping("/anlaufstellen")
-    public ResponseEntity<List<ContactPointView>> getContactPoints() {
-        List<ContactPointView> contactPoints = contactPointService.getAllContactPoints();
-        return ResponseEntity.ok(contactPoints);
-    }
-
-    @GetMapping("/a")
     public List<ContactPointList> getContactPointList() {
         return contactPointService.getContactPointList();
     }
@@ -72,7 +66,7 @@ public class ContactPointController {
     public ContactPointView setContactPoint(
             @PathVariable("id") UUID id, @RequestBody ContactPointView view)
             throws ContactPointValidationException {
-        return manipulationService.updateContactPoint(view);
+        return manipulationService.updateContactPoint(view, id);
     }
 
     @DeleteMapping("/anlaufstellen/{id}")
