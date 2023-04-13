@@ -65,21 +65,21 @@ public class ContactPointCreationService {
             List<LinkView> newLinks = createLinks(id, contactPointView.getLinks());
             List<Competence> newCompetences =
                     createCompetencesIfPresent(id, contactPointView.getCompetences());
-            return ResponseEntity.ok(new ContactPointView(
-                    newContactPoint.getId(),
-                    newContactPoint.getName(),
-                    newContactPoint.getShortCut(),
-                    newContactPoint.getDescription(),
-                    newContactPoint.getDepartment(),
-                    newContact,
-                    newCompetences,
-                    newLinks));
+            return ResponseEntity.ok(
+                    new ContactPointView(
+                        newContactPoint.getId(),
+                        newContactPoint.getName(),
+                        newContactPoint.getShortCut(),
+                        newContactPoint.getDescription(),
+                        newContactPoint.getDepartment(),
+                        newContact,
+                        newCompetences,
+                        newLinks));
         } catch (Exception e) {
             return ResponseEntity.badRequest()
                     .body(Collections.singletonMap("error", e.getMessage()));
         }
     }
-
 
     private ContactPoint createNewContactPoint(ContactPointView contactPointView) {
         return contactPointRepository.save(contactPointView.toContactPoint());
@@ -95,7 +95,6 @@ public class ContactPointCreationService {
         } else {
             return Collections.emptyList();
         }
-
     }
 
     private List<LinkView> createLinks(UUID id, List<LinkView> views) {
@@ -114,4 +113,5 @@ public class ContactPointCreationService {
         }
         return savedContacts.stream().map(Contact::toView).collect(Collectors.toList());
     }
+
 }
