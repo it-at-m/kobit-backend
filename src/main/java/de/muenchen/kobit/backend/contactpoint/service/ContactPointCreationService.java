@@ -97,19 +97,19 @@ public class ContactPointCreationService {
         }
     }
 
-    private List<LinkView> createLinks(UUID id, List<LinkView> views) {
-        List<LinkView> savedLinks = new ArrayList<>(views.size());
-        for (LinkView view : views) {
-            savedLinks.add(linkService.createLink(view.toLink(id)));
-        }
-        return savedLinks;
-    }
-
     private List<ContactView> createContacts(UUID id, List<ContactView> contacts) {
         List<Contact> savedContacts = new ArrayList<>();
         for (ContactView contact : contacts) {
             savedContacts.add(contactService.createContact(new Contact(id, contact.getEmail())));
         }
         return savedContacts.stream().map(Contact::toView).collect(Collectors.toList());
+    }
+
+    private List<LinkView> createLinks(UUID id, List<LinkView> views) {
+        List<LinkView> savedLinks = new ArrayList<>(views.size());
+        for (LinkView view : views) {
+            savedLinks.add(linkService.createLink(view.toLink(id)));
+        }
+        return savedLinks;
     }
 }
