@@ -88,10 +88,7 @@ public class ContactPointCreationService {
         } else {
             return Collections.emptyList();
         }
-        for (Competence competence : competences) {
-            competenceService.createCompetenceToContactPoint(id, competence);
-        }
-        return competences;
+
     }
 
     private List<LinkView> createLinks(UUID id, List<LinkView> views) {
