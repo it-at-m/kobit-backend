@@ -67,14 +67,14 @@ public class ContactPointCreationService {
                     createCompetencesIfPresent(id, contactPointView.getCompetences());
             return ResponseEntity.ok(
                     new ContactPointView(
-                        newContactPoint.getId(),
-                        newContactPoint.getName(),
-                        newContactPoint.getShortCut(),
-                        newContactPoint.getDescription(),
-                        newContactPoint.getDepartment(),
-                        newContact,
-                        newCompetences,
-                        newLinks));
+                            newContactPoint.getId(),
+                            newContactPoint.getName(),
+                            newContactPoint.getShortCut(),
+                            newContactPoint.getDescription(),
+                            newContactPoint.getDepartment(),
+                            newContact,
+                            newCompetences,
+                            newLinks));
         } catch (Exception e) {
             return ResponseEntity.badRequest()
                     .body(Collections.singletonMap("error", e.getMessage()));
@@ -113,5 +113,4 @@ public class ContactPointCreationService {
         }
         return savedContacts.stream().map(Contact::toView).collect(Collectors.toList());
     }
-
 }
