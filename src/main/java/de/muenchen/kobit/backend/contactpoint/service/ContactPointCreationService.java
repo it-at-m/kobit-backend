@@ -111,7 +111,8 @@ public class ContactPointCreationService {
         for (ContactView contact : contacts) {
             savedContacts.add(contactService.createContact(new Contact(id, contact.getEmail())));
         }
-        return savedContacts.stream().map(Contact::toView).collect(Collectors.toList());
+        return savedContacts.stream()
+                .map(Contact::toView)
+                .collect(Collectors.toList());
     }
-
 }
