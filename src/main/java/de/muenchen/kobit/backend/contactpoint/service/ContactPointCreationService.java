@@ -107,12 +107,9 @@ public class ContactPointCreationService {
 
     private List<ContactView> createContacts(UUID id, List<ContactView> contacts) {
         List<Contact> savedContacts = new ArrayList<>();
-
         for (ContactView contact : contacts) {
             savedContacts.add(contactService.createContact(new Contact(id, contact.getEmail())));
         }
-        return savedContacts.stream()
-                .map(Contact::toView)
-                .collect(Collectors.toList());
+        return savedContacts.stream().map(Contact::toView).collect(Collectors.toList());
     }
 }
