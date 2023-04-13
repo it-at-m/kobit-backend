@@ -66,7 +66,7 @@ class ContactPointManipulationServiceTest {
         when(contactService.createContact(any()))
                 .thenReturn(new Contact(id, contacts.stream().findFirst().get().getEmail()));
 
-        var result = contactPointManipulationService.updateContactPoint(view);
+        var result = contactPointManipulationService.updateContactPoint(view, id);
 
         verify(linkService, times(1)).getLinksByContactPointId(id);
         verify(linkService, times(0)).deleteById(id);
@@ -116,7 +116,7 @@ class ContactPointManipulationServiceTest {
         when(contactService.updateContact(any()))
                 .thenReturn(new Contact(id, contactViews.stream().findFirst().get().getEmail()));
 
-        var result = contactPointManipulationService.updateContactPoint(view);
+        var result = contactPointManipulationService.updateContactPoint(view, id);
 
         verify(linkService, times(1)).getLinksByContactPointId(id);
         verify(linkService, times(1)).deleteById(links.get(0).getId());
