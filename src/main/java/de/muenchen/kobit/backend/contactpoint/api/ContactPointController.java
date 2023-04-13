@@ -57,8 +57,7 @@ public class ContactPointController {
     }
 
     @PostMapping("/anlaufstellen")
-    public ContactPointView createContactPoint(@RequestBody ContactPointView view)
-            throws ContactPointValidationException {
+    public ResponseEntity<?> createContactPoint(@RequestBody ContactPointView view) {
         return creationService.createContactPoint(view);
     }
 
