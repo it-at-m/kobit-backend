@@ -1,5 +1,6 @@
 package de.muenchen.kobit.backend.contactpoint.service;
 import org.springframework.http.ResponseEntity;
+
 import de.muenchen.kobit.backend.competence.Competence;
 import de.muenchen.kobit.backend.competence.service.CompetenceService;
 import de.muenchen.kobit.backend.contact.model.Contact;
@@ -112,6 +113,5 @@ public class ContactPointCreationService {
         }
         return savedContacts.stream().map(Contact::toView).collect(Collectors.toList());
     }
-
 
 }
