@@ -54,8 +54,8 @@ public class ContactPointCreationService {
                 try {
                     validator.validate(contactPointView);
                 } catch (ContactPointValidationException e) {
-                    // Log the error if needed, e.g., logger.error("Validation error: {}", e.getMessage());
-                    return ResponseEntity.badRequest().body(Collections.singletonMap("error", e.getMessage()));
+                    return ResponseEntity.badRequest()
+                            .body(Collections.singletonMap("error", e.getMessage()));
                 }
             }
 
@@ -75,7 +75,8 @@ public class ContactPointCreationService {
                     newCompetences,
                     newLinks));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(Collections.singletonMap("error", e.getMessage()));
+            return ResponseEntity.badRequest()
+                    .body(Collections.singletonMap("error", e.getMessage()));
         }
     }
 
