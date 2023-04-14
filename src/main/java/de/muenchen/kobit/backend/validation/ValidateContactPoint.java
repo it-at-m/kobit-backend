@@ -8,8 +8,10 @@ import org.springframework.stereotype.Component;
 public class ValidateContactPoint implements Validator {
 
     private static final int NAME_MIN_SIZE = 5;
+    private static final int NAME_MAX_SIZE = 100;
     private static final int SHORT_CUT_MIN = 3;
     private static final int SHORT_CUT_MAX = 10;
+    private static final int DESCRIPTION_MAX_SIZE = 2000;
     private static final String SHORT_CUT_PATTERN = "^[a-zA-ZäöüÄÖÜß]*$";
 
     @Override
@@ -25,8 +27,8 @@ public class ValidateContactPoint implements Validator {
             throw new InvalidContactPointException(
                     "ContactPoint Fields name, shortCut and description can not be blank!");
         }
-        if (isNameToSmall(contactPointView.getName())) {
-            throw new InvalidContactPointException("Name can not be less than 5 letters!");
+        if (isNameOutOfRange(contactPointView.getName())) {
+            throw new InvalidContactPointException("Name must be at least 4 characters and not more than 100!");
         }
         if (isShortCutOutOfRange(contactPointView.getShortCut())) {
             throw new InvalidContactPointException(
@@ -34,6 +36,10 @@ public class ValidateContactPoint implements Validator {
         }
         if (!isShortCutValid(contactPointView.getShortCut())) {
             throw new InvalidContactPointException("Shortcut can only be letters!");
+        }
+        if (isDescriptionTooLarge(contactPointView.getDescription())) {
+            throw new InvalidContactPointException(
+                    "Description must be not more than 2000 characters!");
         }
     }
 
@@ -49,15 +55,19 @@ public class ValidateContactPoint implements Validator {
                 || contactPointView.getDescription().isBlank());
     }
 
+    private boolean isNameOutOfRange(String name) {
+        return name.length() < NAME_MIN_SIZE || name.length() > NAME_MAX_SIZE;
+    }
     private boolean isShortCutOutOfRange(String shortcut) {
         return shortcut.length() < SHORT_CUT_MIN || shortcut.length() > SHORT_CUT_MAX;
+    }
+
+    private boolean isDescriptionTooLarge(String description) {
+        return description.length() > DESCRIPTION_MAX_SIZE;
     }
 
     private boolean isShortCutValid(String shortcut) {
         return shortcut.matches(SHORT_CUT_PATTERN);
     }
 
-    private boolean isNameToSmall(String name) {
-        return name.length() < NAME_MIN_SIZE;
-    }
 }
