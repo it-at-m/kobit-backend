@@ -14,11 +14,14 @@ import de.muenchen.kobit.backend.links.service.LinkService;
 import de.muenchen.kobit.backend.links.view.LinkView;
 import de.muenchen.kobit.backend.validation.Validator;
 import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
+import de.muenchen.kobit.backend.validation.exception.InvalidContactPointException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,25 +49,48 @@ public class ContactPointManipulationService {
     }
 
     @Transactional
-    public ContactPointView updateContactPoint(ContactPointView contactPointView)
-            throws ContactPointValidationException {
-        for (Validator validator : validators) {
-            validator.validate(contactPointView);
+    public ResponseEntity<?> updateContactPoint(ContactPointView contactPointView, UUID pathId) {
+        try {
+            if (contactPointView.getLinks() == null) {
+                contactPointView.setLinks(Collections.emptyList());
+            }
+
+            for (Validator validator : validators) {
+                try {
+                    validator.validate(contactPointView);
+                } catch (ContactPointValidationException e) {
+                    return ResponseEntity.badRequest()
+                            .body(Collections.singletonMap("error", e.getMessage()));
+                }
+            }
+            validateId(contactPointView.getId(), pathId);
+            ContactPoint newContactPoint = createOrUpdateContactPoint(contactPointView, pathId);
+            UUID id = newContactPoint.getId();
+            List<ContactView> newContact = updateContact(id, contactPointView.getContact());
+            List<LinkView> newLinks = updateLink(id, contactPointView.getLinks());
+            List<Competence> newCompetences =
+                    updateCompetences(id, contactPointView.getCompetences());
+            return ResponseEntity.ok(
+                    new ContactPointView(
+                            newContactPoint.getId(),
+                            newContactPoint.getName(),
+                            newContactPoint.getShortCut(),
+                            newContactPoint.getDescription(),
+                            newContactPoint.getDepartment(),
+                            newContact,
+                            newCompetences,
+                            newLinks));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(Collections.singletonMap("error", e.getMessage()));
         }
-        ContactPoint newContactPoint = createOrUpdateContactPoint(contactPointView);
-        UUID id = newContactPoint.getId();
-        List<ContactView> newContact = updateContact(id, contactPointView.getContact());
-        List<LinkView> newLinks = updateLink(id, contactPointView.getLinks());
-        List<Competence> newCompetences = updateCompetences(id, contactPointView.getCompetences());
-        return new ContactPointView(
-                newContactPoint.getId(),
-                newContactPoint.getName(),
-                newContactPoint.getShortCut(),
-                newContactPoint.getDescription(),
-                newContactPoint.getDepartment(),
-                newContact,
-                newCompetences,
-                newLinks);
+    }
+
+    private void validateId(UUID contactPointId, UUID pathID) throws InvalidContactPointException {
+        if (!contactPointId.equals(pathID)) {
+            throw new InvalidContactPointException(
+                    "PathId and Id in the ContactPointView were not identical!");
+        }
     }
 
     private List<Competence> updateCompetences(UUID id, List<Competence> competences) {
@@ -75,10 +101,9 @@ public class ContactPointManipulationService {
         return competences;
     }
 
-    private ContactPoint createOrUpdateContactPoint(ContactPointView contactPointView) {
+    private ContactPoint createOrUpdateContactPoint(ContactPointView contactPointView, UUID id) {
         try {
-            ContactPoint contactPointToUpdate =
-                    contactPointRepository.getReferenceById(contactPointView.getId());
+            ContactPoint contactPointToUpdate = contactPointRepository.getReferenceById(id);
             contactPointToUpdate.setName(contactPointView.getName());
             contactPointToUpdate.setShortCut(contactPointView.getShortCut());
             contactPointToUpdate.setDescription(contactPointView.getDescription());

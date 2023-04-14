@@ -5,6 +5,7 @@ import de.muenchen.kobit.backend.contactpoint.service.ContactPointCreationServic
 import de.muenchen.kobit.backend.contactpoint.service.ContactPointDeletionService;
 import de.muenchen.kobit.backend.contactpoint.service.ContactPointManipulationService;
 import de.muenchen.kobit.backend.contactpoint.service.ContactPointService;
+import de.muenchen.kobit.backend.contactpoint.view.ContactPointList;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
 import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
 import java.util.List;
@@ -37,9 +38,8 @@ public class ContactPointController {
     }
 
     @GetMapping("/anlaufstellen")
-    public ResponseEntity<List<ContactPointView>> getContactPoints() {
-        List<ContactPointView> contactPoints = contactPointService.getAllContactPoints();
-        return ResponseEntity.ok(contactPoints);
+    public List<ContactPointList> getContactPointList() {
+        return contactPointService.getContactPointList();
     }
 
     @GetMapping("/anlaufstellen/{id}")
@@ -57,19 +57,19 @@ public class ContactPointController {
     }
 
     @PostMapping("/anlaufstellen")
-    public ContactPointView createContactPoint(@RequestBody ContactPointView view)
-            throws ContactPointValidationException {
+    public ResponseEntity<?> createContactPoint(@RequestBody ContactPointView view) {
         return creationService.createContactPoint(view);
     }
 
-    @PutMapping("/anlaufstellen")
-    public ContactPointView setContactPoint(@RequestBody ContactPointView view)
+    @PutMapping("/anlaufstellen/{id}")
+    public ResponseEntity<?> setContactPoint(
+            @PathVariable("id") UUID id, @RequestBody ContactPointView view)
             throws ContactPointValidationException {
-        return manipulationService.updateContactPoint(view);
+        return manipulationService.updateContactPoint(view, id);
     }
 
-    @DeleteMapping("/anlaufstellen")
-    public void deleteContactPoint(@RequestParam UUID id) {
+    @DeleteMapping("/anlaufstellen/{id}")
+    public void deleteContactPoint(@PathVariable("id") UUID id) {
         deletionService.deleteContactPointView(id);
     }
 }
