@@ -12,7 +12,7 @@ public class ValidateContactPoint implements Validator {
     private static final int SHORT_CUT_MIN = 3;
     private static final int SHORT_CUT_MAX = 10;
     private static final int DESCRIPTION_MAX_SIZE = 2000;
-    private static final String SHORT_CUT_PATTERN = "^[a-zA-ZäöüÄÖÜß]*$";
+    private static final String SHORT_CUT_PATTERN = "^[a-zA-ZäöüÄÖÜß\u0020]*$";
 
     @Override
     public void validate(ContactPointView contactPointView) throws InvalidContactPointException {
