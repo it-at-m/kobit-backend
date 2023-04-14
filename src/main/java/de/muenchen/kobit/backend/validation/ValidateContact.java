@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 public class ValidateContact implements Validator {
 
     private static final int EMAIL_MAX_SIZE = 500;
+
     @Override
     public void validate(ContactPointView contactPointView) throws ContactPointValidationException {
         if (contactPointView.getContact() == null) {
@@ -24,7 +25,8 @@ public class ValidateContact implements Validator {
                     throw new InvalidContactException("Contact need mail address is invalid!");
                 }
                 if (isEmailTooLarge(contact.getEmail())) {
-                    throw new InvalidContactException("Contact must be not more than 500 characters!");
+                    throw new InvalidContactException(
+                            "Contact must be not more than 500 characters!");
                 }
             }
         }
