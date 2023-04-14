@@ -11,7 +11,6 @@ public class ValidateCompetence implements Validator {
         if (contactPointView.getId() == null) {
             return;
         }
-
         if (contactPointView.getCompetences() == null) {
             throw new InvalidCompetenceException("Competences can not be null!");
         }

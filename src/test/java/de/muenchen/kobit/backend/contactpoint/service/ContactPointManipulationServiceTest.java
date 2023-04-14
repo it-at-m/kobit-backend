@@ -133,7 +133,8 @@ class ContactPointManipulationServiceTest {
         assertThat(resultView.getContact().size()).isEqualTo(contactViews.size());
         assertThat(resultView.getLinks().size()).isEqualTo(linkViews.size());
         assertThat(resultView.getCompetences().size()).isEqualTo(competences.size());
-        assertThat(resultView.getContact().get(0).getEmail()).isEqualTo(contactViews.get(0).getEmail());
+        assertThat(resultView.getContact().get(0).getEmail())
+                .isEqualTo(contactViews.get(0).getEmail());
         assertThat(resultView.getLinks().get(0).getContactPointId()).isEqualTo(id);
     }
 }

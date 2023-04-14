@@ -60,5 +60,4 @@ public class ValidateContactPoint implements Validator {
     private boolean isNameToSmall(String name) {
         return name.length() < NAME_MIN_SIZE;
     }
-
 }

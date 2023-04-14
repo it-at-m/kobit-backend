@@ -14,7 +14,7 @@ public class ValidateContact implements Validator {
     public void validate(ContactPointView contactPointView) throws ContactPointValidationException {
         if (contactPointView.getContact() == null) {
             throw new InvalidContactPointException("Contact can not be null!");
-        }else{
+        } else {
             for (ContactView contact : contactPointView.getContact()) {
                 if (!isMailValid(contact.getEmail())) {
                     throw new InvalidContactException("Contact need mail address is invalid!");
