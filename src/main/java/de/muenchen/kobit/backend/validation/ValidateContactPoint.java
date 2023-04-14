@@ -28,7 +28,8 @@ public class ValidateContactPoint implements Validator {
                     "ContactPoint Fields name, shortCut and description can not be blank!");
         }
         if (isNameOutOfRange(contactPointView.getName())) {
-            throw new InvalidContactPointException("Name must be at least 4 characters and not more than 100!");
+            throw new InvalidContactPointException(
+                    "Name must be at least 4 characters and not more than 100!");
         }
         if (isShortCutOutOfRange(contactPointView.getShortCut())) {
             throw new InvalidContactPointException(
@@ -58,6 +59,7 @@ public class ValidateContactPoint implements Validator {
     private boolean isNameOutOfRange(String name) {
         return name.length() < NAME_MIN_SIZE || name.length() > NAME_MAX_SIZE;
     }
+
     private boolean isShortCutOutOfRange(String shortcut) {
         return shortcut.length() < SHORT_CUT_MIN || shortcut.length() > SHORT_CUT_MAX;
     }
@@ -69,5 +71,4 @@ public class ValidateContactPoint implements Validator {
     private boolean isShortCutValid(String shortcut) {
         return shortcut.matches(SHORT_CUT_PATTERN);
     }
-
 }

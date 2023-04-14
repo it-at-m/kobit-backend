@@ -7,6 +7,7 @@ import de.muenchen.kobit.backend.validation.exception.InvalidContactException;
 import de.muenchen.kobit.backend.validation.exception.InvalidContactPointException;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.stereotype.Component;
+
 @Component
 public class ValidateContact implements Validator {
     @Override
