@@ -21,6 +21,7 @@ import java.util.UUID;
 import javax.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
 
 class ContactPointManipulationServiceTest {
 
@@ -79,12 +80,12 @@ class ContactPointManipulationServiceTest {
         verify(contactService, times(0)).updateContact(any());
         verify(contactService, times(0)).deleteContact(any());
         verify(contactService, times(1)).createContact(any());
-
-        assertThat(result.getContact().size()).isEqualTo(contacts.size());
-        assertThat(result.getLinks().size()).isEqualTo(linkViews.size());
-        assertThat(result.getCompetences().size()).isEqualTo(competences.size());
-        assertThat(result.getContact().get(0).getEmail()).isEqualTo(contacts.get(0).getEmail());
-        assertThat(result.getLinks().get(0).getContactPointId()).isEqualTo(id);
+        var resultView = (ContactPointView) result.getBody();
+        assertThat(resultView.getContact().size()).isEqualTo(contacts.size());
+        assertThat(resultView.getLinks().size()).isEqualTo(linkViews.size());
+        assertThat(resultView.getCompetences().size()).isEqualTo(competences.size());
+        assertThat(resultView.getContact().get(0).getEmail()).isEqualTo(contacts.get(0).getEmail());
+        assertThat(resultView.getLinks().get(0).getContactPointId()).isEqualTo(id);
     }
 
     @Test
@@ -129,11 +130,11 @@ class ContactPointManipulationServiceTest {
         verify(contactService, times(1)).updateContact(any());
         verify(contactService, times(0)).deleteContact(any());
         verify(contactService, times(0)).createContact(any());
-
-        assertThat(result.getContact().size()).isEqualTo(contactViews.size());
-        assertThat(result.getLinks().size()).isEqualTo(linkViews.size());
-        assertThat(result.getCompetences().size()).isEqualTo(competences.size());
-        assertThat(result.getContact().get(0).getEmail()).isEqualTo(contactViews.get(0).getEmail());
-        assertThat(result.getLinks().get(0).getContactPointId()).isEqualTo(id);
+        var resultView = (ContactPointView) result.getBody();
+        assertThat(resultView.getContact().size()).isEqualTo(contactViews.size());
+        assertThat(resultView.getLinks().size()).isEqualTo(linkViews.size());
+        assertThat(resultView.getCompetences().size()).isEqualTo(competences.size());
+        assertThat(resultView.getContact().get(0).getEmail()).isEqualTo(contactViews.get(0).getEmail());
+        assertThat(resultView.getLinks().get(0).getContactPointId()).isEqualTo(id);
     }
 }
