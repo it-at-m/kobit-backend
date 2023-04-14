@@ -51,6 +51,10 @@ public class ContactPointManipulationService {
     @Transactional
     public ResponseEntity<?> updateContactPoint(ContactPointView contactPointView, UUID pathId) {
         try {
+            if (contactPointView.getLinks() == null) {
+                contactPointView.setLinks(Collections.emptyList());
+            }
+
             for (Validator validator : validators) {
                 try {
                     validator.validate(contactPointView);
@@ -64,16 +68,18 @@ public class ContactPointManipulationService {
             UUID id = newContactPoint.getId();
             List<ContactView> newContact = updateContact(id, contactPointView.getContact());
             List<LinkView> newLinks = updateLink(id, contactPointView.getLinks());
-            List<Competence> newCompetences = updateCompetences(id, contactPointView.getCompetences());
-                return ResponseEntity.ok( new ContactPointView(
-                    newContactPoint.getId(),
-                    newContactPoint.getName(),
-                    newContactPoint.getShortCut(),
-                    newContactPoint.getDescription(),
-                    newContactPoint.getDepartment(),
-                    newContact,
-                    newCompetences,
-                    newLinks));
+            List<Competence> newCompetences =
+                    updateCompetences(id, contactPointView.getCompetences());
+            return ResponseEntity.ok(
+                    new ContactPointView(
+                            newContactPoint.getId(),
+                            newContactPoint.getName(),
+                            newContactPoint.getShortCut(),
+                            newContactPoint.getDescription(),
+                            newContactPoint.getDepartment(),
+                            newContact,
+                            newCompetences,
+                            newLinks));
         } catch (Exception e) {
             return ResponseEntity.badRequest()
                     .body(Collections.singletonMap("error", e.getMessage()));
