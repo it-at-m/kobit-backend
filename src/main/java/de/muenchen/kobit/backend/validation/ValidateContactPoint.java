@@ -10,7 +10,6 @@ public class ValidateContactPoint implements Validator {
     private static final int NAME_MIN_SIZE = 5;
     private static final int SHORT_CUT_MIN = 3;
     private static final int SHORT_CUT_MAX = 10;
-    private static final String NAME_PATTERN = "^[a-zA-ZäöüÄÖÜß]*$";
     private static final String SHORT_CUT_PATTERN = "^[a-zA-ZäöüÄÖÜß]*$";
 
     @Override
@@ -28,9 +27,6 @@ public class ValidateContactPoint implements Validator {
         }
         if (isNameToSmall(contactPointView.getName())) {
             throw new InvalidContactPointException("Name can not be less than 5 letters!");
-        }
-        if (!isNameValid(contactPointView.getName())) {
-            throw new InvalidContactPointException("Name can only be letters!");
         }
         if (isShortCutOutOfRange(contactPointView.getShortCut())) {
             throw new InvalidContactPointException(
@@ -65,7 +61,4 @@ public class ValidateContactPoint implements Validator {
         return name.length() < NAME_MIN_SIZE;
     }
 
-    private boolean isNameValid(String name) {
-        return name.matches(NAME_PATTERN);
-    }
 }

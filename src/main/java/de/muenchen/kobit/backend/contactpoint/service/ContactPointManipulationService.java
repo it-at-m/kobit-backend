@@ -16,10 +16,12 @@ import de.muenchen.kobit.backend.validation.Validator;
 import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
 import de.muenchen.kobit.backend.validation.exception.InvalidContactPointException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,10 +49,15 @@ public class ContactPointManipulationService {
     }
 
     @Transactional
-    public ContactPointView updateContactPoint(ContactPointView contactPointView, UUID pathId)
-            throws ContactPointValidationException {
+    public ResponseEntity<?> updateContactPoint(ContactPointView contactPointView, UUID pathId) {
+        try {
         for (Validator validator : validators) {
-            validator.validate(contactPointView);
+            try {
+                validator.validate(contactPointView);
+            } catch (ContactPointValidationException e) {
+                return ResponseEntity.badRequest()
+                        .body(Collections.singletonMap("error", e.getMessage()));
+            }
         }
         validateId(contactPointView.getId(), pathId);
         ContactPoint newContactPoint = createOrUpdateContactPoint(contactPointView, pathId);
@@ -58,7 +65,7 @@ public class ContactPointManipulationService {
         List<ContactView> newContact = updateContact(id, contactPointView.getContact());
         List<LinkView> newLinks = updateLink(id, contactPointView.getLinks());
         List<Competence> newCompetences = updateCompetences(id, contactPointView.getCompetences());
-        return new ContactPointView(
+            return ResponseEntity.ok( new ContactPointView(
                 newContactPoint.getId(),
                 newContactPoint.getName(),
                 newContactPoint.getShortCut(),
@@ -66,11 +73,15 @@ public class ContactPointManipulationService {
                 newContactPoint.getDepartment(),
                 newContact,
                 newCompetences,
-                newLinks);
+                newLinks));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(Collections.singletonMap("error", e.getMessage()));
+        }
     }
 
     private void validateId(UUID contactPointId, UUID pathID) throws InvalidContactPointException {
-        if (contactPointId != pathID) {
+        if (!contactPointId.equals(pathID)) {
             throw new InvalidContactPointException(
                     "PathId and Id in the ContactPointView were not identical!");
         }
