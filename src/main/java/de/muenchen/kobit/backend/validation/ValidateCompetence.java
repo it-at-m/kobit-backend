@@ -14,8 +14,5 @@ public class ValidateCompetence implements Validator {
         if (contactPointView.getCompetences() == null) {
             throw new InvalidCompetenceException("Competences can not be null!");
         }
-        if (contactPointView.getCompetences().size() < 1) {
-            throw new InvalidCompetenceException("At least one Competence is needed!");
-        }
     }
 }
