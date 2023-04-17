@@ -6,7 +6,6 @@ import de.muenchen.kobit.backend.contactpoint.model.ContactPoint;
 import de.muenchen.kobit.backend.contactpoint.repository.ContactPointRepository;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointListItem;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
-
 import java.text.Collator;
 import java.util.List;
 import java.util.Locale;
@@ -14,7 +13,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +30,8 @@ public class ContactPointService {
 
     @Transactional
     public List<ContactPointListItem> getContactPointList() {
-        List<ContactPointListItem> listItems = repo.findAll().stream().map(ContactPoint::toListView).collect(Collectors.toList());
+        List<ContactPointListItem> listItems =
+                repo.findAll().stream().map(ContactPoint::toListView).collect(Collectors.toList());
         return orderByName(listItems);
     }
 
@@ -51,7 +50,8 @@ public class ContactPointService {
                                         "No contact point found for " + shortCut));
     }
 
-    private List<ContactPointListItem> orderByName(List<ContactPointListItem> contactPointListItems) {
+    private List<ContactPointListItem> orderByName(
+            List<ContactPointListItem> contactPointListItems) {
         Collator c = Collator.getInstance(Locale.GERMAN);
         contactPointListItems.sort((e1, e2) -> c.compare(e1.getName(), e2.getName()));
         return contactPointListItems;
