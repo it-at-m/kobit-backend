@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ContactPointList {
+public class ContactPointListItem {
 
     UUID id;
 

@@ -1,6 +1,6 @@
 package de.muenchen.kobit.backend.contactpoint.model;
 
-import de.muenchen.kobit.backend.contactpoint.view.ContactPointList;
+import de.muenchen.kobit.backend.contactpoint.view.ContactPointListItem;
 import java.util.UUID;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -45,7 +45,7 @@ public class ContactPoint {
         this.department = department;
     }
 
-    public ContactPointList toListView() {
-        return new ContactPointList(id, name, shortCut);
+    public ContactPointListItem toListView() {
+        return new ContactPointListItem(id, name, shortCut);
     }
 }

@@ -5,16 +5,23 @@ import de.muenchen.kobit.backend.contactpoint.service.ContactPointCreationServic
 import de.muenchen.kobit.backend.contactpoint.service.ContactPointDeletionService;
 import de.muenchen.kobit.backend.contactpoint.service.ContactPointManipulationService;
 import de.muenchen.kobit.backend.contactpoint.service.ContactPointService;
-import de.muenchen.kobit.backend.contactpoint.view.ContactPointList;
+import de.muenchen.kobit.backend.contactpoint.view.ContactPointListItem;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
-import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -38,7 +45,7 @@ public class ContactPointController {
     }
 
     @GetMapping("/anlaufstellen")
-    public List<ContactPointList> getContactPointList() {
+    public List<ContactPointListItem> getContactPointList() {
         return contactPointService.getContactPointList();
     }
 
@@ -63,8 +70,7 @@ public class ContactPointController {
 
     @PutMapping("/anlaufstellen/{id}")
     public ResponseEntity<?> setContactPoint(
-            @PathVariable("id") UUID id, @RequestBody ContactPointView view)
-            throws ContactPointValidationException {
+            @PathVariable("id") UUID id, @RequestBody ContactPointView view) {
         return manipulationService.updateContactPoint(view, id);
     }
 
