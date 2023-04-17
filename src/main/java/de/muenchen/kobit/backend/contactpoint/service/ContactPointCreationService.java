@@ -13,9 +13,11 @@ import de.muenchen.kobit.backend.links.view.LinkView;
 import de.muenchen.kobit.backend.validation.Validator;
 import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,36 +44,57 @@ public class ContactPointCreationService {
     }
 
     @Transactional
-    public ContactPointView createContactPoint(ContactPointView contactPointView)
-            throws ContactPointValidationException {
-        for (Validator validator : validators) {
-            validator.validate(contactPointView);
+    public ResponseEntity<?> createContactPoint(ContactPointView contactPointView) {
+        try {
+            if (contactPointView.getLinks() == null) {
+                contactPointView.setLinks(Collections.emptyList());
+            }
+
+            for (Validator validator : validators) {
+                try {
+                    validator.validate(contactPointView);
+                } catch (ContactPointValidationException e) {
+                    return ResponseEntity.badRequest()
+                            .body(Collections.singletonMap("error", e.getMessage()));
+                }
+            }
+
+            ContactPoint newContactPoint = createNewContactPoint(contactPointView);
+            UUID id = newContactPoint.getId();
+            List<ContactView> newContact = createContacts(id, contactPointView.getContact());
+            List<LinkView> newLinks = createLinks(id, contactPointView.getLinks());
+            List<Competence> newCompetences =
+                    createCompetencesIfPresent(id, contactPointView.getCompetences());
+            return ResponseEntity.ok(
+                    new ContactPointView(
+                            newContactPoint.getId(),
+                            newContactPoint.getName(),
+                            newContactPoint.getShortCut(),
+                            newContactPoint.getDescription(),
+                            newContactPoint.getDepartment(),
+                            newContact,
+                            newCompetences,
+                            newLinks));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(Collections.singletonMap("error", e.getMessage()));
         }
-        ContactPoint newContactPoint = createNewContactPoint(contactPointView);
-        UUID id = newContactPoint.getId();
-        List<ContactView> newContact = createContacts(id, contactPointView.getContact());
-        List<LinkView> newLinks = createLinks(id, contactPointView.getLinks());
-        List<Competence> newCompetences = createCompetences(id, contactPointView.getCompetences());
-        return new ContactPointView(
-                newContactPoint.getId(),
-                newContactPoint.getName(),
-                newContactPoint.getShortCut(),
-                newContactPoint.getDescription(),
-                newContactPoint.getDepartment(),
-                newContact,
-                newCompetences,
-                newLinks);
     }
 
     private ContactPoint createNewContactPoint(ContactPointView contactPointView) {
         return contactPointRepository.save(contactPointView.toContactPoint());
     }
 
-    private List<Competence> createCompetences(UUID id, List<Competence> competences) {
-        for (Competence competence : competences) {
-            competenceService.createCompetenceToContactPoint(id, competence);
+    // Saves the list of given ContactPoints, if the List is empty, an empty list will be returned
+    private List<Competence> createCompetencesIfPresent(UUID id, List<Competence> competences) {
+        if (competences != null) {
+            for (Competence competence : competences) {
+                competenceService.createCompetenceToContactPoint(id, competence);
+            }
+            return competences;
+        } else {
+            return Collections.emptyList();
         }
-        return competences;
     }
 
     private List<LinkView> createLinks(UUID id, List<LinkView> views) {

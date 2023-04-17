@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
 
 class ContactPointCreationServiceTest {
 
@@ -67,10 +68,13 @@ class ContactPointCreationServiceTest {
         verify(contactService).createContact(any());
         verify(contactPointRepository).save(any());
 
-        assertThat(result.getContact().size()).isEqualTo(contacts.size());
-        assertThat(result.getLinks().size()).isEqualTo(linkViews.size());
-        assertThat(result.getCompetences().size()).isEqualTo(competences.size());
-        assertThat(result.getContact().get(0).getEmail()).isEqualTo(contacts.get(0).getEmail());
-        assertThat(result.getLinks().get(0).getContactPointId()).isEqualTo(id);
+        assertThat(result.getStatusCodeValue()).isEqualTo(HttpStatus.OK.value());
+        assertThat(result.getBody()).isInstanceOf(ContactPointView.class);
+        var resultView = (ContactPointView) result.getBody();
+        assertThat(resultView.getContact().size()).isEqualTo(contacts.size());
+        assertThat(resultView.getLinks().size()).isEqualTo(linkViews.size());
+        assertThat(resultView.getCompetences().size()).isEqualTo(competences.size());
+        assertThat(resultView.getContact().get(0).getEmail()).isEqualTo(contacts.get(0).getEmail());
+        assertThat(resultView.getLinks().get(0).getContactPointId()).isEqualTo(id);
     }
 }
