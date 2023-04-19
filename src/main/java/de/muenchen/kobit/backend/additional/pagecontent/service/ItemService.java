@@ -79,6 +79,25 @@ public class ItemService {
         throw new UnsupportedOperationException("Operation not supported for this page type.");
     }
 
+    public ContentItem updateContentItem(UUID itemId, ContentItem newContentItem) {
+        ContentItem existingContentItem =
+                contentItemRepository
+                        .findById(itemId)
+                        .orElseThrow(
+                                () ->
+                                        new IllegalArgumentException(
+                                                "ContentItem not found with the given ID."));
+
+        PageType pageType = existingContentItem.getPageType();
+        if (!isTextPage(pageType)) {
+            newContentItem.setId(itemId);
+            newContentItem.setPageType(pageType);
+            return contentItemRepository.save(newContentItem);
+        }
+        throw new UnsupportedOperationException("Operation not supported for this page type.");
+    }
+
+
     public void deleteTextItem(UUID itemId) {
         TextItem textItem =
                 textItemRepository
