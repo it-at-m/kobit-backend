@@ -28,7 +28,7 @@ public class AdditionalController {
 
     @GetMapping("/{pageType}")
     ItemWrapper getPageByType(@PathVariable PageType pageType) {
-        if(pageType == PageType.PREVENTION){
+        if (pageType == PageType.PREVENTION) {
             System.out.println("Prevention");
         }
         return itemService.getItemsForPage(pageType);
@@ -37,7 +37,9 @@ public class AdditionalController {
     @PostMapping("/{pageType}")
     public ItemWrapper createTextItem(
             @PathVariable PageType pageType, @RequestBody TextItem textItem) {
-        if (pageType == PageType.GLOSSARY || pageType == PageType.DOWNLOADS || pageType == PageType.FAQ) {
+        if (pageType == PageType.GLOSSARY
+                || pageType == PageType.DOWNLOADS
+                || pageType == PageType.FAQ) {
             TextItem createdTextItem = itemService.createTextItem(pageType, textItem);
             ItemWrapper itemWrapper =
                     new ItemWrapper.ItemWrapperBuilder()
@@ -53,7 +55,9 @@ public class AdditionalController {
             @PathVariable PageType pageType,
             @PathVariable UUID id,
             @RequestBody TextItem textItem) {
-        if (pageType == PageType.GLOSSARY || pageType == PageType.DOWNLOADS || pageType == PageType.FAQ) {
+        if (pageType == PageType.GLOSSARY
+                || pageType == PageType.DOWNLOADS
+                || pageType == PageType.FAQ) {
             TextItem updatedTextItem = itemService.updateTextItem(id, textItem);
             ItemWrapper itemWrapper =
                     new ItemWrapper.ItemWrapperBuilder()
@@ -79,7 +83,6 @@ public class AdditionalController {
         }
         throw new UnsupportedOperationException("Operation not supported for this page type.");
     }
-
 
     @DeleteMapping("/{pageType}/{id}")
     public void deleteTextItem(@PathVariable PageType pageType, @PathVariable UUID id) {

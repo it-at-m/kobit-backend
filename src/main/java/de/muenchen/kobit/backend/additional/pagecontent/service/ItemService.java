@@ -97,7 +97,6 @@ public class ItemService {
         throw new UnsupportedOperationException("Operation not supported for this page type.");
     }
 
-
     public void deleteTextItem(UUID itemId) {
         TextItem textItem =
                 textItemRepository
