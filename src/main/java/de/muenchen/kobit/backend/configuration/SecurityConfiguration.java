@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -44,15 +43,6 @@ public class SecurityConfiguration {
                 // permit swagger
                 .antMatchers("/swagger-ui/**", "/api/docs/**")
                 .permitAll()
-
-                .antMatchers(HttpMethod.POST, "/additional/**")
-                .hasAuthority("KOBIT_ADMIN")
-
-                .antMatchers(HttpMethod.PUT, "/additional/**")
-                .hasAuthority("KOBIT_ADMIN")
-
-                .antMatchers(HttpMethod.DELETE, "/additional/**")
-                .hasAuthority("KOBIT_ADMIN")
                 // allow access to /actuator/health for OpenShift Health Check
                 .antMatchers("/actuator/health")
                 .permitAll()

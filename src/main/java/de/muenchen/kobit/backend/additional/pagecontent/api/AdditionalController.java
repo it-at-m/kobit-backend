@@ -6,13 +6,15 @@ import de.muenchen.kobit.backend.additional.pagecontent.service.ItemService;
 import de.muenchen.kobit.backend.additional.pagecontent.view.ItemWrapper;
 import java.util.Collections;
 import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.security.access.prepost.PreAuthorize;
+// import org.springframework.security.access.prepost.PreAuthorize;
 
+@Slf4j
 @RestController
 @RequestMapping("/additional")
 public class AdditionalController {
@@ -25,13 +27,14 @@ public class AdditionalController {
 
     @GetMapping("/{pageType}")
     ItemWrapper getPageByType(@PathVariable PageType pageType) {
+        System.out.println("Getting");
         return itemService.getItemsForPage(pageType);
     }
 
     @PostMapping("/{pageType}")
-    @PreAuthorize("hasAuthority('KOBIT_ADMIN')")
     public ItemWrapper createTextItem(
             @PathVariable PageType pageType, @RequestBody TextItem textItem) {
+        System.out.println("Posting");
         if (pageType == PageType.GLOSSARY || pageType == PageType.DOWNLOADS) {
             TextItem createdTextItem = itemService.createTextItem(pageType, textItem);
             ItemWrapper itemWrapper =
@@ -43,14 +46,13 @@ public class AdditionalController {
         throw new UnsupportedOperationException("Operation not supported for this page type.");
     }
 
-    @PutMapping("/{pageType}/{itemId}")
-    @PreAuthorize("hasAuthority('KOBIT_ADMIN')")
+    @PutMapping("/{pageType}/{id}")
     public ItemWrapper updateTextItem(
             @PathVariable PageType pageType,
-            @PathVariable UUID itemId,
+            @PathVariable UUID id,
             @RequestBody TextItem textItem) {
         if (pageType == PageType.GLOSSARY || pageType == PageType.DOWNLOADS) {
-            TextItem updatedTextItem = itemService.updateTextItem(itemId, textItem);
+            TextItem updatedTextItem = itemService.updateTextItem(id, textItem);
             ItemWrapper itemWrapper =
                     new ItemWrapper.ItemWrapperBuilder()
                             .textItems(Collections.singletonList(updatedTextItem.toView()))
@@ -60,11 +62,10 @@ public class AdditionalController {
         throw new UnsupportedOperationException("Operation not supported for this page type.");
     }
 
-    @DeleteMapping("/{pageType}/{itemId}")
-    @PreAuthorize("hasAuthority('KOBIT_ADMIN')")
-    public void deleteTextItem(@PathVariable PageType pageType, @PathVariable UUID itemId) {
+    @DeleteMapping("/{pageType}/{id}")
+    public void deleteTextItem(@PathVariable PageType pageType, @PathVariable UUID id) {
         if (pageType == PageType.GLOSSARY || pageType == PageType.DOWNLOADS) {
-            itemService.deleteTextItem(itemId);
+            itemService.deleteTextItem(id);
         } else {
             throw new UnsupportedOperationException("Operation not supported for this page type.");
         }

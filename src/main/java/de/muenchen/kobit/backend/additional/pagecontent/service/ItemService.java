@@ -72,7 +72,7 @@ public class ItemService {
 
         PageType pageType = existingTextItem.getPageType();
         if (isTextPage(pageType)) {
-            newTextItem.setUuid(itemId);
+            newTextItem.setId(itemId);
             newTextItem.setPageType(pageType);
             return textItemRepository.save(newTextItem);
         }

@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TextItemView {
 
-    private UUID uuid;
+    private UUID id; // Replace 'uuid' with 'id'
 
     private String header;
 
@@ -20,12 +20,12 @@ public class TextItemView {
 
     private URL link;
 
-    public UUID getUuid() {
-        return uuid;
+    public UUID getId() { // Replace 'getUuid' with 'getId'
+        return id;
     }
 
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
+    public void setId(UUID id) { // Replace 'setUuid' with 'setId'
+        this.id = id;
     }
 
     public String getHeader() {
@@ -59,11 +59,12 @@ public class TextItemView {
     }
 
     public TextItem toTextItem(PageType pageType) throws MalformedURLException {
-        return new TextItem(uuid, pageType, header, entry, link);
+        return new TextItem(id, pageType, header, entry, link); // Replace 'uuid' with 'id'
     }
 
     public static TextItemView toView(TextItem textItem) {
         TextItemView view = new TextItemView();
+        view.setId(textItem.getId()); // Replace 'setUuid' with 'setId'
         view.setHeader(textItem.getHeader());
         view.setEntry(textItem.getEntry());
         view.setLink(textItem.getLink() != null ? textItem.getLink().toString() : null);

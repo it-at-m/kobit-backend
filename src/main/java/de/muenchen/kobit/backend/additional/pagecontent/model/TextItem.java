@@ -11,7 +11,7 @@ public class TextItem {
 
     @Id
     @Column(name = "id", unique = true, nullable = false)
-    private UUID uuid;
+    private UUID id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "page_type")
@@ -26,12 +26,12 @@ public class TextItem {
     @Column(name = "link")
     private URL link;
 
-    public UUID getUuid() {
-        return uuid;
+    public UUID getId() { // Add this getter
+        return id;
     }
 
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
+    public void setId(UUID id) { // Add this setter
+        this.id = id;
     }
 
     public PageType getPageType() {
@@ -66,8 +66,8 @@ public class TextItem {
         this.link = link;
     }
 
-    public TextItem(UUID uuid, PageType pageType, String header, String entry, URL link) {
-        this.uuid = uuid;
+    public TextItem(UUID id, PageType pageType, String header, String entry, URL link) {
+        this.id = id;
         this.pageType = pageType;
         this.header = header;
         this.entry = entry;
@@ -80,6 +80,7 @@ public class TextItem {
 
     public TextItemView toView() {
         TextItemView view = new TextItemView();
+        view.setId(id); // Add this line
         view.setHeader(header);
         view.setEntry(entry);
 
