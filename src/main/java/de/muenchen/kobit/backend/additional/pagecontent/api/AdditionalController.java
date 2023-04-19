@@ -27,14 +27,12 @@ public class AdditionalController {
 
     @GetMapping("/{pageType}")
     ItemWrapper getPageByType(@PathVariable PageType pageType) {
-        System.out.println("Getting");
         return itemService.getItemsForPage(pageType);
     }
 
     @PostMapping("/{pageType}")
     public ItemWrapper createTextItem(
             @PathVariable PageType pageType, @RequestBody TextItem textItem) {
-        System.out.println("Posting");
         if (pageType == PageType.GLOSSARY || pageType == PageType.DOWNLOADS) {
             TextItem createdTextItem = itemService.createTextItem(pageType, textItem);
             ItemWrapper itemWrapper =
