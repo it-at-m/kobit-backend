@@ -2,9 +2,8 @@ package de.muenchen.kobit.backend.admin.service;
 
 import de.muenchen.kobit.backend.admin.model.AdminUserView;
 import de.muenchen.kobit.backend.user.service.UserDataResolver;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class AdminService {

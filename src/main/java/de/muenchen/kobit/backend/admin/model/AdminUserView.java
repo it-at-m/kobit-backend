@@ -14,8 +14,7 @@ public class AdminUserView {
         this.department = department;
     }
 
-    public AdminUserView() {
-    }
+    public AdminUserView() {}
 
     @JsonProperty("isCentralAdmin")
     public boolean isCentralAdmin() {
