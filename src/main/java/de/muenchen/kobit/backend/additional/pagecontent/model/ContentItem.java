@@ -58,6 +58,6 @@ public class ContentItem {
     }
 
     public ContentItemView toView() {
-        return new ContentItemView(content);
+        return new ContentItemView(id, pageType, content);
     }
 }

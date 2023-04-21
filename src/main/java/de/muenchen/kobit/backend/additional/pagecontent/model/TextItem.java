@@ -26,11 +26,11 @@ public class TextItem {
     @Column(name = "link")
     private URL link;
 
-    public UUID getId() { // Add this getter
+    public UUID getId() {
         return id;
     }
 
-    public void setId(UUID id) { // Add this setter
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -80,7 +80,8 @@ public class TextItem {
 
     public TextItemView toView() {
         TextItemView view = new TextItemView();
-        view.setId(id); // Add this line
+        view.setId(id);
+        view.setPageType(pageType);
         view.setHeader(header);
         view.setEntry(entry);
 

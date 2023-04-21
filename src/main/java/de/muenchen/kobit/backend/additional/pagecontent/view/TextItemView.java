@@ -14,6 +14,8 @@ public class TextItemView {
 
     private UUID id; // Replace 'uuid' with 'id'
 
+    private PageType pageType;
+
     private String header;
 
     private String entry;
@@ -26,6 +28,14 @@ public class TextItemView {
 
     public void setId(UUID id) { // Replace 'setUuid' with 'setId'
         this.id = id;
+    }
+
+    public PageType getPageType() {
+        return pageType;
+    }
+
+    public void setPageType(PageType pageType) {
+        this.pageType = pageType;
     }
 
     public String getHeader() {
@@ -58,13 +68,14 @@ public class TextItemView {
         }
     }
 
-    public TextItem toTextItem(PageType pageType) throws MalformedURLException {
+    public TextItem toTextItem() throws MalformedURLException {
         return new TextItem(id, pageType, header, entry, link); // Replace 'uuid' with 'id'
     }
 
     public static TextItemView toView(TextItem textItem) {
         TextItemView view = new TextItemView();
         view.setId(textItem.getId()); // Replace 'setUuid' with 'setId'
+        view.setPageType(textItem.getPageType());
         view.setHeader(textItem.getHeader());
         view.setEntry(textItem.getEntry());
         view.setLink(textItem.getLink() != null ? textItem.getLink().toString() : null);
