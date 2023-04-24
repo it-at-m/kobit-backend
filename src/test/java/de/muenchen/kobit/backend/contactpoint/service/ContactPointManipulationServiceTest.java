@@ -4,7 +4,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-import com.sun.jdi.PrimitiveValue;
 import de.muenchen.kobit.backend.admin.model.AdminUserView;
 import de.muenchen.kobit.backend.admin.service.AdminService;
 import de.muenchen.kobit.backend.competence.Competence;
@@ -22,7 +21,6 @@ import de.muenchen.kobit.backend.validation.Validator;
 import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
 import java.util.List;
 import java.util.UUID;
-import javax.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -97,8 +95,7 @@ class ContactPointManipulationServiceTest {
         assertThat(result.getContact().size()).isEqualTo(contactViews.size());
         assertThat(result.getLinks().size()).isEqualTo(linkViews.size());
         assertThat(result.getCompetences().size()).isEqualTo(competences.size());
-        assertThat(result.getContact().get(0).getEmail())
-                .isEqualTo(contactViews.get(0).getEmail());
+        assertThat(result.getContact().get(0).getEmail()).isEqualTo(contactViews.get(0).getEmail());
         assertThat(result.getLinks().get(0).getContactPointId()).isEqualTo(id);
     }
 
@@ -113,9 +110,19 @@ class ContactPointManipulationServiceTest {
                 List.of(new Link(UUID.randomUUID(), id, "link", "https://test-test.com/", false));
         var view =
                 new ContactPointView(
-                        id, "test", "tes", "test test", "KLT", contactViews, competences, linkViews);
+                        id,
+                        "test",
+                        "tes",
+                        "test test",
+                        "KLT",
+                        contactViews,
+                        competences,
+                        linkViews);
         when(adminService.getAdminUserInfo()).thenReturn(new AdminUserView(false, true, "ITM"));
-        Exception ex = assertThrows(ContactPointValidationException.class, () -> contactPointManipulationService.updateContactPoint(view, id));
+        Exception ex =
+                assertThrows(
+                        ContactPointValidationException.class,
+                        () -> contactPointManipulationService.updateContactPoint(view, id));
         assertThat(ex.getMessage()).isEqualTo("The User has not the needed permission!");
     }
 }

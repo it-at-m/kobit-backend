@@ -1,7 +1,6 @@
 package de.muenchen.kobit.backend.contactpoint.repository;
 
 import de.muenchen.kobit.backend.contactpoint.model.ContactPoint;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -16,5 +15,4 @@ public interface ContactPointRepository extends JpaRepository<ContactPoint, UUID
     List<ContactPoint> findContactPointsByDepartment(String department);
 
     Optional<ContactPoint> findContactPointByIdAndDepartment(UUID id, String department);
-
 }

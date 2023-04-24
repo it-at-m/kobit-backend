@@ -49,7 +49,8 @@ class DecisionTreeServiceTest {
                         "question",
                         List.of(Competence.ADDICTION.toCompetenceView()));
         when(healthIssuesBranch.getNextNode(Competence.HEALTH_PROBLEMS)).thenReturn(decisionPoint);
-        var result = decisionTreeService.getNextDecisionPointOrContactPoints(competences, department);
+        var result =
+                decisionTreeService.getNextDecisionPointOrContactPoints(competences, department);
         verify(competenceService, never()).findAllContactPointsForCompetences(any(), any());
         verify(mobbingBranch, never()).getNextNode(any());
         verify(discriminationBranch, never()).getNextNode(any());
@@ -68,7 +69,8 @@ class DecisionTreeServiceTest {
                         "question",
                         List.of(Competence.ADDICTION.toCompetenceView()));
         when(root.getRootOptions()).thenReturn(decisionPoint);
-        var result = decisionTreeService.getNextDecisionPointOrContactPoints(competences, department);
+        var result =
+                decisionTreeService.getNextDecisionPointOrContactPoints(competences, department);
         verify(competenceService, never()).findAllContactPointsForCompetences(any(), any());
         verify(mobbingBranch, never()).getNextNode(any());
         verify(discriminationBranch, never()).getNextNode(any());
@@ -103,7 +105,8 @@ class DecisionTreeServiceTest {
         List<Competence> competences = List.of(Competence.ANTI_DEMOCRACY);
         when(competenceService.findAllContactPointsForCompetences(competences, department))
                 .thenReturn(contactPoints);
-        var result = decisionTreeService.getNextDecisionPointOrContactPoints(competences, department);
+        var result =
+                decisionTreeService.getNextDecisionPointOrContactPoints(competences, department);
         verify(healthIssuesBranch, never()).getNextNode(any());
         verify(mobbingBranch, never()).getNextNode(any());
         verify(discriminationBranch, never()).getNextNode(any());
@@ -159,7 +162,8 @@ class DecisionTreeServiceTest {
         List<Competence> competences = List.of(Competence.ANTI_DEMOCRACY);
         when(competenceService.findAllContactPointsForCompetences(competences, department))
                 .thenReturn(contactPoints);
-        var result = decisionTreeService.getNextDecisionPointOrContactPoints(competences, department);
+        var result =
+                decisionTreeService.getNextDecisionPointOrContactPoints(competences, department);
         verify(healthIssuesBranch, never()).getNextNode(any());
         verify(mobbingBranch, never()).getNextNode(any());
         verify(discriminationBranch, never()).getNextNode(any());

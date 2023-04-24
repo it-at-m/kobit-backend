@@ -36,7 +36,8 @@ class AdminServiceTest {
     @Test
     void isAdminTest_true() {
         when(userDataResolver.getCurrentUser())
-                .thenReturn(new User("test@test.test", "ITM", List.of(DEPARTMENT_ADMIN, KOBIT_ADMIN)));
+                .thenReturn(
+                        new User("test@test.test", "ITM", List.of(DEPARTMENT_ADMIN, KOBIT_ADMIN)));
         val isAdmin = adminService.isUserAdmin();
         assertThat(isAdmin).isTrue();
     }
@@ -51,7 +52,8 @@ class AdminServiceTest {
 
     @Test
     void isAdminTest_false() {
-        when(userDataResolver.getCurrentUser()).thenReturn(new User("test@test.test", "ITM", List.of()));
+        when(userDataResolver.getCurrentUser())
+                .thenReturn(new User("test@test.test", "ITM", List.of()));
         val isAdmin = adminService.isUserAdmin();
         assertThat(isAdmin).isFalse();
     }
@@ -90,7 +92,8 @@ class AdminServiceTest {
 
     @Test
     void isDepartmentAdminTest_false() {
-        when(userDataResolver.getCurrentUser()).thenReturn(new User("test@test.test", "ITM", List.of()));
+        when(userDataResolver.getCurrentUser())
+                .thenReturn(new User("test@test.test", "ITM", List.of()));
         val isAdmin = adminService.isUserDepartmentAdmin();
         assertThat(isAdmin).isFalse();
     }

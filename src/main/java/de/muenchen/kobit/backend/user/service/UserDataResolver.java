@@ -37,7 +37,10 @@ public class UserDataResolver {
             final JwtAuthenticationToken jwtToken = (JwtAuthenticationToken) authentication;
             Map<String, Object> tokenAttributes = jwtToken.getTokenAttributes();
             try {
-                return new User(getUserMail(tokenAttributes), getDepartment(tokenAttributes), getRoles(tokenAttributes));
+                return new User(
+                        getUserMail(tokenAttributes),
+                        getDepartment(tokenAttributes),
+                        getRoles(tokenAttributes));
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }

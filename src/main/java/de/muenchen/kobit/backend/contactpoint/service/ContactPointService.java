@@ -6,9 +6,6 @@ import de.muenchen.kobit.backend.contactpoint.model.ContactPoint;
 import de.muenchen.kobit.backend.contactpoint.repository.ContactPointRepository;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointListItem;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.text.Collator;
 import java.util.List;
 import java.util.Locale;
@@ -16,6 +13,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ContactPointService {
@@ -32,13 +31,16 @@ public class ContactPointService {
     @Transactional
     public List<ContactPointListItem> getContactPointList(String department) {
         List<ContactPointListItem> listItems =
-                repo.findAllByDepartment(department).stream().map(ContactPoint::toListView).collect(Collectors.toList());
+                repo.findAllByDepartment(department).stream()
+                        .map(ContactPoint::toListView)
+                        .collect(Collectors.toList());
         return orderByName(listItems);
     }
 
     @Transactional(readOnly = true)
     public Optional<ContactPointView> findById(UUID id, String department) {
-        return repo.findContactPointByIdAndDepartment(id, department).map(mapper::contactPointToView);
+        return repo.findContactPointByIdAndDepartment(id, department)
+                .map(mapper::contactPointToView);
     }
 
     @Transactional(readOnly = true)

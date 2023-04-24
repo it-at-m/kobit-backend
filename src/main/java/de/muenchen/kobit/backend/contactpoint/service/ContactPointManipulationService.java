@@ -18,15 +18,14 @@ import de.muenchen.kobit.backend.validation.Validator;
 import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
 import de.muenchen.kobit.backend.validation.exception.InvalidContactPointException;
 import de.muenchen.kobit.backend.validation.exception.InvalidUserException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import javax.persistence.EntityNotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ContactPointManipulationService {
@@ -56,14 +55,15 @@ public class ContactPointManipulationService {
     }
 
     @Transactional
-    public ContactPointView updateContactPoint(ContactPointView contactPointView, UUID pathId) throws ContactPointValidationException {
+    public ContactPointView updateContactPoint(ContactPointView contactPointView, UUID pathId)
+            throws ContactPointValidationException {
         if (contactPointView.getLinks() == null) {
             contactPointView.setLinks(Collections.emptyList());
         }
         for (Validator validator : validators) {
             validator.validate(contactPointView);
         }
-        if(! isUserAuthorized(contactPointView.getDepartment())) {
+        if (!isUserAuthorized(contactPointView.getDepartment())) {
             throw new InvalidUserException("The User has not the needed permission!");
         }
         validateId(contactPointView.getId(), pathId);
@@ -71,8 +71,7 @@ public class ContactPointManipulationService {
         UUID id = newContactPoint.getId();
         List<ContactView> newContact = updateContact(id, contactPointView.getContact());
         List<LinkView> newLinks = updateLink(id, contactPointView.getLinks());
-        List<Competence> newCompetences =
-                updateCompetences(id, contactPointView.getCompetences());
+        List<Competence> newCompetences = updateCompetences(id, contactPointView.getCompetences());
         return new ContactPointView(
                 newContactPoint.getId(),
                 newContactPoint.getName(),
@@ -156,7 +155,7 @@ public class ContactPointManipulationService {
     private boolean isUserAuthorized(String contactPointDepartment) {
         AdminUserView adminInfo = adminService.getAdminUserInfo();
         if (adminInfo.isCentralAdmin()) {
-           return true;
+            return true;
         }
         if (adminInfo.isDepartmentAdmin()) {
             return adminInfo.getDepartment().equals(contactPointDepartment);

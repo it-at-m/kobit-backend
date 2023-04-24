@@ -14,16 +14,12 @@ import de.muenchen.kobit.backend.links.service.LinkService;
 import de.muenchen.kobit.backend.links.view.LinkView;
 import de.muenchen.kobit.backend.validation.Validator;
 import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
-
+import de.muenchen.kobit.backend.validation.exception.InvalidUserException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import de.muenchen.kobit.backend.validation.exception.InvalidContactPointException;
-import de.muenchen.kobit.backend.validation.exception.InvalidUserException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,11 +49,12 @@ public class ContactPointCreationService {
     }
 
     @Transactional
-    public ContactPointView createContactPoint(ContactPointView contactPointView) throws ContactPointValidationException {
+    public ContactPointView createContactPoint(ContactPointView contactPointView)
+            throws ContactPointValidationException {
         if (contactPointView.getLinks() == null) {
             contactPointView.setLinks(Collections.emptyList());
         }
-        if(! isUserAuthorized(contactPointView.getDepartment())) {
+        if (!isUserAuthorized(contactPointView.getDepartment())) {
             throw new InvalidUserException("The User has not the needed permission!");
         }
         for (Validator validator : validators) {

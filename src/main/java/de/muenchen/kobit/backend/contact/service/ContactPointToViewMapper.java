@@ -8,20 +8,20 @@ import de.muenchen.kobit.backend.contactpoint.model.ContactPoint;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
 import de.muenchen.kobit.backend.links.service.LinkService;
 import de.muenchen.kobit.backend.links.view.LinkView;
-import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Component;
 
 @Component
 public class ContactPointToViewMapper {
 
     /**
-     * The repo need to be used because the services need this mapper. this would cause a
-     * circular reference and the app won't start!
+     * The repo need to be used because the services need this mapper. this would cause a circular
+     * reference and the app won't start!
      */
     private final CompetenceRepository competenceRepository;
+
     private final ContactService contactService;
     private final LinkService linkService;
 

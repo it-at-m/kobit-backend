@@ -8,15 +8,13 @@ import de.muenchen.kobit.backend.competence.repository.CompetenceRepository;
 import de.muenchen.kobit.backend.contact.service.ContactPointToViewMapper;
 import de.muenchen.kobit.backend.contactpoint.repository.ContactPointRepository;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
-
+import de.muenchen.kobit.backend.user.service.UserDataResolver;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import de.muenchen.kobit.backend.user.service.UserDataResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +25,7 @@ public class CompetenceService {
     private final ContactPointRepository contactPointRepository;
     private final ContactPointToViewMapper mapper;
 
-    @Autowired
-    UserDataResolver userDataResolver;
+    @Autowired UserDataResolver userDataResolver;
 
     CompetenceService(
             CompetenceRepository competenceRepository,
@@ -39,7 +36,8 @@ public class CompetenceService {
         this.mapper = mapper;
     }
 
-    public List<ContactPointView> findAllContactPointsForCompetences(List<Competence> competences, String department) {
+    public List<ContactPointView> findAllContactPointsForCompetences(
+            List<Competence> competences, String department) {
         Set<UUID> keys = getContactPointIds(competences);
         if (isSpecialCase(competences)) {
             keys.addAll(specialCaseContactPoints(competences));
