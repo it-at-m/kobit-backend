@@ -12,11 +12,14 @@ import de.muenchen.kobit.backend.links.service.LinkService;
 import de.muenchen.kobit.backend.links.view.LinkView;
 import de.muenchen.kobit.backend.validation.Validator;
 import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import de.muenchen.kobit.backend.validation.exception.InvalidContactPointException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,41 +47,31 @@ public class ContactPointCreationService {
     }
 
     @Transactional
-    public ResponseEntity<?> createContactPoint(ContactPointView contactPointView) {
-        try {
-            if (contactPointView.getLinks() == null) {
-                contactPointView.setLinks(Collections.emptyList());
-            }
-
-            for (Validator validator : validators) {
-                try {
-                    validator.validate(contactPointView);
-                } catch (ContactPointValidationException e) {
-                    return ResponseEntity.badRequest()
-                            .body(Collections.singletonMap("error", e.getMessage()));
-                }
-            }
-
-            ContactPoint newContactPoint = createNewContactPoint(contactPointView);
-            UUID id = newContactPoint.getId();
-            List<ContactView> newContact = createContacts(id, contactPointView.getContact());
-            List<LinkView> newLinks = createLinks(id, contactPointView.getLinks());
-            List<Competence> newCompetences =
-                    createCompetencesIfPresent(id, contactPointView.getCompetences());
-            return ResponseEntity.ok(
-                    new ContactPointView(
-                            newContactPoint.getId(),
-                            newContactPoint.getName(),
-                            newContactPoint.getShortCut(),
-                            newContactPoint.getDescription(),
-                            newContactPoint.getDepartment(),
-                            newContact,
-                            newCompetences,
-                            newLinks));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest()
-                    .body(Collections.singletonMap("error", e.getMessage()));
+    public ContactPointView createContactPoint(ContactPointView contactPointView, String department) throws ContactPointValidationException {
+        if (contactPointView.getLinks() == null) {
+            contactPointView.setLinks(Collections.emptyList());
         }
+        if (!contactPointView.getDepartment().equalsIgnoreCase(department)){
+            throw new InvalidContactPointException("Department of ContactPoint and Users department do not match!");
+        }
+        for (Validator validator : validators) {
+            validator.validate(contactPointView);
+        }
+        ContactPoint newContactPoint = createNewContactPoint(contactPointView);
+        UUID id = newContactPoint.getId();
+        List<ContactView> newContact = createContacts(id, contactPointView.getContact());
+        List<LinkView> newLinks = createLinks(id, contactPointView.getLinks());
+        List<Competence> newCompetences =
+                createCompetencesIfPresent(id, contactPointView.getCompetences());
+        return new ContactPointView(
+                newContactPoint.getId(),
+                newContactPoint.getName(),
+                newContactPoint.getShortCut(),
+                newContactPoint.getDescription(),
+                newContactPoint.getDepartment(),
+                newContact,
+                newCompetences,
+                newLinks);
     }
 
     private ContactPoint createNewContactPoint(ContactPointView contactPointView) {

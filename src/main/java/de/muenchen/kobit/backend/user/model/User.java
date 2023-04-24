@@ -11,5 +11,7 @@ import lombok.Setter;
 public class User {
     private final String email;
 
+    private final String department;
+
     private final List<String> roles;
 }

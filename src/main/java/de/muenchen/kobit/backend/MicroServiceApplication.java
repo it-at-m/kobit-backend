@@ -4,10 +4,12 @@
  */
 package de.muenchen.kobit.backend;
 
+import de.muenchen.kobit.backend.user.service.DepartmentResolver;
 import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
@@ -28,6 +30,11 @@ import org.springframework.web.util.UrlPathHelper;
 @EnableAutoConfiguration
 @Hidden
 public class MicroServiceApplication implements WebMvcConfigurer {
+
+    @Bean
+    DepartmentResolver departmentResolver() {
+        return new DepartmentResolver();
+    }
 
     public static void main(String[] args) {
         System.setProperty("org.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH", "true");

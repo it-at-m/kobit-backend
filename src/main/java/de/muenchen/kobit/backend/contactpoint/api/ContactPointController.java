@@ -7,9 +7,8 @@ import de.muenchen.kobit.backend.contactpoint.service.ContactPointManipulationSe
 import de.muenchen.kobit.backend.contactpoint.service.ContactPointService;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointListItem;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import de.muenchen.kobit.backend.user.service.Department;
+import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +20,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -44,13 +47,15 @@ public class ContactPointController {
     }
 
     @GetMapping("/anlaufstellen")
-    public List<ContactPointListItem> getContactPointList() {
-        return contactPointService.getContactPointList();
+    public List<ContactPointListItem> getContactPointList(@Department String department) {
+        return contactPointService.getContactPointList(department);
     }
 
     @GetMapping("/anlaufstellen/{id}")
-    public ResponseEntity<ContactPointView> getContactPointById(@PathVariable UUID id) {
-        Optional<ContactPointView> contactPoint = contactPointService.findById(id);
+    public ResponseEntity<ContactPointView> getContactPointById(
+            @PathVariable UUID id,
+            @Department String department) {
+        Optional<ContactPointView> contactPoint = contactPointService.findById(id, department);
         return contactPoint
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -63,8 +68,8 @@ public class ContactPointController {
     }
 
     @PostMapping("/anlaufstellen")
-    public ResponseEntity<?> createContactPoint(@RequestBody ContactPointView view) {
-        return creationService.createContactPoint(view);
+    public ContactPointView createContactPoint(@RequestBody ContactPointView view, @Department String department) throws ContactPointValidationException {
+        return creationService.createContactPoint(view, department);
     }
 
     @PutMapping("/anlaufstellen/{id}")

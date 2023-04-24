@@ -11,13 +11,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
+@Component
 public class UserDataResolver {
 
     private static final String TOKEN_EMAIL = "email";
+
+    private static final String TOKEN_DEPARTMENT = "department";
     private static final String RESOURCE_FIELD = "resource_access";
     private static final String KOBIT_FIELD = "kobit";
     private static final String ROLES_FIELD = "roles";
@@ -31,9 +35,9 @@ public class UserDataResolver {
     private User readUserFromToken(Authentication authentication) {
         if (authentication instanceof JwtAuthenticationToken) {
             final JwtAuthenticationToken jwtToken = (JwtAuthenticationToken) authentication;
-            var t = jwtToken.getTokenAttributes();
+            Map<String, Object> tokenAttributes = jwtToken.getTokenAttributes();
             try {
-                return new User(getUserMail(t), getRoles(t));
+                return new User(getUserMail(tokenAttributes), getDepartment(tokenAttributes), getRoles(tokenAttributes));
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }
@@ -69,5 +73,9 @@ public class UserDataResolver {
 
     private static String getUserMail(Map<String, Object> tokenDetails) {
         return tokenDetails.get(TOKEN_EMAIL).toString();
+    }
+
+    private static String getDepartment(Map<String, Object> tokenDetails) {
+        return tokenDetails.get(TOKEN_DEPARTMENT).toString();
     }
 }
