@@ -1,5 +1,7 @@
 package de.muenchen.kobit.backend.contactpoint.service;
 
+import de.muenchen.kobit.backend.admin.model.AdminUserView;
+import de.muenchen.kobit.backend.admin.service.AdminService;
 import de.muenchen.kobit.backend.competence.Competence;
 import de.muenchen.kobit.backend.competence.service.CompetenceService;
 import de.muenchen.kobit.backend.contact.model.Contact;
@@ -20,6 +22,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import de.muenchen.kobit.backend.validation.exception.InvalidContactPointException;
+import de.muenchen.kobit.backend.validation.exception.InvalidUserException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +34,7 @@ public class ContactPointCreationService {
     private final ContactService contactService;
     private final LinkService linkService;
     private final CompetenceService competenceService;
+    private final AdminService adminService;
     private final List<Validator> validators;
 
     ContactPointCreationService(
@@ -38,21 +42,23 @@ public class ContactPointCreationService {
             ContactService contactService,
             LinkService linkService,
             CompetenceService competenceService,
+            AdminService adminService,
             List<Validator> validators) {
         this.contactPointRepository = contactPointRepository;
         this.contactService = contactService;
         this.linkService = linkService;
         this.competenceService = competenceService;
+        this.adminService = adminService;
         this.validators = validators;
     }
 
     @Transactional
-    public ContactPointView createContactPoint(ContactPointView contactPointView, String department) throws ContactPointValidationException {
+    public ContactPointView createContactPoint(ContactPointView contactPointView) throws ContactPointValidationException {
         if (contactPointView.getLinks() == null) {
             contactPointView.setLinks(Collections.emptyList());
         }
-        if (!contactPointView.getDepartment().equalsIgnoreCase(department)){
-            throw new InvalidContactPointException("Department of ContactPoint and Users department do not match!");
+        if(! isUserAuthorized(contactPointView.getDepartment())) {
+            throw new InvalidUserException("The User has not the needed permission!");
         }
         for (Validator validator : validators) {
             validator.validate(contactPointView);
@@ -104,5 +110,16 @@ public class ContactPointCreationService {
             savedContacts.add(contactService.createContact(new Contact(id, contact.getEmail())));
         }
         return savedContacts.stream().map(Contact::toView).collect(Collectors.toList());
+    }
+
+    private boolean isUserAuthorized(String contactPointDepartment) {
+        AdminUserView adminInfo = adminService.getAdminUserInfo();
+        if (adminInfo.isCentralAdmin()) {
+            return true;
+        }
+        if (adminInfo.isDepartmentAdmin()) {
+            return adminInfo.getDepartment().equals(contactPointDepartment);
+        }
+        return false;
     }
 }

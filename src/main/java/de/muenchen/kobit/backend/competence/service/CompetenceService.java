@@ -39,8 +39,7 @@ public class CompetenceService {
         this.mapper = mapper;
     }
 
-    public List<ContactPointView> findAllContactPointsForCompetences(List<Competence> competences) {
-        String department = "";
+    public List<ContactPointView> findAllContactPointsForCompetences(List<Competence> competences, String department) {
         Set<UUID> keys = getContactPointIds(competences);
         if (isSpecialCase(competences)) {
             keys.addAll(specialCaseContactPoints(competences));

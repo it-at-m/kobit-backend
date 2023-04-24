@@ -76,6 +76,8 @@ public class UserDataResolver {
     }
 
     private static String getDepartment(Map<String, Object> tokenDetails) {
-        return tokenDetails.get(TOKEN_DEPARTMENT).toString();
+        // Matches the parts of
+        String regex = "^[A-Z]*[^-]";
+        return tokenDetails.get(TOKEN_DEPARTMENT).toString().toUpperCase().split(regex)[0];
     }
 }

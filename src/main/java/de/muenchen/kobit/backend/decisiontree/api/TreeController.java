@@ -4,6 +4,8 @@ import de.muenchen.kobit.backend.competence.Competence;
 import de.muenchen.kobit.backend.decisiontree.service.DecisionTreeService;
 import de.muenchen.kobit.backend.decisiontree.view.DecisionContactPointWrapper;
 import java.util.List;
+
+import de.muenchen.kobit.backend.user.service.Department;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,10 +25,11 @@ public class TreeController {
 
     @PostMapping(value = "/next")
     public DecisionContactPointWrapper getNextDecisionOrContactPoints(
-            @RequestBody List<Competence> competences) {
+            @RequestBody List<Competence> competences,
+            @Department String department) {
         if (competences.isEmpty()) {
             return decisionTreeService.getRoot();
         }
-        return decisionTreeService.getNextDecisionPointOrContactPoints(competences);
+        return decisionTreeService.getNextDecisionPointOrContactPoints(competences, department);
     }
 }

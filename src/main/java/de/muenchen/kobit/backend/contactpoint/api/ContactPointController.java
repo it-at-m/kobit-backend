@@ -68,13 +68,13 @@ public class ContactPointController {
     }
 
     @PostMapping("/anlaufstellen")
-    public ContactPointView createContactPoint(@RequestBody ContactPointView view, @Department String department) throws ContactPointValidationException {
-        return creationService.createContactPoint(view, department);
+    public ContactPointView createContactPoint(@RequestBody ContactPointView view) throws ContactPointValidationException {
+        return creationService.createContactPoint(view);
     }
 
     @PutMapping("/anlaufstellen/{id}")
-    public ResponseEntity<?> setContactPoint(
-            @PathVariable("id") UUID id, @RequestBody ContactPointView view) {
+    public ContactPointView setContactPoint(
+            @PathVariable("id") UUID id, @RequestBody ContactPointView view) throws ContactPointValidationException{
         return manipulationService.updateContactPoint(view, id);
     }
 
