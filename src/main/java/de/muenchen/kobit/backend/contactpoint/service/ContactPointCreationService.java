@@ -10,7 +10,7 @@ import de.muenchen.kobit.backend.contactpoint.repository.ContactPointRepository;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
 import de.muenchen.kobit.backend.links.service.LinkService;
 import de.muenchen.kobit.backend.links.view.LinkView;
-import de.muenchen.kobit.backend.validation.Validator;
+import de.muenchen.kobit.backend.validation.ContactPointValidator;
 import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,14 +28,14 @@ public class ContactPointCreationService {
     private final ContactService contactService;
     private final LinkService linkService;
     private final CompetenceService competenceService;
-    private final List<Validator> validators;
+    private final List<ContactPointValidator> validators;
 
     ContactPointCreationService(
             ContactPointRepository contactPointRepository,
             ContactService contactService,
             LinkService linkService,
             CompetenceService competenceService,
-            List<Validator> validators) {
+            List<ContactPointValidator> validators) {
         this.contactPointRepository = contactPointRepository;
         this.contactService = contactService;
         this.linkService = linkService;
@@ -50,7 +50,7 @@ public class ContactPointCreationService {
                 contactPointView.setLinks(Collections.emptyList());
             }
 
-            for (Validator validator : validators) {
+            for (ContactPointValidator validator : validators) {
                 try {
                     validator.validate(contactPointView);
                 } catch (ContactPointValidationException e) {

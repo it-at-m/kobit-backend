@@ -21,7 +21,6 @@ public class AdminService {
         boolean isAdmin =
                 getUserRoles().stream()
                         .anyMatch(it -> it.equals(DEPARTMENT_ADMIN) || it.equals(KOBIT_ADMIN));
-        System.out.println("User is admin: " + isAdmin);
         return isAdmin;
     }
 

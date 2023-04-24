@@ -13,7 +13,7 @@ import de.muenchen.kobit.backend.contactpoint.repository.ContactPointRepository;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
 import de.muenchen.kobit.backend.links.service.LinkService;
 import de.muenchen.kobit.backend.links.view.LinkView;
-import de.muenchen.kobit.backend.validation.Validator;
+import de.muenchen.kobit.backend.validation.ContactPointValidator;
 import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
 import java.util.List;
 import java.util.UUID;
@@ -28,7 +28,8 @@ class ContactPointCreationServiceTest {
     private final ContactService contactService = mock(ContactService.class);
     private final LinkService linkService = mock(LinkService.class);
     private final CompetenceService competenceService = mock(CompetenceService.class);
-    private final List<Validator> validators = List.of(mock(Validator.class));
+    private final List<ContactPointValidator> validators =
+            List.of(mock(ContactPointValidator.class));
 
     private ContactPointCreationService contactCreationService;
 

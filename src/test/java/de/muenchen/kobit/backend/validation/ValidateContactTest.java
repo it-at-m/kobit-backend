@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import de.muenchen.kobit.backend.contact.view.ContactView;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
+import de.muenchen.kobit.backend.validation.contactpoint.ValidateContact;
 import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
 import java.util.List;
 import java.util.UUID;

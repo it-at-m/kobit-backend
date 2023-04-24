@@ -1,11 +1,12 @@
-package de.muenchen.kobit.backend.validation;
+package de.muenchen.kobit.backend.validation.contactpoint;
 
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
-import de.muenchen.kobit.backend.validation.exception.InvalidContactPointException;
+import de.muenchen.kobit.backend.validation.ContactPointValidator;
+import de.muenchen.kobit.backend.validation.exception.contactpoint.InvalidContactPointException;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ValidateContactPoint implements Validator {
+public class ValidateContactPoint implements ContactPointValidator<ContactPointView> {
 
     private static final int NAME_MIN_SIZE = 5;
     private static final int NAME_MAX_SIZE = 100;

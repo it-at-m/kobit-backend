@@ -1,13 +1,14 @@
-package de.muenchen.kobit.backend.validation;
+package de.muenchen.kobit.backend.validation.contactpoint;
 
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
 import de.muenchen.kobit.backend.links.view.LinkView;
-import de.muenchen.kobit.backend.validation.exception.InvalidLinkException;
+import de.muenchen.kobit.backend.validation.ContactPointValidator;
+import de.muenchen.kobit.backend.validation.exception.contactpoint.InvalidLinkException;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ValidateLinks implements Validator {
+public class ValidateLinks implements ContactPointValidator<ContactPointView> {
 
     private static final int LINK_NAME_MAX_SIZE = 100;
     private static final int LINK_MAX_SIZE = 2000;

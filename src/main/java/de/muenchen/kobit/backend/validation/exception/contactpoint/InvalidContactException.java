@@ -1,5 +1,6 @@
-package de.muenchen.kobit.backend.validation.exception;
+package de.muenchen.kobit.backend.validation.exception.contactpoint;
 
+import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 

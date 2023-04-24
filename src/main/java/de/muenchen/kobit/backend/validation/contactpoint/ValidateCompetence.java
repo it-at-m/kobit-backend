@@ -1,11 +1,12 @@
-package de.muenchen.kobit.backend.validation;
+package de.muenchen.kobit.backend.validation.contactpoint;
 
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
-import de.muenchen.kobit.backend.validation.exception.InvalidCompetenceException;
+import de.muenchen.kobit.backend.validation.ContactPointValidator;
+import de.muenchen.kobit.backend.validation.exception.contactpoint.InvalidCompetenceException;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ValidateCompetence implements Validator {
+public class ValidateCompetence implements ContactPointValidator<ContactPointView> {
     @Override
     public void validate(ContactPointView contactPointView) throws InvalidCompetenceException {
         if (contactPointView.getId() == null) {

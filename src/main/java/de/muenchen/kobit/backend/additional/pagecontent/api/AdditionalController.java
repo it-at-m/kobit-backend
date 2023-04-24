@@ -1,19 +1,20 @@
 package de.muenchen.kobit.backend.additional.pagecontent.api;
 
-import de.muenchen.kobit.backend.additional.pagecontent.model.ContentItem;
 import de.muenchen.kobit.backend.additional.pagecontent.model.PageType;
 import de.muenchen.kobit.backend.additional.pagecontent.model.TextItem;
+import de.muenchen.kobit.backend.additional.pagecontent.service.ContentItemManipulationService;
 import de.muenchen.kobit.backend.additional.pagecontent.service.ItemService;
+import de.muenchen.kobit.backend.additional.pagecontent.view.ContentItemView;
 import de.muenchen.kobit.backend.additional.pagecontent.view.ItemWrapper;
 import java.util.Collections;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-// import org.springframework.security.access.prepost.PreAuthorize;
 
 @Slf4j
 @RestController
@@ -21,16 +22,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdditionalController {
 
     private final ItemService itemService;
+    private final ContentItemManipulationService contentItemManipulationService;
 
-    AdditionalController(ItemService itemService) {
+    AdditionalController(
+            ItemService itemService,
+            ContentItemManipulationService contentItemManipulationService) {
         this.itemService = itemService;
+        this.contentItemManipulationService = contentItemManipulationService;
     }
 
     @GetMapping("/{pageType}")
     ItemWrapper getPageByType(@PathVariable PageType pageType) {
-        if (pageType == PageType.PREVENTION) {
-            System.out.println("Prevention");
-        }
         return itemService.getItemsForPage(pageType);
     }
 
@@ -69,17 +71,12 @@ public class AdditionalController {
     }
 
     @PutMapping("/{pageType}/content-item/{id}")
-    public ItemWrapper updateContentItem(
+    public ResponseEntity<?> updateContentItem(
             @PathVariable PageType pageType,
             @PathVariable UUID id,
-            @RequestBody ContentItem contentItem) {
+            @RequestBody ContentItemView contentItem) {
         if (pageType == PageType.PREVENTION || pageType == PageType.LEADERSHIP) {
-            ContentItem updatedContentItem = itemService.updateContentItem(id, contentItem);
-            ItemWrapper itemWrapper =
-                    new ItemWrapper.ItemWrapperBuilder()
-                            .contentItems(Collections.singletonList(updatedContentItem.toView()))
-                            .build();
-            return itemWrapper;
+            return contentItemManipulationService.updateContentItem(id, contentItem);
         }
         throw new UnsupportedOperationException("Operation not supported for this page type.");
     }
