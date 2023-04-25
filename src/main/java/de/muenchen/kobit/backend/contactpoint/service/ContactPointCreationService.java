@@ -54,7 +54,7 @@ public class ContactPointCreationService {
         if (contactPointView.getLinks() == null) {
             contactPointView.setLinks(Collections.emptyList());
         }
-        if (!isUserAuthorized(contactPointView.getDepartment())) {
+        if (!isUserAuthorized(contactPointView.getDepartments())) {
             throw new InvalidUserException("The User has not the needed permission!");
         }
         for (Validator validator : validators) {
@@ -71,7 +71,7 @@ public class ContactPointCreationService {
                 newContactPoint.getName(),
                 newContactPoint.getShortCut(),
                 newContactPoint.getDescription(),
-                newContactPoint.getDepartment(),
+                newContactPoint.getDepartments(),
                 newContact,
                 newCompetences,
                 newLinks);
@@ -109,13 +109,13 @@ public class ContactPointCreationService {
         return savedContacts.stream().map(Contact::toView).collect(Collectors.toList());
     }
 
-    private boolean isUserAuthorized(String contactPointDepartment) {
+    private boolean isUserAuthorized(List<String> contactPointDepartment) {
         AdminUserView adminInfo = adminService.getAdminUserInfo();
         if (adminInfo.isCentralAdmin()) {
             return true;
         }
         if (adminInfo.isDepartmentAdmin()) {
-            return adminInfo.getDepartment().equals(contactPointDepartment);
+            return contactPointDepartment.stream().anyMatch(it -> it.equals(adminInfo.getDepartment()));
         }
         return false;
     }

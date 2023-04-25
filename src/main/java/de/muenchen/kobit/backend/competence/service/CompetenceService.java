@@ -43,7 +43,7 @@ public class CompetenceService {
             keys.addAll(specialCaseContactPoints(competences));
         }
         return contactPointRepository.findAllById(keys).stream()
-                .filter(it -> it.getDepartment().equals(department))
+                .filter(it -> it.getDepartments().equals(department))
                 .map(mapper::contactPointToView)
                 .collect(Collectors.toList());
     }

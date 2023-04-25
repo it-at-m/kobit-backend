@@ -31,7 +31,7 @@ public class ContactPointService {
     @Transactional
     public List<ContactPointListItem> getContactPointList(String department) {
         List<ContactPointListItem> listItems =
-                repo.findAllByDepartment(department).stream()
+                repo.findAllByDepartmentOrDepartmentIsNull(department).stream()
                         .map(ContactPoint::toListView)
                         .collect(Collectors.toList());
         return orderByName(listItems);

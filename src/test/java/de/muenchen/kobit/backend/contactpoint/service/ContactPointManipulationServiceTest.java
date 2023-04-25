@@ -59,7 +59,7 @@ class ContactPointManipulationServiceTest {
                 List.of(new Link(UUID.randomUUID(), id, "link", "https://test-test.com/", false));
         var view =
                 new ContactPointView(
-                        id, "test", "tes", "test test", "t", contactViews, competences, linkViews);
+                        id, "test", "tes", "test test", List.of("ITM"), contactViews, competences, linkViews);
         var contactPoint = view.toContactPoint();
         contactPoint.setId(id);
         when(contactPointRepository.getReferenceById(id))
@@ -69,7 +69,7 @@ class ContactPointManipulationServiceTest {
                                 view.getName(),
                                 view.getShortCut(),
                                 view.getDescription(),
-                                view.getDepartment()));
+                                view.getDepartments()));
         when(linkService.getLinksByContactPointId(id)).thenReturn(links);
         when(contactService.getContactsByContactPointId(id)).thenReturn(contacts);
         when(contactPointRepository.save(any())).thenReturn(contactPoint);
@@ -114,7 +114,7 @@ class ContactPointManipulationServiceTest {
                         "test",
                         "tes",
                         "test test",
-                        "KLT",
+                        List.of("TST"),
                         contactViews,
                         competences,
                         linkViews);

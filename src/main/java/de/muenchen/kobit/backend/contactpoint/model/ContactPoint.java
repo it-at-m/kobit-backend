@@ -1,10 +1,15 @@
 package de.muenchen.kobit.backend.contactpoint.model;
 
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointListItem;
+
+import java.util.List;
 import java.util.UUID;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -36,13 +41,23 @@ public class ContactPoint {
     private String shortCut;
 
     @NotNull private String description;
-    private String department;
+    /**
+     * Departments contains a list of String each entry is a single department - Referat
+     * a ContactPoint can be assigned to more than one department
+     * if a ContactPoint has no department (the list is empty)
+     */
+    @ElementCollection
+    @CollectionTable(
+            name="departments",
+            joinColumns=@JoinColumn(name="contact_point_id")
+    )
+    private List<String> departments;
 
-    public ContactPoint(String name, String shortCut, String description, String department) {
+    public ContactPoint(String name, String shortCut, String description, List<String> departments) {
         this.name = name;
         this.description = description;
         this.shortCut = shortCut;
-        this.department = department;
+        this.departments = departments;
     }
 
     public ContactPointListItem toListView() {

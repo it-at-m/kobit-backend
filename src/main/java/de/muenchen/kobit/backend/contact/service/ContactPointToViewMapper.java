@@ -57,7 +57,7 @@ public class ContactPointToViewMapper {
                 contactPoint.getName(),
                 contactPoint.getShortCut(),
                 contactPoint.getDescription(),
-                contactPoint.getDepartment(),
+                contactPoint.getDepartments(),
                 contacts.stream().map(Contact::toView).collect(Collectors.toList()),
                 competences,
                 links);
