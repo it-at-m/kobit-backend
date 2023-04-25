@@ -3,8 +3,10 @@ package de.muenchen.kobit.backend.additional.pagecontent.api;
 import de.muenchen.kobit.backend.additional.pagecontent.model.PageType;
 import de.muenchen.kobit.backend.additional.pagecontent.model.TextItem;
 import de.muenchen.kobit.backend.additional.pagecontent.service.ContentItemManipulationService;
+import de.muenchen.kobit.backend.additional.pagecontent.service.TextItemManipulationService;
 import de.muenchen.kobit.backend.additional.pagecontent.service.ItemService;
 import de.muenchen.kobit.backend.additional.pagecontent.view.ContentItemView;
+import de.muenchen.kobit.backend.additional.pagecontent.view.TextItemView;
 import de.muenchen.kobit.backend.additional.pagecontent.view.ItemWrapper;
 import java.util.Collections;
 import java.util.UUID;
@@ -23,12 +25,15 @@ public class AdditionalController {
 
     private final ItemService itemService;
     private final ContentItemManipulationService contentItemManipulationService;
+    private final TextItemManipulationService textItemManipulationService;
 
     AdditionalController(
             ItemService itemService,
-            ContentItemManipulationService contentItemManipulationService) {
+            ContentItemManipulationService contentItemManipulationService,
+            TextItemManipulationService textItemManipulationService) {
         this.itemService = itemService;
         this.contentItemManipulationService = contentItemManipulationService;
+        this.textItemManipulationService = textItemManipulationService;
     }
 
     @GetMapping("/{pageType}")
@@ -53,22 +58,18 @@ public class AdditionalController {
     }
 
     @PutMapping("/{pageType}/text-item/{id}")
-    public ItemWrapper updateTextItem(
+    public ResponseEntity<?> updateTextItem(
             @PathVariable PageType pageType,
             @PathVariable UUID id,
-            @RequestBody TextItem textItem) {
+            @RequestBody TextItemView textItemView) {
         if (pageType == PageType.GLOSSARY
                 || pageType == PageType.DOWNLOADS
                 || pageType == PageType.FAQ) {
-            TextItem updatedTextItem = itemService.updateTextItem(id, textItem);
-            ItemWrapper itemWrapper =
-                    new ItemWrapper.ItemWrapperBuilder()
-                            .textItems(Collections.singletonList(updatedTextItem.toView()))
-                            .build();
-            return itemWrapper;
+            return textItemManipulationService.updateTextItem(id, textItemView);
         }
         throw new UnsupportedOperationException("Operation not supported for this page type.");
     }
+
 
     @PutMapping("/{pageType}/content-item/{id}")
     public ResponseEntity<?> updateContentItem(
