@@ -1,16 +1,14 @@
 package de.muenchen.kobit.backend.additional.pagecontent.api;
 
 import de.muenchen.kobit.backend.additional.pagecontent.model.PageType;
-import de.muenchen.kobit.backend.additional.pagecontent.model.TextItem;
 import de.muenchen.kobit.backend.additional.pagecontent.service.ContentItemManipulationService;
-import de.muenchen.kobit.backend.additional.pagecontent.service.TextItemManipulationService;
-import de.muenchen.kobit.backend.additional.pagecontent.service.TextItemDeletionService;
-import de.muenchen.kobit.backend.additional.pagecontent.service.TextItemCreationService;
 import de.muenchen.kobit.backend.additional.pagecontent.service.ItemService;
+import de.muenchen.kobit.backend.additional.pagecontent.service.TextItemCreationService;
+import de.muenchen.kobit.backend.additional.pagecontent.service.TextItemDeletionService;
+import de.muenchen.kobit.backend.additional.pagecontent.service.TextItemManipulationService;
 import de.muenchen.kobit.backend.additional.pagecontent.view.ContentItemView;
-import de.muenchen.kobit.backend.additional.pagecontent.view.TextItemView;
 import de.muenchen.kobit.backend.additional.pagecontent.view.ItemWrapper;
-import java.util.Collections;
+import de.muenchen.kobit.backend.additional.pagecontent.view.TextItemView;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -36,8 +34,7 @@ public class AdditionalController {
             ContentItemManipulationService contentItemManipulationService,
             TextItemManipulationService textItemManipulationService,
             TextItemDeletionService textItemDeletionService,
-            TextItemCreationService textItemCreationService
-            ) {
+            TextItemCreationService textItemCreationService) {
         this.itemService = itemService;
         this.contentItemManipulationService = contentItemManipulationService;
         this.textItemManipulationService = textItemManipulationService;
@@ -49,7 +46,6 @@ public class AdditionalController {
     ItemWrapper getPageByType(@PathVariable PageType pageType) {
         return itemService.getItemsForPage(pageType);
     }
-
 
     @PostMapping("/{pageType}")
     public ResponseEntity<?> createTextItem(
@@ -75,7 +71,6 @@ public class AdditionalController {
         throw new UnsupportedOperationException("Operation not supported for this page type.");
     }
 
-
     @PutMapping("/{pageType}/content-item/{id}")
     public ResponseEntity<?> updateContentItem(
             @PathVariable PageType pageType,
@@ -95,5 +90,4 @@ public class AdditionalController {
             throw new UnsupportedOperationException("Operation not supported for this page type.");
         }
     }
-
 }

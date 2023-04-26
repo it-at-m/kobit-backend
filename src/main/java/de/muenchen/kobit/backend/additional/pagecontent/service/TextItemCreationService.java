@@ -5,11 +5,9 @@ import de.muenchen.kobit.backend.additional.pagecontent.repository.TextItemRepos
 import de.muenchen.kobit.backend.additional.pagecontent.view.TextItemView;
 import de.muenchen.kobit.backend.validation.TextItemValidator;
 import de.muenchen.kobit.backend.validation.exception.TextItemValidationException;
-
 import java.net.MalformedURLException;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,8 +19,7 @@ public class TextItemCreationService {
     private final List<TextItemValidator> validators;
 
     TextItemCreationService(
-            TextItemRepository textItemRepository,
-            List<TextItemValidator> validators) {
+            TextItemRepository textItemRepository, List<TextItemValidator> validators) {
         this.textItemRepository = textItemRepository;
         this.validators = validators;
     }
@@ -40,12 +37,13 @@ public class TextItemCreationService {
             }
 
             TextItem newTextItem = createNewTextItem(textItemView);
-            return ResponseEntity.ok(new TextItemView(
-                    newTextItem.getId(),
-                    newTextItem.getPageType(),
-                    newTextItem.getHeader(),
-                    newTextItem.getEntry(),
-                    newTextItem.getLink()));
+            return ResponseEntity.ok(
+                    new TextItemView(
+                            newTextItem.getId(),
+                            newTextItem.getPageType(),
+                            newTextItem.getHeader(),
+                            newTextItem.getEntry(),
+                            newTextItem.getLink()));
         } catch (Exception e) {
             return ResponseEntity.badRequest()
                     .body(Collections.singletonMap("error", e.getMessage()));
@@ -60,5 +58,4 @@ public class TextItemCreationService {
             return null;
         }
     }
-
 }
