@@ -4,6 +4,8 @@ import de.muenchen.kobit.backend.additional.pagecontent.model.PageType;
 import de.muenchen.kobit.backend.additional.pagecontent.model.TextItem;
 import de.muenchen.kobit.backend.additional.pagecontent.service.ContentItemManipulationService;
 import de.muenchen.kobit.backend.additional.pagecontent.service.TextItemManipulationService;
+import de.muenchen.kobit.backend.additional.pagecontent.service.TextItemDeletionService;
+import de.muenchen.kobit.backend.additional.pagecontent.service.TextItemCreationService;
 import de.muenchen.kobit.backend.additional.pagecontent.service.ItemService;
 import de.muenchen.kobit.backend.additional.pagecontent.view.ContentItemView;
 import de.muenchen.kobit.backend.additional.pagecontent.view.TextItemView;
@@ -26,14 +28,21 @@ public class AdditionalController {
     private final ItemService itemService;
     private final ContentItemManipulationService contentItemManipulationService;
     private final TextItemManipulationService textItemManipulationService;
+    private final TextItemDeletionService textItemDeletionService;
+    private final TextItemCreationService textItemCreationService;
 
     AdditionalController(
             ItemService itemService,
             ContentItemManipulationService contentItemManipulationService,
-            TextItemManipulationService textItemManipulationService) {
+            TextItemManipulationService textItemManipulationService,
+            TextItemDeletionService textItemDeletionService,
+            TextItemCreationService textItemCreationService
+            ) {
         this.itemService = itemService;
         this.contentItemManipulationService = contentItemManipulationService;
         this.textItemManipulationService = textItemManipulationService;
+        this.textItemDeletionService = textItemDeletionService;
+        this.textItemCreationService = textItemCreationService;
     }
 
     @GetMapping("/{pageType}")
@@ -41,18 +50,14 @@ public class AdditionalController {
         return itemService.getItemsForPage(pageType);
     }
 
+
     @PostMapping("/{pageType}")
-    public ItemWrapper createTextItem(
-            @PathVariable PageType pageType, @RequestBody TextItem textItem) {
+    public ResponseEntity<?> createTextItem(
+            @PathVariable PageType pageType, @RequestBody TextItemView textItemView) {
         if (pageType == PageType.GLOSSARY
                 || pageType == PageType.DOWNLOADS
                 || pageType == PageType.FAQ) {
-            TextItem createdTextItem = itemService.createTextItem(pageType, textItem);
-            ItemWrapper itemWrapper =
-                    new ItemWrapper.ItemWrapperBuilder()
-                            .textItems(Collections.singletonList(createdTextItem.toView()))
-                            .build();
-            return itemWrapper;
+            return textItemCreationService.createTextItem(textItemView);
         }
         throw new UnsupportedOperationException("Operation not supported for this page type.");
     }
@@ -82,12 +87,13 @@ public class AdditionalController {
         throw new UnsupportedOperationException("Operation not supported for this page type.");
     }
 
-    @DeleteMapping("/{pageType}/{id}")
+    @DeleteMapping("/{pageType}/text-item/{id}")
     public void deleteTextItem(@PathVariable PageType pageType, @PathVariable UUID id) {
         if (pageType == PageType.GLOSSARY || pageType == PageType.DOWNLOADS) {
-            itemService.deleteTextItem(id);
+            textItemDeletionService.deleteTextItemView(id);
         } else {
             throw new UnsupportedOperationException("Operation not supported for this page type.");
         }
     }
+
 }
