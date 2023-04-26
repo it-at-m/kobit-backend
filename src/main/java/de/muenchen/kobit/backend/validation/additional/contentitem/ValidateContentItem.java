@@ -26,7 +26,6 @@ public class ValidateContentItem implements ContentItemValidator<ContentItemView
             throw new InvalidContentItemException(
                     "Header must be at least 5 characters and not more than 5000!");
         }
-
     }
 
     private boolean isContentOutOfRange(String header) {

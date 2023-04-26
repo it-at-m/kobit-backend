@@ -35,8 +35,6 @@ public class ValidateTextItem implements TextItemValidator<TextItemView> {
             throw new InvalidTextItemException(
                     "Entry must be at least 5 characters and not more than 500!");
         }
-
-
     }
 
     private boolean isHeaderOutOfRange(String header) {
