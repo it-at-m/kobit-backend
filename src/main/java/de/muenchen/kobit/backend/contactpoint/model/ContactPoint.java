@@ -44,7 +44,7 @@ public class ContactPoint {
     /**
      * Departments contains a list of String each entry is a single department - Referat a
      * ContactPoint can be assigned to more than one department if a ContactPoint has no department
-     * (the list is empty)
+     * departments is null.
      */
     @ElementCollection
     @CollectionTable(name = "departments", joinColumns = @JoinColumn(name = "contact_point_id"))
