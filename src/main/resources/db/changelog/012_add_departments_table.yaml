@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: ex.schuetze
+      preConditions:
+        onError: CONTINUE
+        onFail: CONTINUE
+        not:
+          tableExists:
+            tableName: departments
+      changes:
+        - createTable:
+            tableName: departments
+            columns:
+              - column:
+                  name: contact_point_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: FK_CONTACTPOINT_ID
+                    references: contact_point(id)
+              - column:
+                  name: department
+                  type: varchar
+                  constraints:
+                    nullable: false
