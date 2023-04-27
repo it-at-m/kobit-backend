@@ -36,7 +36,8 @@ class ContactPointToViewMapperTest {
     @Test
     void contactPointToView_ObjectTest() {
         ContactPoint contactPoint =
-                new ContactPoint(UUID.randomUUID(), "test", "test", "Beschreibung", List.of("test"));
+                new ContactPoint(
+                        UUID.randomUUID(), "test", "test", "Beschreibung", List.of("test"));
         List<Contact> contacts = List.of(new Contact(contactPoint.getId(), "mail"));
         List<LinkView> links = List.of(new LinkView(contactPoint.getId(), "test", "test", false));
         List<CompetenceToContactPoint> competenceToContactPoint =

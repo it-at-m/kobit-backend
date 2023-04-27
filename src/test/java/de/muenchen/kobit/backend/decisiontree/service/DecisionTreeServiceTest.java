@@ -98,10 +98,24 @@ class DecisionTreeServiceTest {
         var contactPoints = new ArrayList<ContactPointView>();
         contactPoints.add(
                 new ContactPointView(
-                        id, "test", "test", "test", List.of("test"), List.of(), List.of(), List.of()));
+                        id,
+                        "test",
+                        "test",
+                        "test",
+                        List.of("test"),
+                        List.of(),
+                        List.of(),
+                        List.of()));
         contactPoints.add(
                 new ContactPointView(
-                        id, "test", "atest", "test", List.of("test"), List.of(), List.of(), List.of()));
+                        id,
+                        "test",
+                        "atest",
+                        "test",
+                        List.of("test"),
+                        List.of(),
+                        List.of(),
+                        List.of()));
         List<Competence> competences = List.of(Competence.ANTI_DEMOCRACY);
         when(competenceService.findAllContactPointsForCompetences(competences, department))
                 .thenReturn(contactPoints);
@@ -122,42 +136,126 @@ class DecisionTreeServiceTest {
         var contactPoints = new ArrayList<ContactPointView>();
         contactPoints.add(
                 new ContactPointView(
-                        id, "mtest", "mtest", "test", List.of("test"), List.of(), List.of(), List.of()));
+                        id,
+                        "mtest",
+                        "mtest",
+                        "test",
+                        List.of("test"),
+                        List.of(),
+                        List.of(),
+                        List.of()));
         contactPoints.add(
                 new ContactPointView(
-                        id, "test", "test", "test", List.of("test"), List.of(), List.of(), List.of()));
+                        id,
+                        "test",
+                        "test",
+                        "test",
+                        List.of("test"),
+                        List.of(),
+                        List.of(),
+                        List.of()));
         contactPoints.add(
                 new ContactPointView(
-                        id, "ätest", "ätest", "test", List.of("test"), List.of(), List.of(), List.of()));
+                        id,
+                        "ätest",
+                        "ätest",
+                        "test",
+                        List.of("test"),
+                        List.of(),
+                        List.of(),
+                        List.of()));
         contactPoints.add(
                 new ContactPointView(
-                        id, "ötest", "ötest", "test", List.of("test"), List.of(), List.of(), List.of()));
+                        id,
+                        "ötest",
+                        "ötest",
+                        "test",
+                        List.of("test"),
+                        List.of(),
+                        List.of(),
+                        List.of()));
         contactPoints.add(
                 new ContactPointView(
-                        id, "ptest", "ptest", "test", List.of("test"), List.of(), List.of(), List.of()));
+                        id,
+                        "ptest",
+                        "ptest",
+                        "test",
+                        List.of("test"),
+                        List.of(),
+                        List.of(),
+                        List.of()));
         contactPoints.add(
                 new ContactPointView(
-                        id, "atest", "atest", "test", List.of("test"), List.of(), List.of(), List.of()));
+                        id,
+                        "atest",
+                        "atest",
+                        "test",
+                        List.of("test"),
+                        List.of(),
+                        List.of(),
+                        List.of()));
 
         var contactPointsAlphabetical = new ArrayList<ContactPointView>();
         contactPointsAlphabetical.add(
                 new ContactPointView(
-                        id, "atest", "atest", "test", List.of("test"), List.of(), List.of(), List.of()));
+                        id,
+                        "atest",
+                        "atest",
+                        "test",
+                        List.of("test"),
+                        List.of(),
+                        List.of(),
+                        List.of()));
         contactPointsAlphabetical.add(
                 new ContactPointView(
-                        id, "ätest", "ätest", "test", List.of("test"), List.of(), List.of(), List.of()));
+                        id,
+                        "ätest",
+                        "ätest",
+                        "test",
+                        List.of("test"),
+                        List.of(),
+                        List.of(),
+                        List.of()));
         contactPointsAlphabetical.add(
                 new ContactPointView(
-                        id, "mtest", "mtest", "test", List.of("test"), List.of(), List.of(), List.of()));
+                        id,
+                        "mtest",
+                        "mtest",
+                        "test",
+                        List.of("test"),
+                        List.of(),
+                        List.of(),
+                        List.of()));
         contactPointsAlphabetical.add(
                 new ContactPointView(
-                        id, "ötest", "ötest", "test", List.of("test"), List.of(), List.of(), List.of()));
+                        id,
+                        "ötest",
+                        "ötest",
+                        "test",
+                        List.of("test"),
+                        List.of(),
+                        List.of(),
+                        List.of()));
         contactPointsAlphabetical.add(
                 new ContactPointView(
-                        id, "ptest", "ptest", "test", List.of("test"), List.of(), List.of(), List.of()));
+                        id,
+                        "ptest",
+                        "ptest",
+                        "test",
+                        List.of("test"),
+                        List.of(),
+                        List.of(),
+                        List.of()));
         contactPointsAlphabetical.add(
                 new ContactPointView(
-                        id, "test", "test", "test", List.of("test"), List.of(), List.of(), List.of()));
+                        id,
+                        "test",
+                        "test",
+                        "test",
+                        List.of("test"),
+                        List.of(),
+                        List.of(),
+                        List.of()));
 
         List<Competence> competences = List.of(Competence.ANTI_DEMOCRACY);
         when(competenceService.findAllContactPointsForCompetences(competences, department))
