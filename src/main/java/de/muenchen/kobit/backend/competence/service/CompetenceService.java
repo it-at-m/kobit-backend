@@ -1,5 +1,9 @@
 package de.muenchen.kobit.backend.competence.service;
 
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.mapping;
+import static java.util.stream.Collectors.toList;
+
 import de.muenchen.kobit.backend.competence.Competence;
 import de.muenchen.kobit.backend.competence.model.CompetenceToContactPoint;
 import de.muenchen.kobit.backend.competence.repository.CompetenceRepository;
@@ -7,8 +11,6 @@ import de.muenchen.kobit.backend.contact.service.ContactPointToViewMapper;
 import de.muenchen.kobit.backend.contactpoint.model.ContactPoint;
 import de.muenchen.kobit.backend.contactpoint.repository.ContactPointRepository;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
-import org.springframework.stereotype.Service;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -16,10 +18,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.mapping;
-import static java.util.stream.Collectors.toList;
+import org.springframework.stereotype.Service;
 
 @Service
 public class CompetenceService {
@@ -50,7 +49,10 @@ public class CompetenceService {
 
     private List<ContactPoint> getMatchingContactPoints(String department, Set<UUID> keys) {
         return keys.stream()
-                .map(it -> contactPointRepository.findContactPointByIdAndDepartmentLike(it, department))
+                .map(
+                        it ->
+                                contactPointRepository.findContactPointByIdAndDepartmentLike(
+                                        it, department))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(toList());
@@ -79,7 +81,7 @@ public class CompetenceService {
                                                 toList())));
         Set<UUID> matchingKeys = new HashSet<>();
         for (UUID key : contactPointToCompetences.keySet()) {
-            if (contactPointToCompetences.get(key).containsAll(competences)) {
+            if (new HashSet<>(contactPointToCompetences.get(key)).containsAll(competences)) {
                 matchingKeys.add(key);
             }
         }
@@ -89,14 +91,14 @@ public class CompetenceService {
     /**
      * @param competences - list of competences selected in the decision tree
      * @return true if a special case is given A special case are some contact points for juniors.
-     * These are not only responsible for the Juniors, they are also responsible if an executive
-     * or employee has a problem with a junior.
+     *     These are not only responsible for the Juniors, they are also responsible if an executive
+     *     or employee has a problem with a junior.
      */
     private boolean isSpecialCase(List<Competence> competences) {
         return ((competences.contains(Competence.EXECUTIVE)
-                && competences.contains(Competence.OPPOSITE_JUNIOR))
+                        && competences.contains(Competence.OPPOSITE_JUNIOR))
                 || (competences.contains(Competence.EMPLOYEE)
-                && competences.contains(Competence.OPPOSITE_JUNIOR)));
+                        && competences.contains(Competence.OPPOSITE_JUNIOR)));
     }
 
     private Set<UUID> specialCaseContactPoints(List<Competence> competences) {

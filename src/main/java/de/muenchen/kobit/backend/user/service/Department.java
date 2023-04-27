@@ -6,9 +6,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Injects the department of the current user into the parameter.
- * see DepartmentAttributeResolver.java for impl.
- * see WebMvcContext.java for configuration
+ * Injects the department of the current user into the parameter. see
+ * DepartmentAttributeResolver.java for impl. see WebMvcContext.java for configuration
  */
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
