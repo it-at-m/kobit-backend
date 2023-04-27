@@ -55,7 +55,7 @@ class ContactPointCreationServiceTest {
         var savedLink = new LinkView(id, "link", "https://test-test.com/", false);
         var view =
                 new ContactPointView(
-                        id, "test", "tes", "test test", "t", contacts, competences, linkViews);
+                        id, "test", "tes", "test test", List.of("t"), contacts, competences, linkViews);
         var contactPoint = view.toContactPoint();
         contactPoint.setId(id);
         when(contactPointRepository.save(any())).thenReturn(contactPoint);
