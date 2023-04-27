@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 public class ValidateTextItem implements TextItemValidator<TextItemView> {
 
     private static final int HEADER_MIN_SIZE = 5;
-    private static final int HEADER_MAX_SIZE = 100;
+    private static final int HEADER_MAX_SIZE = 200;
     private static final int ENTRY_CUT_MIN = 5;
-    private static final int ENTRY_CUT_MAX = 500;
+    private static final int ENTRY_CUT_MAX = 1500;
 
     @Override
     public void validate(TextItemView textItemView) throws InvalidTextItemException {
@@ -29,11 +29,11 @@ public class ValidateTextItem implements TextItemValidator<TextItemView> {
         }
         if (isHeaderOutOfRange(textItemView.getHeader())) {
             throw new InvalidTextItemException(
-                    "Header must be at least 5 characters and not more than 100!");
+                    "Header must be at least 5 characters and not more than 200!");
         }
         if (isEntryCutOutOfRange(textItemView.getEntry())) {
             throw new InvalidTextItemException(
-                    "Entry must be at least 5 characters and not more than 500!");
+                    "Entry must be at least 5 characters and not more than 1500!");
         }
     }
 
