@@ -33,5 +33,8 @@ databaseChangeLog:
       file: 011_create_dv_fair.yaml
       relativeToChangelogFile: true
   - include:
+      file: 012_add_departments_table.yaml
+      relativeToChangelogFile: true
+  - include:
       file: 013_refactor_department.yaml
       relativeToChangelogFile: true
