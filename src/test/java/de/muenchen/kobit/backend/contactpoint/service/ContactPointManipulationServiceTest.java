@@ -59,7 +59,14 @@ class ContactPointManipulationServiceTest {
                 List.of(new Link(UUID.randomUUID(), id, "link", "https://test-test.com/", false));
         var view =
                 new ContactPointView(
-                        id, "test", "tes", "test test", List.of("ITM"), contactViews, competences, linkViews);
+                        id,
+                        "test",
+                        "tes",
+                        "test test",
+                        List.of("ITM"),
+                        contactViews,
+                        competences,
+                        linkViews);
         var contactPoint = view.toContactPoint();
         contactPoint.setId(id);
         when(contactPointRepository.getReferenceById(id))

@@ -31,7 +31,7 @@ public class ContactPointService {
     @Transactional
     public List<ContactPointListItem> getContactPointList(String department) {
         List<ContactPointListItem> listItems =
-                repo.findAllByDepartmentOrDepartmentIsNull(department).stream()
+                repo.findAllByDepartmentLikeOrNull(department).stream()
                         .map(ContactPoint::toListView)
                         .collect(Collectors.toList());
         return orderByName(listItems);
@@ -39,7 +39,7 @@ public class ContactPointService {
 
     @Transactional(readOnly = true)
     public Optional<ContactPointView> findById(UUID id, String department) {
-        return repo.findContactPointByIdAndDepartment(id, department)
+        return repo.findContactPointByIdAndDepartmentLike(id, department)
                 .map(mapper::contactPointToView);
     }
 

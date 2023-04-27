@@ -115,7 +115,8 @@ public class ContactPointCreationService {
             return true;
         }
         if (adminInfo.isDepartmentAdmin()) {
-            return contactPointDepartment.stream().anyMatch(it -> it.equals(adminInfo.getDepartment()));
+            return contactPointDepartment.stream()
+                    .anyMatch(it -> it.equals(adminInfo.getDepartment()));
         }
         return false;
     }

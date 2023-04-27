@@ -5,8 +5,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ElementType.PARAMETER})
+/**
+ * Injects the department of the current user into the parameter.
+ * see DepartmentAttributeResolver.java for impl.
+ * see WebMvcContext.java for configuration
+ */
+@Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Department {
-    String department() default "";
-}
+public @interface Department {}

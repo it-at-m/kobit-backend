@@ -104,6 +104,7 @@ public class ContactPointManipulationService {
             contactPointToUpdate.setName(contactPointView.getName());
             contactPointToUpdate.setShortCut(contactPointView.getShortCut());
             contactPointToUpdate.setDescription(contactPointView.getDescription());
+            contactPointToUpdate.setDepartments(contactPointView.getDepartments());
             return contactPointRepository.save(contactPointToUpdate);
         } catch (EntityNotFoundException exception) {
             return contactPointRepository.save(contactPointView.toContactPoint());
@@ -158,7 +159,8 @@ public class ContactPointManipulationService {
             return true;
         }
         if (adminInfo.isDepartmentAdmin()) {
-            return contactPointDepartments.stream().anyMatch(it -> it.equals(adminInfo.getDepartment()));
+            return contactPointDepartments.stream()
+                    .anyMatch(it -> it.equals(adminInfo.getDepartment()));
         }
         return false;
     }
