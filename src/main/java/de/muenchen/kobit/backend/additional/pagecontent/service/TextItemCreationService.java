@@ -37,6 +37,7 @@ public class TextItemCreationService {
             }
 
             TextItem newTextItem = createNewTextItem(textItemView);
+            // newTextItem.setId(UUID.randomUUID());
             return ResponseEntity.ok(
                     new TextItemView(
                             newTextItem.getId(),

@@ -4,22 +4,29 @@ import de.muenchen.kobit.backend.additional.pagecontent.view.TextItemView;
 import java.net.URL;
 import java.util.UUID;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "text_item")
 public class TextItem {
 
     @Id
-    @Column(name = "id", unique = true, nullable = false)
+    @NotNull
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "page_type")
     private PageType pageType;
 
+    @Size(min = 3, message = "violation if minimal name length")
     @Column(name = "header", columnDefinition = "TEXT")
     private String header;
 
+    @Size(min = 5, message = "violation if minimal name length")
     @Column(name = "entry", columnDefinition = "TEXT")
     private String entry;
 
@@ -66,8 +73,7 @@ public class TextItem {
         this.link = link;
     }
 
-    public TextItem(UUID id, PageType pageType, String header, String entry, URL link) {
-        this.id = id;
+    public TextItem(PageType pageType, String header, String entry, URL link) {
         this.pageType = pageType;
         this.header = header;
         this.entry = entry;

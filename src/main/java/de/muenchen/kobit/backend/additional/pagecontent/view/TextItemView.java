@@ -69,7 +69,7 @@ public class TextItemView {
     }
 
     public TextItem toTextItem() throws MalformedURLException {
-        return new TextItem(id, pageType, header, entry, link); // Replace 'uuid' with 'id'
+        return new TextItem(this.pageType, this.header, this.entry, this.link);
     }
 
     public static TextItemView toView(TextItem textItem) {
