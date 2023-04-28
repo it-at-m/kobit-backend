@@ -51,10 +51,7 @@ class ItemServiceTest {
         PageType pageType = PageType.DOWNLOADS;
         TextItem textItem =
                 new TextItem(
-                        PageType.DOWNLOADS,
-                        "header",
-                        "entry",
-                        new URL("http://localhost:8080"));
+                        PageType.DOWNLOADS, "header", "entry", new URL("http://localhost:8080"));
         when(textItemRepository.findAllByPageType(pageType)).thenReturn(List.of(textItem));
         var result = itemService.getItemsForPage(pageType);
         verify(contentItemRepository, never()).findAllByPageType(any());

@@ -84,7 +84,9 @@ public class AdditionalController {
 
     @DeleteMapping("/{pageType}/text-item/{id}")
     public void deleteTextItem(@PathVariable PageType pageType, @PathVariable UUID id) {
-        if (pageType == PageType.GLOSSARY || pageType == PageType.DOWNLOADS || pageType == PageType.FAQ) {
+        if (pageType == PageType.GLOSSARY
+                || pageType == PageType.DOWNLOADS
+                || pageType == PageType.FAQ) {
             textItemDeletionService.deleteTextItemView(id);
         } else {
             throw new UnsupportedOperationException("Operation not supported for this page type.");
