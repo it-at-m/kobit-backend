@@ -3,6 +3,7 @@ package de.muenchen.kobit.backend.validation;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import de.muenchen.kobit.backend.additional.pagecontent.model.PageType;
 import de.muenchen.kobit.backend.additional.pagecontent.view.ContentItemView;
 import de.muenchen.kobit.backend.validation.additional.contentitem.ValidateContentItem;
 import de.muenchen.kobit.backend.validation.exception.experiencemore.InvalidContentItemException;
@@ -16,6 +17,8 @@ class ValidateContentItemTest {
     void validateTest_isValid() throws InvalidContentItemException {
         ContentItemView contentItemView =
                 new ContentItemView(); // Create a valid ContentItemView object
+        contentItemView.setContent("Content");
+        contentItemView.setPageType(PageType.PREVENTION);
         validateContentItem.validate(contentItemView);
     }
 

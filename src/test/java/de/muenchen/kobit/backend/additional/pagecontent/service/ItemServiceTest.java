@@ -51,7 +51,6 @@ class ItemServiceTest {
         PageType pageType = PageType.DOWNLOADS;
         TextItem textItem =
                 new TextItem(
-                        UUID.randomUUID(),
                         PageType.DOWNLOADS,
                         "header",
                         "entry",
