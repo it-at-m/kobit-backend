@@ -30,7 +30,6 @@ class ContactPointCreationServiceTest {
     private final CompetenceService competenceService = mock(CompetenceService.class);
     private final List<ContactPointValidator> validators =
             List.of(mock(ContactPointValidator.class));
-
     private ContactPointCreationService contactCreationService;
 
     @BeforeEach
