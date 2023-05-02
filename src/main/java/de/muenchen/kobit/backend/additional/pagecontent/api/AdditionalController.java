@@ -1,7 +1,5 @@
 package de.muenchen.kobit.backend.additional.pagecontent.api;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import de.muenchen.kobit.backend.additional.pagecontent.model.PageType;
 import de.muenchen.kobit.backend.additional.pagecontent.service.ContentItemManipulationService;
 import de.muenchen.kobit.backend.additional.pagecontent.service.ItemService;
@@ -61,25 +59,7 @@ public class AdditionalController {
             @RequestBody TextItemView textItemView,
             @RequestPart(value = "file", required = false) MultipartFile file)
             throws IOException {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            String json = mapper.writeValueAsString(textItemView);
-            System.out.println(json);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
         if (pageType == PageType.GLOSSARY || pageType == PageType.FAQ) {
-            try {
-                ObjectMapper mapper = new ObjectMapper();
-                String json = mapper.writeValueAsString(textItemView);
-                System.out.println(json);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-            System.out.println(textItemView.getEntry());
-            System.out.println(textItemView.getHeader());
-            System.out.println(textItemView.getId());
-            System.out.println(textItemView.getLink());
             return textItemCreationService.createTextItem(textItemView);
         } else if (pageType == PageType.DOWNLOADS) {
             if (file == null) {
