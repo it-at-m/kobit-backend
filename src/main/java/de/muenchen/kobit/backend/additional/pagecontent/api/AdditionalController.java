@@ -67,12 +67,9 @@ public class AdditionalController {
                 throw new IllegalArgumentException("File is required for the DOWNLOADS page type.");
             }
             try {
-                String fileName = s3UploadService.uploadFile(file);
-                // You can now create a TextItem with the link to the uploaded file and save it
-                // to the database.
-                // ...
-
-                return ResponseEntity.ok().build();
+                String newLink = s3UploadService.uploadFile(file);
+                textItemView.setLink(newLink);
+                return textItemCreationService.createTextItem(textItemView);
             } catch (IOException e) {
                 // Handle the exception, e.g., log the error, return an error response, etc.
                 throw e;
