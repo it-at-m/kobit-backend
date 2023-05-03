@@ -126,6 +126,8 @@ public class AdditionalController {
             @PathVariable PageType pageType,
             @PathVariable UUID id,
             @RequestParam(value = "link", required = false) String link) {
+        System.out.println(id);
+        System.out.println(link);
         if (pageType == PageType.GLOSSARY || pageType == PageType.FAQ) {
             textItemDeletionService.deleteTextItemView(id);
         } else if (pageType == PageType.DOWNLOADS && link != null) {
