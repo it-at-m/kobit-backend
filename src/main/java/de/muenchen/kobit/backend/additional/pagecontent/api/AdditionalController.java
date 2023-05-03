@@ -5,6 +5,7 @@ import de.muenchen.kobit.backend.additional.pagecontent.service.*;
 import de.muenchen.kobit.backend.additional.pagecontent.view.ContentItemView;
 import de.muenchen.kobit.backend.additional.pagecontent.view.ItemWrapper;
 import de.muenchen.kobit.backend.additional.pagecontent.view.TextItemView;
+import de.muenchen.kobit.backend.validation.exception.S3FileValidationException;
 import java.io.IOException;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
@@ -59,7 +60,7 @@ public class AdditionalController {
             @PathVariable PageType pageType,
             @RequestBody TextItemView textItemView,
             @RequestPart(value = "file", required = false) MultipartFile file)
-            throws IOException {
+            throws IOException, S3FileValidationException {
         if (pageType == PageType.GLOSSARY || pageType == PageType.FAQ) {
             return textItemCreationService.createTextItem(textItemView);
         } else if (pageType == PageType.DOWNLOADS) {
@@ -70,7 +71,7 @@ public class AdditionalController {
                 String newLink = s3UploadService.uploadFile(file);
                 textItemView.setLink(newLink);
                 return textItemCreationService.createTextItem(textItemView);
-            } catch (IOException e) {
+            } catch (IOException | S3FileValidationException e) {
                 // Handle the exception, e.g., log the error, return an error response, etc.
                 throw e;
             }
@@ -100,7 +101,7 @@ public class AdditionalController {
                     // You can now update the TextItem with the link to the uploaded file and save
                     // it to the database.
                     // ...
-                } catch (IOException e) {
+                } catch (IOException | S3FileValidationException e) {
                     // Handle the exception, e.g., log the error, return an error response, etc.
                 }
             }
