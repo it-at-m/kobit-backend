@@ -1,12 +1,7 @@
 package de.muenchen.kobit.backend.additional.pagecontent.api;
 
 import de.muenchen.kobit.backend.additional.pagecontent.model.PageType;
-import de.muenchen.kobit.backend.additional.pagecontent.service.ContentItemManipulationService;
-import de.muenchen.kobit.backend.additional.pagecontent.service.ItemService;
-import de.muenchen.kobit.backend.additional.pagecontent.service.S3UploadService;
-import de.muenchen.kobit.backend.additional.pagecontent.service.TextItemCreationService;
-import de.muenchen.kobit.backend.additional.pagecontent.service.TextItemDeletionService;
-import de.muenchen.kobit.backend.additional.pagecontent.service.TextItemManipulationService;
+import de.muenchen.kobit.backend.additional.pagecontent.service.*;
 import de.muenchen.kobit.backend.additional.pagecontent.view.ContentItemView;
 import de.muenchen.kobit.backend.additional.pagecontent.view.ItemWrapper;
 import de.muenchen.kobit.backend.additional.pagecontent.view.TextItemView;
@@ -32,6 +27,8 @@ public class AdditionalController {
     private final TextItemDeletionService textItemDeletionService;
     private final TextItemCreationService textItemCreationService;
     private final S3UploadService s3UploadService;
+    private final S3DeletionService s3DeletionService;
+    private final S3ManipulationService s3ManipulationService;
 
     AdditionalController(
             ItemService itemService,
@@ -39,13 +36,17 @@ public class AdditionalController {
             TextItemManipulationService textItemManipulationService,
             TextItemDeletionService textItemDeletionService,
             TextItemCreationService textItemCreationService,
-            S3UploadService s3UploadService) {
+            S3UploadService s3UploadService,
+            S3DeletionService s3DeletionService,
+            S3ManipulationService s3ManipulationService) {
         this.itemService = itemService;
         this.contentItemManipulationService = contentItemManipulationService;
         this.textItemManipulationService = textItemManipulationService;
         this.textItemDeletionService = textItemDeletionService;
         this.textItemCreationService = textItemCreationService;
         this.s3UploadService = s3UploadService;
+        this.s3DeletionService = s3DeletionService;
+        this.s3ManipulationService = s3ManipulationService;
     }
 
     @GetMapping("/{pageType}")
@@ -85,14 +86,20 @@ public class AdditionalController {
             @PathVariable PageType pageType,
             @PathVariable UUID id,
             @RequestBody TextItemView textItemView,
-            @RequestPart(value = "file", required = false) MultipartFile file)
+            @RequestPart(value = "file", required = false) MultipartFile newFile)
             throws IOException {
         if (pageType == PageType.GLOSSARY || pageType == PageType.FAQ) {
             return textItemManipulationService.updateTextItem(id, textItemView);
         } else if (pageType == PageType.DOWNLOADS) {
-            if (file != null) {
+            if (newFile != null) {
                 try {
-                    String fileName = s3UploadService.uploadFile(file);
+                    String newLink =
+                            s3ManipulationService.replaceFile(
+                                    textItemView.getLink().toString(), newFile);
+
+                    textItemView.setLink(newLink);
+
+                    return textItemManipulationService.updateTextItem(id, textItemView);
                     // You can now update the TextItem with the link to the uploaded file and save
                     // it to the database.
                     // ...
@@ -117,10 +124,15 @@ public class AdditionalController {
     }
 
     @DeleteMapping("/{pageType}/text-item/{id}")
-    public void deleteTextItem(@PathVariable PageType pageType, @PathVariable UUID id) {
-        if (pageType == PageType.GLOSSARY
-                || pageType == PageType.DOWNLOADS
-                || pageType == PageType.FAQ) {
+    public void deleteTextItem(
+            @PathVariable PageType pageType,
+            @PathVariable UUID id,
+            @RequestParam(value = "link", required = false) String link) {
+        if (pageType == PageType.GLOSSARY || pageType == PageType.FAQ) {
+            textItemDeletionService.deleteTextItemView(id);
+        } else if (pageType == PageType.DOWNLOADS && link != null) {
+            // Get the link to the file from the database, then delete it from S3
+            s3DeletionService.deleteFileByLink(link);
             textItemDeletionService.deleteTextItemView(id);
         } else {
             throw new UnsupportedOperationException("Operation not supported for this page type.");
