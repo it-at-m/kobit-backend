@@ -19,5 +19,5 @@ public class ContactPointListItem {
 
     String shortCut;
 
-    List<String> department;
+    List<String> departments;
 }
