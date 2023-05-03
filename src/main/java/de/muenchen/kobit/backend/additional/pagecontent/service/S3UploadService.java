@@ -5,14 +5,13 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import de.muenchen.kobit.backend.validation.S3FileValidator;
+import de.muenchen.kobit.backend.validation.exception.S3FileValidationException;
 import java.io.IOException;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import de.muenchen.kobit.backend.validation.S3FileValidator;
-import de.muenchen.kobit.backend.validation.exception.S3FileValidationException;
 
 @Service
 public class S3UploadService {
