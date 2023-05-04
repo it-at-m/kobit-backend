@@ -14,52 +14,34 @@ import org.springframework.stereotype.Service;
 @Service
 public class S3DeletionService {
 
-    private final AmazonS3 s3Client;
-
-
-    @Value("${aws.s3.bucket-name}")
+    @Value("${spring.aws.s3.bucket-name}")
     private String bucketName;
 
-
-    @Value("${aws.s3.access-key}")
+    @Value("${spring.aws.s3.access-key}")
     private String accessKey;
 
-
-    @Value("${aws.s3.secret-key}")
+    @Value("${spring.aws.s3.secret-key}")
     private String secretKey;
 
-
-    @Value("${aws.s3.hostname}")
+    @Value("${spring.aws.s3.hostname}")
     private String hostname;
 
-    @Value("${kobit.mail.from}")
-    private String noReplyMail;
-
-    public S3DeletionService() {
-
-        System.out.println(noReplyMail);
-        System.out.println(accessKey);
-        System.out.println(secretKey);
-        System.out.println(bucketName);
-        System.out.println(hostname);
-
-        System.out.println(System.getenv("AWS_S3_ACCESS_KEY"));
-        System.out.println(System.getenv("AWS_S3_SECRET_KEY"));
-        System.out.println(System.getenv("AWS_S3_BUCKET_NAME"));
-        System.out.println(System.getenv("AWS_S3_HOSTNAME"));
-
-        this.s3Client = AmazonS3ClientBuilder.standard()
-                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("s3k.muenchen.de", "eu-central-1"))
-                .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretKey)))
+    private AmazonS3 getS3Client() {
+        return AmazonS3ClientBuilder.standard()
+                .withEndpointConfiguration(
+                        new AwsClientBuilder.EndpointConfiguration(
+                                "s3k.muenchen.de", "eu-central-1"))
+                .withCredentials(
+                        new AWSStaticCredentialsProvider(
+                                new BasicAWSCredentials(accessKey, secretKey)))
                 .build();
-        System.out.println("Access key: " + accessKey);
-        System.out.println("Secret key: " + secretKey);
     }
 
     public void deleteFileByLink(String link) {
+
         String[] parts = link.split("/");
+
         String fileName = parts[parts.length - 1];
-        s3Client.deleteObject(new DeleteObjectRequest(bucketName, fileName));
+        getS3Client().deleteObject(new DeleteObjectRequest(bucketName, fileName));
     }
 }
-

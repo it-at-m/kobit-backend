@@ -5,6 +5,10 @@ spring:
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
 
+
+  http:
+    log-request-details: on
+
   aws:
     s3:
       bucket-name: ${AWS_S3_BUCKET_NAME}
@@ -14,6 +18,3 @@ spring:
       region:
         static: eu-central-1
         auto: false
-
-  http:
-    log-request-details: on
