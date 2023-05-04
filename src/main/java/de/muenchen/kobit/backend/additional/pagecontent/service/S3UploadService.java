@@ -1,5 +1,8 @@
 package de.muenchen.kobit.backend.additional.pagecontent.service;
 
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
@@ -16,32 +19,53 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class S3UploadService {
 
-    private final AmazonS3 s3Client;
-    private final List<S3FileValidator> validators;
-
-    @Value("${aws.s3.bucket-name}")
+    @Value("${spring.aws.s3.bucket-name}")
     private String bucketName;
 
+    @Value("${spring.aws.s3.access-key}")
+    private String accessKey;
+
+    @Value("${spring.aws.s3.secret-key}")
+    private String secretKey;
+
+    @Value("${spring.aws.s3.hostname}")
+    private String hostname;
+
+    @Value("${spring.aws.s3.region.static}")
+    private String signingRegion;
+
+    private final List<S3FileValidator> validators;
+
+    private AmazonS3 getS3Client() {
+        return AmazonS3ClientBuilder.standard()
+                .withEndpointConfiguration(
+                        new AwsClientBuilder.EndpointConfiguration(hostname, signingRegion))
+                .withCredentials(
+                        new AWSStaticCredentialsProvider(
+                                new BasicAWSCredentials(accessKey, secretKey)))
+                .build();
+    }
+
     public S3UploadService(List<S3FileValidator> validators) {
-        this.s3Client = AmazonS3ClientBuilder.standard().build();
         this.validators = validators;
     }
 
     public String uploadFile(MultipartFile file) throws IOException, S3FileValidationException {
 
-        // Validate the uploaded file using the validators
         for (S3FileValidator validator : validators) {
             validator.validate(file);
         }
         String fileName = file.getOriginalFilename();
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(file.getSize());
-        s3Client.putObject(
-                new PutObjectRequest(bucketName, fileName, file.getInputStream(), metadata));
+        getS3Client()
+                .putObject(
+                        new PutObjectRequest(
+                                bucketName, fileName, file.getInputStream(), metadata));
         return fileName;
     }
 
     public void deleteFile(String fileName) {
-        s3Client.deleteObject(new DeleteObjectRequest(bucketName, fileName));
+        getS3Client().deleteObject(new DeleteObjectRequest(bucketName, fileName));
     }
 }

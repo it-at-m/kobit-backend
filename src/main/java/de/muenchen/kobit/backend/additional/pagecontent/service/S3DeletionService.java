@@ -26,11 +26,13 @@ public class S3DeletionService {
     @Value("${spring.aws.s3.hostname}")
     private String hostname;
 
+    @Value("${spring.aws.s3.region.static}")
+    private String signingRegion;
+
     private AmazonS3 getS3Client() {
         return AmazonS3ClientBuilder.standard()
                 .withEndpointConfiguration(
-                        new AwsClientBuilder.EndpointConfiguration(
-                                "s3k.muenchen.de", "eu-central-1"))
+                        new AwsClientBuilder.EndpointConfiguration(hostname, signingRegion))
                 .withCredentials(
                         new AWSStaticCredentialsProvider(
                                 new BasicAWSCredentials(accessKey, secretKey)))
