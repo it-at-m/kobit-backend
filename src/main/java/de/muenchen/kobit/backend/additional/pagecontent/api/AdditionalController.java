@@ -8,11 +8,15 @@ import de.muenchen.kobit.backend.additional.pagecontent.view.TextItemView;
 import de.muenchen.kobit.backend.validation.exception.S3FileValidationException;
 import java.io.IOException;
 import java.util.UUID;
+import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -50,17 +54,21 @@ public class AdditionalController {
         this.s3ManipulationService = s3ManipulationService;
     }
 
-    @GetMapping("/{pageType}")
-    ItemWrapper getPageByType(@PathVariable PageType pageType) {
-        return itemService.getItemsForPage(pageType);
-    }
-
     @PostMapping("/{pageType}")
     public ResponseEntity<?> createTextItem(
             @PathVariable PageType pageType,
             @RequestBody TextItemView textItemView,
-            @RequestPart(value = "file", required = false) MultipartFile file)
+            @RequestPart(value = "file", required = false) MultipartFile file,
+            HttpServletRequest request)
             throws IOException, S3FileValidationException {
+
+        CsrfToken token = (CsrfToken) request.getAttribute("_csrf");
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-CSRF-TOKEN", token.getToken());
+
+        System.out.println(textItemView.getId());
+        System.out.println(file);
+
         if (pageType == PageType.GLOSSARY || pageType == PageType.FAQ) {
             return textItemCreationService.createTextItem(textItemView);
         } else if (pageType == PageType.DOWNLOADS) {
@@ -77,6 +85,11 @@ public class AdditionalController {
             }
         }
         throw new UnsupportedOperationException("Operation not supported for this page type.");
+    }
+
+    @GetMapping("/{pageType}")
+    ItemWrapper getPageByType(@PathVariable PageType pageType) {
+        return itemService.getItemsForPage(pageType);
     }
 
     @PutMapping("/{pageType}/text-item/{id}")
