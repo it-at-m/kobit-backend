@@ -32,10 +32,9 @@ public class UserDataResolver {
 
     public final User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication.getPrincipal() instanceof OidcUser) {
-            OidcUserInfo userInfo = ((OidcUser) authentication.getPrincipal()).getUserInfo();
-            log.info(String.valueOf(userInfo.getClaims()));
-        }
+        log.info(String.valueOf(authentication.getDetails()));
+        OidcUserInfo userInfo = ((OidcUser) authentication.getPrincipal()).getUserInfo();
+        log.info(String.valueOf(userInfo.getClaims()));
         return readUserFromToken(SecurityContextHolder.getContext().getAuthentication());
     }
 
