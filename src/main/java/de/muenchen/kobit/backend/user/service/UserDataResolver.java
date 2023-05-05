@@ -31,7 +31,8 @@ public class UserDataResolver {
 
     public final User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        log.info(String.valueOf(authentication));
+        log.info(String.valueOf(authentication.getPrincipal()));
+        log.info(String.valueOf(authentication.getDetails()));
         try {
             ((DefaultOidcUser) authentication.getPrincipal()).getIdToken().getTokenValue();
         } catch (Exception e) {
