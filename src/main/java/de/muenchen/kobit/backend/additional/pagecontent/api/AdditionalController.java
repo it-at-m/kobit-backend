@@ -7,12 +7,11 @@ import de.muenchen.kobit.backend.additional.pagecontent.view.ItemWrapper;
 import de.muenchen.kobit.backend.additional.pagecontent.view.TextItemView;
 import de.muenchen.kobit.backend.validation.exception.S3FileValidationException;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
-import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,37 +53,44 @@ public class AdditionalController {
         this.s3ManipulationService = s3ManipulationService;
     }
 
-    @PostMapping("/{pageType}")
+    @PostMapping(value = "/{pageType}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createTextItem(
-            @PathVariable PageType pageType,
-            @RequestBody TextItemView textItemView,
-            @RequestPart(value = "file", required = false) MultipartFile file,
-            HttpServletRequest request)
+            @PathVariable PageType pageType, @RequestBody TextItemView textItemView)
             throws IOException, S3FileValidationException {
 
-        CsrfToken token = (CsrfToken) request.getAttribute("_csrf");
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("X-CSRF-TOKEN", token.getToken());
+        ResponseEntity<?> response = textItemCreationService.createTextItem(textItemView);
 
-        System.out.println(textItemView.getId());
-        System.out.println(file);
-
-        if (pageType == PageType.GLOSSARY || pageType == PageType.FAQ) {
-            return textItemCreationService.createTextItem(textItemView);
-        } else if (pageType == PageType.DOWNLOADS) {
-            if (file == null) {
-                throw new IllegalArgumentException("File is required for the DOWNLOADS page type.");
-            }
-            try {
-                String newLink = s3UploadService.uploadFile(file);
-                textItemView.setLink(newLink);
-                return textItemCreationService.createTextItem(textItemView);
-            } catch (IOException | S3FileValidationException e) {
-                // Handle the exception, e.g., log the error, return an error response, etc.
-                throw e;
-            }
+        if (pageType == PageType.DOWNLOADS && textItemView.getLink() == null) {
+            throw new IllegalStateException(
+                    "Link cannot be null in created text item for downloads");
+        } else {
+            return response;
         }
-        throw new UnsupportedOperationException("Operation not supported for this page type.");
+
+        /*
+        if (response.getStatusCode() == HttpStatus.CREATED) {
+            // Get the link from the response
+            TextItemView createdTextItem = (TextItemView) response.getBody();
+            if (createdTextItem != null && createdTextItem.getLink() != null) {
+                String link = createdTextItem.getLink().toString();
+                System.out.println(link);
+                // Do something with the link
+            } else {
+                // Handle the case where the link is null
+                throw new IllegalStateException("Link is null in created text item");
+            }
+        }*/
+
+    }
+
+    @PostMapping(value = "/file/{pageType}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> uploadFile(
+            @PathVariable PageType pageType, @RequestParam("file") MultipartFile file)
+            throws IOException, S3FileValidationException, NoSuchAlgorithmException {
+
+        String link = s3UploadService.uploadFile(file);
+
+        return ResponseEntity.ok(link);
     }
 
     @GetMapping("/{pageType}")
@@ -139,8 +145,6 @@ public class AdditionalController {
             @PathVariable PageType pageType,
             @PathVariable UUID id,
             @RequestParam(value = "link", required = false) String link) {
-        System.out.println(id);
-        System.out.println(link);
         if (pageType == PageType.GLOSSARY || pageType == PageType.FAQ) {
             textItemDeletionService.deleteTextItemView(id);
         } else if (pageType == PageType.DOWNLOADS && link != null) {

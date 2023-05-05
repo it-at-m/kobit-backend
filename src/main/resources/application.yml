@@ -1,4 +1,8 @@
 spring:
+  servlet:
+    multipart:
+      max-file-size: 1000MB
+      max-request-size: 1000MB
   application.name: @project.artifactId@
   banner.location: banner.txt
   mail:

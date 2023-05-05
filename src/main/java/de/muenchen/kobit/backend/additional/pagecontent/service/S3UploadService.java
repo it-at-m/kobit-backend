@@ -11,6 +11,10 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import de.muenchen.kobit.backend.validation.S3FileValidator;
 import de.muenchen.kobit.backend.validation.exception.S3FileValidationException;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -50,19 +54,37 @@ public class S3UploadService {
         this.validators = validators;
     }
 
-    public String uploadFile(MultipartFile file) throws IOException, S3FileValidationException {
-
+    public String uploadFile(MultipartFile file)
+            throws IOException, S3FileValidationException, NoSuchAlgorithmException {
         for (S3FileValidator validator : validators) {
             validator.validate(file);
         }
-        String fileName = file.getOriginalFilename();
+
+        String originalFileName = file.getOriginalFilename();
+        String extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
+        String fileNameWithoutExtension =
+                originalFileName.substring(0, originalFileName.lastIndexOf('.'));
+
+        // Generate unique hash
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        String timeStamp = Long.toString(System.currentTimeMillis());
+        String dataToHash = fileNameWithoutExtension + timeStamp;
+        byte[] hashedBytes = md.digest(dataToHash.getBytes(StandardCharsets.UTF_8));
+        String uniqueHash = Base64.getUrlEncoder().withoutPadding().encodeToString(hashedBytes);
+
+        // Append unique hash to the file name
+        String newFileName = fileNameWithoutExtension + "_" + uniqueHash + extension;
+
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(file.getSize());
         getS3Client()
                 .putObject(
                         new PutObjectRequest(
-                                bucketName, fileName, file.getInputStream(), metadata));
-        return fileName;
+                                bucketName, newFileName, file.getInputStream(), metadata));
+
+        String fileLink = "https://" + hostname + "/" + bucketName + "/" + newFileName;
+
+        return fileLink;
     }
 
     public void deleteFile(String fileName) {
