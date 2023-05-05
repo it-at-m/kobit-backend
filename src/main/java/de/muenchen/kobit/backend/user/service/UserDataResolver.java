@@ -31,6 +31,9 @@ public class UserDataResolver {
 
     public final User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        var t = authentication.getPrincipal();
+        log.info(t.toString());
+        log.info(authentication.getDetails().toString());
         log.info(String.valueOf(authentication.getPrincipal()));
         log.info(String.valueOf(authentication.getDetails()));
         try {
