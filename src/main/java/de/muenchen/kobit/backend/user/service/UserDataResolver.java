@@ -4,17 +4,17 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.muenchen.kobit.backend.user.model.User;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -32,9 +32,12 @@ public class UserDataResolver {
 
     public final User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        log.info(String.valueOf(authentication.getDetails()));
-        OidcUserInfo userInfo = ((OidcUser) authentication.getPrincipal()).getUserInfo();
-        log.info(String.valueOf(userInfo.getClaims()));
+        log.info(String.valueOf(authentication));
+        try{
+            ((DefaultOidcUser) authentication.getPrincipal()).getIdToken().getTokenValue();
+        } catch (Exception e) {
+            log.error("Error", e);
+        }
         return readUserFromToken(SecurityContextHolder.getContext().getAuthentication());
     }
 
