@@ -10,6 +10,8 @@ import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,11 @@ public class UserDataResolver {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public final User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.getPrincipal() instanceof OidcUser) {
+            OidcUserInfo userInfo = ((OidcUser) authentication.getPrincipal()).getUserInfo();
+            log.info(String.valueOf(userInfo.getClaims()));
+        }
         return readUserFromToken(SecurityContextHolder.getContext().getAuthentication());
     }
 
