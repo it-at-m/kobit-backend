@@ -35,9 +35,8 @@ public class ValidateTextItem implements TextItemValidator<TextItemView> {
             throw new InvalidTextItemException(
                     "Entry must be at least 5 characters and not more than 1500!");
         }
-        if(textItemView.getLink() == null){
-            throw new InvalidTextItemException(
-                    "File cannot be null");
+        if (textItemView.getLink() == null) {
+            throw new InvalidTextItemException("File cannot be null");
         }
 
         if (textItemView.getLink() != null) {

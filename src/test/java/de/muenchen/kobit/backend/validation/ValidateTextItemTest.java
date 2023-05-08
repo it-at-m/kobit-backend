@@ -8,11 +8,10 @@ import de.muenchen.kobit.backend.additional.pagecontent.model.PageType;
 import de.muenchen.kobit.backend.additional.pagecontent.view.TextItemView;
 import de.muenchen.kobit.backend.validation.additional.textitem.ValidateTextItem;
 import de.muenchen.kobit.backend.validation.exception.experiencemore.InvalidTextItemException;
+import java.net.URI;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.net.URI;
 
 public class ValidateTextItemTest {
 
@@ -44,7 +43,8 @@ public class ValidateTextItemTest {
         TextItemView textItemView = null;
 
         // Act & Assert
-        Assertions.assertThrows(InvalidTextItemException.class, () -> validateTextItem.validate(textItemView));
+        Assertions.assertThrows(
+                InvalidTextItemException.class, () -> validateTextItem.validate(textItemView));
     }
 
     @Test
@@ -56,7 +56,8 @@ public class ValidateTextItemTest {
         textItemView.setPageType(PageType.FAQ);
 
         // Act & Assert
-        Assertions.assertThrows(InvalidTextItemException.class, () -> validateTextItem.validate(textItemView));
+        Assertions.assertThrows(
+                InvalidTextItemException.class, () -> validateTextItem.validate(textItemView));
     }
 
     @Test
@@ -68,7 +69,8 @@ public class ValidateTextItemTest {
         textItemView.setPageType(PageType.DOWNLOADS);
 
         // Act & Assert
-        Assertions.assertThrows(InvalidTextItemException.class, () -> validateTextItem.validate(textItemView));
+        Assertions.assertThrows(
+                InvalidTextItemException.class, () -> validateTextItem.validate(textItemView));
     }
 
     @Test
@@ -80,7 +82,8 @@ public class ValidateTextItemTest {
         textItemView.setPageType(PageType.FAQ);
 
         // Act & Assert
-        Assertions.assertThrows(InvalidTextItemException.class, () -> validateTextItem.validate(textItemView));
+        Assertions.assertThrows(
+                InvalidTextItemException.class, () -> validateTextItem.validate(textItemView));
     }
 
     @Test
@@ -92,7 +95,8 @@ public class ValidateTextItemTest {
         textItemView.setPageType(PageType.GLOSSARY);
 
         // Act & Assert
-        Assertions.assertThrows(InvalidTextItemException.class, () -> validateTextItem.validate(textItemView));
+        Assertions.assertThrows(
+                InvalidTextItemException.class, () -> validateTextItem.validate(textItemView));
     }
 
     @Test
@@ -104,15 +108,14 @@ public class ValidateTextItemTest {
         textItemView.setPageType(null);
 
         // Act & Assert
-        Assertions.assertThrows(InvalidTextItemException.class, () -> validateTextItem.validate(textItemView));
+        Assertions.assertThrows(
+                InvalidTextItemException.class, () -> validateTextItem.validate(textItemView));
     }
 
     @Test
     void validateTest_textItemViewNull() {
         InvalidTextItemException exception =
-                assertThrows(
-                        InvalidTextItemException.class,
-                        () -> validateTextItem.validate(null));
+                assertThrows(InvalidTextItemException.class, () -> validateTextItem.validate(null));
         assertThat(exception.getMessage()).isEqualTo("TextItemView can not be null!");
     }
 
@@ -203,7 +206,12 @@ public class ValidateTextItemTest {
 
     void validateTest_headerOutOfRangeTooLong() {
         TextItemView textItemView = new TextItemView();
-        textItemView.setHeader("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam volup"); // header length is less than the minimum
+        textItemView.setHeader(
+                "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod"
+                        + " tempor invidunt ut labore et"
+                        + " dolore magna aliquyam erat,"
+                        + " sed diam"
+                        + " volup"); // header length is less than the minimum
         textItemView.setEntry("Entry");
         textItemView.setPageType(PageType.DOWNLOADS);
 
@@ -234,11 +242,31 @@ public class ValidateTextItemTest {
     void validateTest_entryOutOfRangeTooLong() {
         TextItemView textItemView = new TextItemView();
         textItemView.setHeader("This is a Header"); // header length is less than the minimum
-        textItemView.setEntry("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. \n" +
-                "\n" +
-                "Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. \n" +
-                "\n" +
-                "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit e");
+        textItemView.setEntry(
+                "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod"
+                    + " tempor invidunt ut labore et dolore magna aliquyam erat, sed diam"
+                    + " voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet"
+                    + " clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit"
+                    + " amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam"
+                    + " nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed"
+                    + " diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum."
+                    + " Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor"
+                    + " sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed"
+                    + " diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam"
+                    + " erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea"
+                    + " rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum"
+                    + " dolor sit amet. \n"
+                    + "\n"
+                    + "Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse"
+                    + " molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero"
+                    + " eros et accumsan et iusto odio dignissim qui blandit praesent luptatum"
+                    + " zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum"
+                    + " dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh"
+                    + " euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. \n"
+                    + "\n"
+                    + "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper"
+                    + " suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel"
+                    + " eum iriure dolor in hendrerit in vulputate velit e");
         textItemView.setPageType(PageType.DOWNLOADS);
 
         InvalidTextItemException exception =
@@ -263,7 +291,6 @@ public class ValidateTextItemTest {
         assertThat(exception.getMessage()).isEqualTo("File cannot be null");
     }
 
-
     @Test
     void validate_shouldThrowInvalidTextItemException_whenLinkHasInvalidFileType() {
         // Given
@@ -277,7 +304,8 @@ public class ValidateTextItemTest {
                 assertThrows(
                         InvalidTextItemException.class,
                         () -> validateTextItem.validate(textItemView));
-        assertThat(exception.getMessage()).isEqualTo("Invalid file type. Only PDF, DOC, DOCX, and ODF files are allowed.");
+        assertThat(exception.getMessage())
+                .isEqualTo("Invalid file type. Only PDF, DOC, DOCX, and ODF files are allowed.");
     }
 
     @Test
@@ -292,5 +320,4 @@ public class ValidateTextItemTest {
         // When, Then
         assertDoesNotThrow(() -> validateTextItem.validate(textItemView));
     }
-
 }

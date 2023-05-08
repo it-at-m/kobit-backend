@@ -5,7 +5,6 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import de.muenchen.kobit.backend.validation.S3FileValidator;
@@ -85,9 +84,5 @@ public class S3UploadService {
         String fileLink = "https://" + hostname + "/" + bucketName + "/" + newFileName;
 
         return fileLink;
-    }
-
-    public void deleteFile(String fileName) {
-        getS3Client().deleteObject(new DeleteObjectRequest(bucketName, fileName));
     }
 }
