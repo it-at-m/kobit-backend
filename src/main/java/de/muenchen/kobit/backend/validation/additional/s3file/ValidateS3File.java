@@ -9,6 +9,11 @@ public class ValidateS3File implements S3FileValidator<TextItemView> {
     @Override
     public void validate(TextItemView textItemView) throws InvalidS3FileException {
 
+        if(textItemView.getLink() == null){
+            throw new InvalidS3FileException(
+                    "File cannot be null");
+        }
+
         if (textItemView.getLink() != null) {
             String filename = textItemView.getLink().toString();
             if (!filename.matches(".*\\.(pdf|doc|docx|odf)")) {
@@ -16,5 +21,6 @@ public class ValidateS3File implements S3FileValidator<TextItemView> {
                         "Invalid file type. Only PDF, DOC, DOCX, and ODF files are allowed.");
             }
         }
+
     }
 }

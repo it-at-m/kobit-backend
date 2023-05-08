@@ -35,6 +35,18 @@ public class ValidateTextItem implements TextItemValidator<TextItemView> {
             throw new InvalidTextItemException(
                     "Entry must be at least 5 characters and not more than 1500!");
         }
+        if(textItemView.getLink() == null){
+            throw new InvalidTextItemException(
+                    "File cannot be null");
+        }
+
+        if (textItemView.getLink() != null) {
+            String filename = textItemView.getLink().toString();
+            if (!filename.matches(".*\\.(pdf|doc|docx|odf)")) {
+                throw new InvalidTextItemException(
+                        "Invalid file type. Only PDF, DOC, DOCX, and ODF files are allowed.");
+            }
+        }
     }
 
     private boolean isHeaderOutOfRange(String header) {

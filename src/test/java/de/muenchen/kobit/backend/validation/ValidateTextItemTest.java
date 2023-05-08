@@ -1,6 +1,7 @@
 package de.muenchen.kobit.backend.validation;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import de.muenchen.kobit.backend.additional.pagecontent.model.PageType;
@@ -10,6 +11,8 @@ import de.muenchen.kobit.backend.validation.exception.experiencemore.InvalidText
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.net.URI;
 
 public class ValidateTextItemTest {
 
@@ -27,6 +30,7 @@ public class ValidateTextItemTest {
         textItemView.setHeader("Header");
         textItemView.setEntry("Entry");
         textItemView.setPageType(PageType.DOWNLOADS);
+        textItemView.setLink(String.valueOf(URI.create("http://example.com/files/myfile.pdf")));
 
         // Act
         validateTextItem.validate(textItemView);
@@ -226,6 +230,7 @@ public class ValidateTextItemTest {
                 .isEqualTo("Entry must be at least 5 characters and not more than 1500!");
     }
 
+    @Test
     void validateTest_entryOutOfRangeTooLong() {
         TextItemView textItemView = new TextItemView();
         textItemView.setHeader("This is a Header"); // header length is less than the minimum
@@ -243,4 +248,49 @@ public class ValidateTextItemTest {
         assertThat(exception.getMessage())
                 .isEqualTo("Entry must be at least 5 characters and not more than 1500!");
     }
+
+    @Test
+    void validateTest_InvalidLinkNull() {
+        TextItemView textItemView = new TextItemView();
+        textItemView.setHeader("Header");
+        textItemView.setEntry("Entry");
+        textItemView.setPageType(PageType.PREVENTION);
+        textItemView.setLink(null);
+        InvalidTextItemException exception =
+                assertThrows(
+                        InvalidTextItemException.class,
+                        () -> validateTextItem.validate(textItemView));
+        assertThat(exception.getMessage()).isEqualTo("File cannot be null");
+    }
+
+
+    @Test
+    void validate_shouldThrowInvalidTextItemException_whenLinkHasInvalidFileType() {
+        // Given
+        TextItemView textItemView = new TextItemView();
+        textItemView.setHeader("Header");
+        textItemView.setEntry("Entry");
+        textItemView.setPageType(PageType.GLOSSARY);
+        textItemView.setLink(String.valueOf(URI.create("http://example.com/files/myfile.txt")));
+
+        InvalidTextItemException exception =
+                assertThrows(
+                        InvalidTextItemException.class,
+                        () -> validateTextItem.validate(textItemView));
+        assertThat(exception.getMessage()).isEqualTo("Invalid file type. Only PDF, DOC, DOCX, and ODF files are allowed.");
+    }
+
+    @Test
+    void validate_shouldNotThrowInvalidTextItemException_whenLinkHasValidFileType() {
+        // Given
+        TextItemView textItemView = new TextItemView();
+        textItemView.setHeader("Header");
+        textItemView.setEntry("Entry");
+        textItemView.setPageType(PageType.GLOSSARY);
+        textItemView.setLink(String.valueOf(URI.create("http://example.com/files/myfile.pdf")));
+
+        // When, Then
+        assertDoesNotThrow(() -> validateTextItem.validate(textItemView));
+    }
+
 }
