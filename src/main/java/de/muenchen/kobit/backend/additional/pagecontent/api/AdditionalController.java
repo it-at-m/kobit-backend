@@ -66,21 +66,6 @@ public class AdditionalController {
         } else {
             return response;
         }
-
-        /*
-        if (response.getStatusCode() == HttpStatus.CREATED) {
-            // Get the link from the response
-            TextItemView createdTextItem = (TextItemView) response.getBody();
-            if (createdTextItem != null && createdTextItem.getLink() != null) {
-                String link = createdTextItem.getLink().toString();
-                System.out.println(link);
-                // Do something with the link
-            } else {
-                // Handle the case where the link is null
-                throw new IllegalStateException("Link is null in created text item");
-            }
-        }*/
-
     }
 
     @PostMapping(value = "/file/{pageType}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -102,31 +87,20 @@ public class AdditionalController {
     public ResponseEntity<?> updateTextItem(
             @PathVariable PageType pageType,
             @PathVariable UUID id,
-            @RequestBody TextItemView textItemView,
-            @RequestPart(value = "file", required = false) MultipartFile newFile)
+            @RequestBody TextItemView textItemView)
             throws IOException {
-        if (pageType == PageType.GLOSSARY || pageType == PageType.FAQ) {
-            return textItemManipulationService.updateTextItem(id, textItemView);
-        } else if (pageType == PageType.DOWNLOADS) {
-            if (newFile != null) {
-                try {
-                    String newLink =
-                            s3ManipulationService.replaceFile(
-                                    textItemView.getLink().toString(), newFile);
 
-                    textItemView.setLink(newLink);
-
-                    return textItemManipulationService.updateTextItem(id, textItemView);
-                    // You can now update the TextItem with the link to the uploaded file and save
-                    // it to the database.
-                    // ...
-                } catch (IOException | S3FileValidationException e) {
-                    // Handle the exception, e.g., log the error, return an error response, etc.
-                }
-            }
+        if (pageType == PageType.GLOSSARY
+                || pageType == PageType.FAQ
+                || pageType == PageType.DOWNLOADS) {
             return textItemManipulationService.updateTextItem(id, textItemView);
         }
         throw new UnsupportedOperationException("Operation not supported for this page type.");
+    }
+
+    @DeleteMapping(value = "/{pageType}/delete-file")
+    public void deleteOldFile(@RequestParam(value = "link", required = false) String link) {
+        s3DeletionService.deleteFileByLink(link);
     }
 
     @PutMapping("/{pageType}/content-item/{id}")
