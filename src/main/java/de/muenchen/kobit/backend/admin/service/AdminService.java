@@ -1,5 +1,6 @@
 package de.muenchen.kobit.backend.admin.service;
 
+import de.muenchen.kobit.backend.admin.model.AdminUserView;
 import de.muenchen.kobit.backend.user.service.UserDataResolver;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,10 @@ public class AdminService {
                 getUserRoles().stream()
                         .anyMatch(it -> it.equals(DEPARTMENT_ADMIN) || it.equals(KOBIT_ADMIN));
         return isAdmin;
+    }
+
+    public AdminUserView getAdminUserInfo() {
+        return new AdminUserView(isUserKobitAdmin(), isUserDepartmentAdmin(), "");
     }
 
     public boolean isUserKobitAdmin() {

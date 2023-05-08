@@ -1,5 +1,6 @@
 package de.muenchen.kobit.backend.admin.api;
 
+import de.muenchen.kobit.backend.admin.model.AdminUserView;
 import de.muenchen.kobit.backend.admin.service.AdminService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,5 +19,10 @@ public class AdminController {
     @GetMapping
     boolean isUserAdmin() {
         return adminService.isUserAdmin();
+    }
+
+    @GetMapping("/info")
+    AdminUserView getUserInfo() {
+        return adminService.getAdminUserInfo();
     }
 }
