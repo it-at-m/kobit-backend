@@ -44,7 +44,7 @@ public class ContactPointCreationService {
     }
 
     @Transactional
-    public ResponseEntity<?> createContactPoint(ContactPointView contactPointView) {
+    public ContactPointView createContactPoint(ContactPointView contactPointView) {
         try {
             if (contactPointView.getLinks() == null) {
                 contactPointView.setLinks(Collections.emptyList());
@@ -54,8 +54,7 @@ public class ContactPointCreationService {
                 try {
                     validator.validate(contactPointView);
                 } catch (ContactPointValidationException e) {
-                    return ResponseEntity.badRequest()
-                            .body(Collections.singletonMap("error", e.getMessage()));
+                    throw new IllegalArgumentException(e.getMessage());
                 }
             }
 
@@ -65,19 +64,17 @@ public class ContactPointCreationService {
             List<LinkView> newLinks = createLinks(id, contactPointView.getLinks());
             List<Competence> newCompetences =
                     createCompetencesIfPresent(id, contactPointView.getCompetences());
-            return ResponseEntity.ok(
-                    new ContactPointView(
-                            newContactPoint.getId(),
-                            newContactPoint.getName(),
-                            newContactPoint.getShortCut(),
-                            newContactPoint.getDescription(),
-                            newContactPoint.getDepartment(),
-                            newContact,
-                            newCompetences,
-                            newLinks));
+            return new ContactPointView(
+                    newContactPoint.getId(),
+                    newContactPoint.getName(),
+                    newContactPoint.getShortCut(),
+                    newContactPoint.getDescription(),
+                    newContactPoint.getDepartment(),
+                    newContact,
+                    newCompetences,
+                    newLinks);
         } catch (Exception e) {
-            return ResponseEntity.badRequest()
-                    .body(Collections.singletonMap("error", e.getMessage()));
+            throw new IllegalArgumentException(e.getMessage());
         }
     }
 

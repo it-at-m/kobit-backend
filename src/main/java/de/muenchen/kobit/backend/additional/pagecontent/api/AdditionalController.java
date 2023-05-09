@@ -54,7 +54,7 @@ public class AdditionalController {
     }
 
     @PostMapping(value = "/{pageType}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> createTextItem(
+    public TextItemView createTextItem(
             @PathVariable PageType pageType, @RequestBody TextItemView textItemView)
             throws IOException, S3FileValidationException {
 
@@ -62,7 +62,7 @@ public class AdditionalController {
             throw new IllegalStateException(
                     "Link cannot be null in created text item for downloads");
         } else {
-            ResponseEntity<?> response = textItemCreationService.createTextItem(textItemView);
+            TextItemView response = textItemCreationService.createTextItem(textItemView);
             return response;
         }
     }
@@ -83,7 +83,7 @@ public class AdditionalController {
     }
 
     @PutMapping("/{pageType}/text-item/{id}")
-    public ResponseEntity<?> updateTextItem(
+    public TextItemView updateTextItem(
             @PathVariable PageType pageType,
             @PathVariable UUID id,
             @RequestBody TextItemView textItemView)
@@ -103,7 +103,7 @@ public class AdditionalController {
     }
 
     @PutMapping("/{pageType}/content-item/{id}")
-    public ResponseEntity<?> updateContentItem(
+    public ContentItemView updateContentItem(
             @PathVariable PageType pageType,
             @PathVariable UUID id,
             @RequestBody ContentItemView contentItem) {

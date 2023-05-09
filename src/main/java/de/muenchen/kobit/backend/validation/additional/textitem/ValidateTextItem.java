@@ -1,5 +1,6 @@
 package de.muenchen.kobit.backend.validation.additional.textitem;
 
+import de.muenchen.kobit.backend.additional.pagecontent.model.PageType;
 import de.muenchen.kobit.backend.additional.pagecontent.view.TextItemView;
 import de.muenchen.kobit.backend.validation.TextItemValidator;
 import de.muenchen.kobit.backend.validation.exception.experiencemore.InvalidTextItemException;
@@ -35,7 +36,7 @@ public class ValidateTextItem implements TextItemValidator<TextItemView> {
             throw new InvalidTextItemException(
                     "Entry must be at least 5 characters and not more than 1500!");
         }
-        if (textItemView.getLink() == null) {
+        if (textItemView.getLink() == null && textItemView.getPageType() == PageType.DOWNLOADS) {
             throw new InvalidTextItemException("File cannot be null");
         }
 

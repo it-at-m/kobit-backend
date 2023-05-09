@@ -27,19 +27,17 @@ public class TextItemManipulationService {
     }
 
     @Transactional
-    public ResponseEntity<?> updateTextItem(UUID itemId, TextItemView newTextItem) {
-
+    public TextItemView updateTextItem(UUID itemId, TextItemView newTextItem) {
         // Validate newTextItem is not null and content is not blank
         if (newTextItem == null) {
-            return ResponseEntity.badRequest().body("TextItem cannot be null.");
+            throw new IllegalArgumentException("TextItem cannot be null.");
         }
 
         for (TextItemValidator validator : validators) {
             try {
                 validator.validate(newTextItem);
             } catch (TextItemValidationException e) {
-                return ResponseEntity.badRequest()
-                        .body(Collections.singletonMap("error", e.getMessage()));
+                throw new IllegalArgumentException(e.getMessage(), e);
             }
         }
 
@@ -55,12 +53,10 @@ public class TextItemManipulationService {
             TextItem updatedTextItem = newTextItem.toTextItem();
             updatedTextItem.setId(itemId);
             TextItem savedTextItem = textItemRepository.save(updatedTextItem);
-            TextItemView savedTextView = TextItemView.toView(savedTextItem);
-            return ResponseEntity.ok(savedTextView);
+            return TextItemView.toView(savedTextItem);
 
         } catch (Exception e) {
-            return ResponseEntity.badRequest()
-                    .body(Collections.singletonMap("error", e.getMessage()));
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 }

@@ -28,19 +28,18 @@ public class ContentItemManipulationService {
     }
 
     @Transactional
-    public ResponseEntity<?> updateContentItem(UUID itemId, ContentItemView newContentItem) {
+    public ContentItemView updateContentItem(UUID itemId, ContentItemView newContentItem) {
 
         // Validate newContentItem is not null and content is not blank
         if (newContentItem == null) {
-            return ResponseEntity.badRequest().body("ContentItem cannot be null.");
+            throw new IllegalArgumentException("ContentItem cannot be null.");
         }
 
         for (ContentItemValidator validator : validators) {
             try {
                 validator.validate(newContentItem);
             } catch (ContentItemValidationException e) {
-                return ResponseEntity.badRequest()
-                        .body(Collections.singletonMap("error", e.getMessage()));
+                throw new IllegalArgumentException(e.getMessage());
             }
         }
 
@@ -60,12 +59,11 @@ public class ContentItemManipulationService {
                 updatedContentItem.setPageType(pageType);
                 ContentItem savedContentItem = contentItemRepository.save(updatedContentItem);
                 ContentItemView savedContentView = ContentItemView.toView(savedContentItem);
-                return ResponseEntity.ok(savedContentView);
+                return savedContentView;
             }
             throw new UnsupportedOperationException("Operation not supported for this page type.");
         } catch (Exception e) {
-            return ResponseEntity.badRequest()
-                    .body(Collections.singletonMap("error", e.getMessage()));
+            throw new IllegalArgumentException(e.getMessage());
         }
     }
 

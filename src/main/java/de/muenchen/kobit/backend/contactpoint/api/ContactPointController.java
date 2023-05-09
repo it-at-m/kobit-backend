@@ -63,12 +63,12 @@ public class ContactPointController {
     }
 
     @PostMapping("/anlaufstellen")
-    public ResponseEntity<?> createContactPoint(@RequestBody ContactPointView view) {
+    public ContactPointView createContactPoint(@RequestBody ContactPointView view) {
         return creationService.createContactPoint(view);
     }
 
     @PutMapping("/anlaufstellen/{id}")
-    public ResponseEntity<?> setContactPoint(
+    public ContactPointView setContactPoint(
             @PathVariable("id") UUID id, @RequestBody ContactPointView view) {
         return manipulationService.updateContactPoint(view, id);
     }

@@ -49,7 +49,7 @@ public class ContactPointManipulationService {
     }
 
     @Transactional
-    public ResponseEntity<?> updateContactPoint(ContactPointView contactPointView, UUID pathId) {
+    public ContactPointView updateContactPoint(ContactPointView contactPointView, UUID pathId) {
         try {
             if (contactPointView.getLinks() == null) {
                 contactPointView.setLinks(Collections.emptyList());
@@ -59,30 +59,27 @@ public class ContactPointManipulationService {
                 try {
                     validator.validate(contactPointView);
                 } catch (ContactPointValidationException e) {
-                    return ResponseEntity.badRequest()
-                            .body(Collections.singletonMap("error", e.getMessage()));
+                    throw new IllegalArgumentException(e.getMessage());
                 }
             }
+
             validateId(contactPointView.getId(), pathId);
             ContactPoint newContactPoint = createOrUpdateContactPoint(contactPointView, pathId);
             UUID id = newContactPoint.getId();
             List<ContactView> newContact = updateContact(id, contactPointView.getContact());
             List<LinkView> newLinks = updateLink(id, contactPointView.getLinks());
-            List<Competence> newCompetences =
-                    updateCompetences(id, contactPointView.getCompetences());
-            return ResponseEntity.ok(
-                    new ContactPointView(
-                            newContactPoint.getId(),
-                            newContactPoint.getName(),
-                            newContactPoint.getShortCut(),
-                            newContactPoint.getDescription(),
-                            newContactPoint.getDepartment(),
-                            newContact,
-                            newCompetences,
-                            newLinks));
+            List<Competence> newCompetences = updateCompetences(id, contactPointView.getCompetences());
+            return new ContactPointView(
+                    newContactPoint.getId(),
+                    newContactPoint.getName(),
+                    newContactPoint.getShortCut(),
+                    newContactPoint.getDescription(),
+                    newContactPoint.getDepartment(),
+                    newContact,
+                    newCompetences,
+                    newLinks);
         } catch (Exception e) {
-            return ResponseEntity.badRequest()
-                    .body(Collections.singletonMap("error", e.getMessage()));
+            throw new IllegalArgumentException(e.getMessage());
         }
     }
 
