@@ -95,8 +95,6 @@ public class S3ManipulationService {
         return fileName;
     }
 
-
-
     public void deleteFile(String fileName) {
         getS3Client().deleteObject(new DeleteObjectRequest(bucketName, fileName));
     }

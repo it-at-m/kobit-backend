@@ -1,7 +1,6 @@
 package de.muenchen.kobit.backend.additional.pagecontent.model;
 
 import de.muenchen.kobit.backend.additional.pagecontent.view.TextItemView;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.UUID;
@@ -81,9 +80,7 @@ public class TextItem {
         this.link = link;
     }
 
-    public TextItem() {
-
-    }
+    public TextItem() {}
 
     public TextItemView toView() {
         try {
@@ -100,5 +97,4 @@ public class TextItem {
             throw new RuntimeException("Error while converting TextItem to TextItemView", e);
         }
     }
-
 }

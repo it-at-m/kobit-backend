@@ -49,6 +49,7 @@ public class CompetenceService {
     public void createCompetenceToContactPoint(UUID contactPointId, Competence competence) {
         createCompetenceToContactPoint(new CompetenceToContactPoint(contactPointId, competence));
     }
+
     @Transactional
     public void createCompetenceToContactPoint(CompetenceToContactPoint competence) {
         competenceRepository.save(competence);

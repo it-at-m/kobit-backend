@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,7 +67,8 @@ public class ContactPointManipulationService {
             UUID id = newContactPoint.getId();
             List<ContactView> newContact = updateContact(id, contactPointView.getContact());
             List<LinkView> newLinks = updateLink(id, contactPointView.getLinks());
-            List<Competence> newCompetences = updateCompetences(id, contactPointView.getCompetences());
+            List<Competence> newCompetences =
+                    updateCompetences(id, contactPointView.getCompetences());
             return new ContactPointView(
                     newContactPoint.getId(),
                     newContactPoint.getName(),

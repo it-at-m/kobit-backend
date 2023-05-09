@@ -5,10 +5,8 @@ import de.muenchen.kobit.backend.additional.pagecontent.repository.TextItemRepos
 import de.muenchen.kobit.backend.additional.pagecontent.view.TextItemView;
 import de.muenchen.kobit.backend.validation.TextItemValidator;
 import de.muenchen.kobit.backend.validation.exception.TextItemValidationException;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

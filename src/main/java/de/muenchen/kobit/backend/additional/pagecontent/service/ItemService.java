@@ -52,7 +52,6 @@ public class ItemService {
         } catch (Exception e) {
             throw new RuntimeException("Failed to get all texts for page " + pageType, e);
         }
-
     }
 
     @Transactional(readOnly = true)
@@ -108,6 +107,7 @@ public class ItemService {
         }
         throw new UnsupportedOperationException("Operation not supported for this page type.");
     }
+
     @Transactional
     public void deleteTextItem(UUID itemId) {
         TextItem textItem =

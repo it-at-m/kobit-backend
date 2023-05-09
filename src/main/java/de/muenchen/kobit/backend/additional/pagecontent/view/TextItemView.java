@@ -58,7 +58,6 @@ public class TextItemView {
         return link;
     }
 
-
     public void setLink(String link) throws MalformedURLException {
         if (link != null) {
             this.link = new URL(link);

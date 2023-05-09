@@ -6,11 +6,8 @@ import de.muenchen.kobit.backend.additional.pagecontent.view.TextItemView;
 import de.muenchen.kobit.backend.validation.TextItemValidator;
 import de.muenchen.kobit.backend.validation.exception.TextItemValidationException;
 import java.net.MalformedURLException;
-import java.util.Collections;
 import java.util.List;
-
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -44,8 +41,7 @@ public class TextItemCreationService {
                     newTextItem.getPageType(),
                     newTextItem.getHeader(),
                     newTextItem.getEntry(),
-                    newTextItem.getLink()
-            );
+                    newTextItem.getLink());
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }

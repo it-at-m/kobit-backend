@@ -6,10 +6,8 @@ import de.muenchen.kobit.backend.additional.pagecontent.repository.ContentItemRe
 import de.muenchen.kobit.backend.additional.pagecontent.view.ContentItemView;
 import de.muenchen.kobit.backend.validation.ContentItemValidator;
 import de.muenchen.kobit.backend.validation.exception.ContentItemValidationException;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
