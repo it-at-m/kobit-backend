@@ -1,5 +1,6 @@
 package de.muenchen.kobit.backend.validation.additional.contentitem;
 
+import de.muenchen.kobit.backend.additional.pagecontent.model.PageType;
 import de.muenchen.kobit.backend.additional.pagecontent.view.ContentItemView;
 import de.muenchen.kobit.backend.validation.ContentItemValidator;
 import de.muenchen.kobit.backend.validation.exception.experiencemore.InvalidContentItemException;
@@ -14,7 +15,7 @@ public class ValidateContentItem implements ContentItemValidator<ContentItemView
     @Override
     public void validate(ContentItemView contentItemView) throws InvalidContentItemException {
         if (contentItemView == null) {
-            throw new InvalidContentItemException("ContentItemView can not be null!");
+            throw new InvalidContentItemException("ContentItemView can not be null.");
         }
         if (contentItemView.getContent() == null || contentItemView.getContent().trim().isEmpty()) {
             throw new InvalidContentItemException("Content string cannot be blank or null.");
@@ -22,9 +23,13 @@ public class ValidateContentItem implements ContentItemValidator<ContentItemView
         if (contentItemView.getPageType() == null) {
             throw new InvalidContentItemException("PageType cannot be null.");
         }
+        if (contentItemView.getPageType() != PageType.LEADERSHIP
+                && contentItemView.getPageType() != PageType.PREVENTION) {
+            throw new InvalidContentItemException("Operation not supported for this page type.");
+        }
         if (isContentOutOfRange(contentItemView.getContent())) {
             throw new InvalidContentItemException(
-                    "Header must be at least 5 characters and not more than 5000!");
+                    "Header must be at least 5 characters and not more than 5000.");
         }
     }
 

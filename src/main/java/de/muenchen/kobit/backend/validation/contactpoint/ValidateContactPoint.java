@@ -18,30 +18,30 @@ public class ValidateContactPoint implements ContactPointValidator<ContactPointV
     @Override
     public void validate(ContactPointView contactPointView) throws InvalidContactPointException {
         if (contactPointView == null) {
-            throw new InvalidContactPointException("ContactPointView can not be null!");
+            throw new InvalidContactPointException("ContactPointView can not be null.");
         }
         if (anyFieldNull(contactPointView)) {
             throw new InvalidContactPointException(
-                    "ContactPoint Fields name, shortCut and description can not be null!");
+                    "ContactPoint Fields name, shortCut and description can not be null.");
         }
         if (anyFieldBlank(contactPointView)) {
             throw new InvalidContactPointException(
-                    "ContactPoint Fields name, shortCut and description can not be blank!");
+                    "ContactPoint Fields name, shortCut and description can not be blank.");
         }
         if (isNameOutOfRange(contactPointView.getName())) {
             throw new InvalidContactPointException(
-                    "Name must be at least 4 characters and not more than 100!");
+                    "Name must be at least 4 characters and not more than 100.");
         }
         if (isShortCutOutOfRange(contactPointView.getShortCut())) {
             throw new InvalidContactPointException(
-                    "ShortCut must be at least 3 letters and not more than 10!");
+                    "ShortCut must be at least 3 letters and not more than 10.");
         }
         if (!isShortCutValid(contactPointView.getShortCut())) {
-            throw new InvalidContactPointException("Shortcut can only be letters!");
+            throw new InvalidContactPointException("Shortcut can only be letters.");
         }
         if (isDescriptionTooLarge(contactPointView.getDescription())) {
             throw new InvalidContactPointException(
-                    "Description must be not more than 2000 characters!");
+                    "Description must be not more than 2000 characters.");
         }
     }
 

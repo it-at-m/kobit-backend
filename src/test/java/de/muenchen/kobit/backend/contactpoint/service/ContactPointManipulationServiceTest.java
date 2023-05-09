@@ -36,7 +36,7 @@ class ContactPointManipulationServiceTest {
 
     @BeforeEach
     void init() {
-        clearAllCaches();
+        // clearAllCaches();
         contactPointManipulationService =
                 new ContactPointManipulationService(
                         contactPointRepository,
@@ -67,7 +67,7 @@ class ContactPointManipulationServiceTest {
         when(contactService.createContact(any()))
                 .thenReturn(new Contact(id, contacts.stream().findFirst().get().getEmail()));
 
-        var result = contactPointManipulationService.updateContactPoint(view, id);
+        var resultView = contactPointManipulationService.updateContactPoint(view, id);
 
         verify(linkService, times(1)).getLinksByContactPointId(id);
         verify(linkService, times(0)).deleteById(id);
@@ -80,7 +80,7 @@ class ContactPointManipulationServiceTest {
         verify(contactService, times(0)).updateContact(any());
         verify(contactService, times(0)).deleteContact(any());
         verify(contactService, times(1)).createContact(any());
-        var resultView = (ContactPointView) result.getBody();
+
         assertThat(resultView.getContact().size()).isEqualTo(contacts.size());
         assertThat(resultView.getLinks().size()).isEqualTo(linkViews.size());
         assertThat(resultView.getCompetences().size()).isEqualTo(competences.size());
@@ -117,7 +117,7 @@ class ContactPointManipulationServiceTest {
         when(contactService.updateContact(any()))
                 .thenReturn(new Contact(id, contactViews.stream().findFirst().get().getEmail()));
 
-        var result = contactPointManipulationService.updateContactPoint(view, id);
+        var resultView = contactPointManipulationService.updateContactPoint(view, id);
 
         verify(linkService, times(1)).getLinksByContactPointId(id);
         verify(linkService, times(1)).deleteById(links.get(0).getId());
@@ -130,7 +130,7 @@ class ContactPointManipulationServiceTest {
         verify(contactService, times(1)).updateContact(any());
         verify(contactService, times(0)).deleteContact(any());
         verify(contactService, times(0)).createContact(any());
-        var resultView = (ContactPointView) result.getBody();
+
         assertThat(resultView.getContact().size()).isEqualTo(contactViews.size());
         assertThat(resultView.getLinks().size()).isEqualTo(linkViews.size());
         assertThat(resultView.getCompetences().size()).isEqualTo(competences.size());

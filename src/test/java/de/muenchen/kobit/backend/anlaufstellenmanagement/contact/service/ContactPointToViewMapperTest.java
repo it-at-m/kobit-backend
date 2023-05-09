@@ -1,7 +1,6 @@
 package de.muenchen.kobit.backend.anlaufstellenmanagement.contact.service;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.Mockito.clearAllCaches;
 
 import de.muenchen.kobit.backend.competence.Competence;
 import de.muenchen.kobit.backend.competence.model.CompetenceToContactPoint;
@@ -34,7 +33,7 @@ class ContactPointToViewMapperTest {
 
     @BeforeEach
     void init() {
-        clearAllCaches();
+        // clearAllCaches();
         mapper =
                 new ContactPointToViewMapper(
                         contactPointRepository, competenceRepository, contactService, linkService);

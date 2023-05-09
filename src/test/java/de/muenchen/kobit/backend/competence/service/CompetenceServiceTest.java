@@ -3,7 +3,6 @@ package de.muenchen.kobit.backend.competence.service;
 import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.clearAllCaches;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -32,7 +31,7 @@ class CompetenceServiceTest {
 
     @BeforeEach
     void init() {
-        clearAllCaches();
+        // clearAllCaches();
         service = new CompetenceService(competenceRepository, contactPointRepository, mapper);
     }
 

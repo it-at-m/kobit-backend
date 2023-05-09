@@ -58,13 +58,8 @@ public class AdditionalController {
             @PathVariable PageType pageType, @RequestBody TextItemView textItemView)
             throws IOException, S3FileValidationException {
 
-        if (pageType == PageType.DOWNLOADS && textItemView.getLink() == null) {
-            throw new IllegalStateException(
-                    "Link cannot be null in created text item for downloads");
-        } else {
-            TextItemView response = textItemCreationService.createTextItem(textItemView);
-            return response;
-        }
+        TextItemView response = textItemCreationService.createTextItem(textItemView);
+        return response;
     }
 
     @PostMapping(value = "/file/{pageType}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -73,7 +68,6 @@ public class AdditionalController {
             throws IOException, S3FileValidationException, NoSuchAlgorithmException {
 
         String link = s3UploadService.uploadFile(file);
-
         return ResponseEntity.ok(link);
     }
 
@@ -86,15 +80,10 @@ public class AdditionalController {
     public TextItemView updateTextItem(
             @PathVariable PageType pageType,
             @PathVariable UUID id,
-            @RequestBody TextItemView textItemView)
-            throws IOException {
+            @RequestBody TextItemView textItemView) {
 
-        if (pageType == PageType.GLOSSARY
-                || pageType == PageType.FAQ
-                || pageType == PageType.DOWNLOADS) {
-            return textItemManipulationService.updateTextItem(id, textItemView);
-        }
-        throw new UnsupportedOperationException("Operation not supported for this page type.");
+        TextItemView response = textItemManipulationService.updateTextItem(id, textItemView);
+        return response;
     }
 
     @DeleteMapping(value = "/{pageType}/delete-file")
@@ -107,10 +96,10 @@ public class AdditionalController {
             @PathVariable PageType pageType,
             @PathVariable UUID id,
             @RequestBody ContentItemView contentItem) {
-        if (pageType == PageType.PREVENTION || pageType == PageType.LEADERSHIP) {
-            return contentItemManipulationService.updateContentItem(id, contentItem);
-        }
-        throw new UnsupportedOperationException("Operation not supported for this page type.");
+
+        ContentItemView response =
+                contentItemManipulationService.updateContentItem(id, contentItem);
+        return response;
     }
 
     @DeleteMapping("/{pageType}/text-item/{id}")

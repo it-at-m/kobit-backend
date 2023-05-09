@@ -17,7 +17,7 @@ class ContactPointServiceTest {
 
     @BeforeEach
     void init() {
-        Mockito.clearAllCaches();
+        // Mockito.clearAllCaches();
         service = new ContactPointService(repository, mapper);
     }
 

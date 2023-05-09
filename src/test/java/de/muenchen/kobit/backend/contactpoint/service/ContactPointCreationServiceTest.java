@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
 
 class ContactPointCreationServiceTest {
 
@@ -34,7 +33,7 @@ class ContactPointCreationServiceTest {
 
     @BeforeEach
     void init() {
-        clearAllCaches();
+        // clearAllCaches();
         contactCreationService =
                 new ContactPointCreationService(
                         contactPointRepository,
@@ -61,16 +60,14 @@ class ContactPointCreationServiceTest {
         when(contactService.createContact(any()))
                 .thenReturn(new Contact(id, contacts.get(0).getEmail()));
 
-        var result = contactCreationService.createContactPoint(view);
+        var resultView = contactCreationService.createContactPoint(view);
 
         verify(linkService).createLink(any());
         verify(competenceService, times(2)).createCompetenceToContactPoint(eq(id), any());
         verify(contactService).createContact(any());
         verify(contactPointRepository).save(any());
 
-        assertThat(result.getStatusCodeValue()).isEqualTo(HttpStatus.OK.value());
-        assertThat(result.getBody()).isInstanceOf(ContactPointView.class);
-        var resultView = (ContactPointView) result.getBody();
+        assertThat(resultView).isInstanceOf(ContactPointView.class);
         assertThat(resultView.getContact().size()).isEqualTo(contacts.size());
         assertThat(resultView.getLinks().size()).isEqualTo(linkViews.size());
         assertThat(resultView.getCompetences().size()).isEqualTo(competences.size());

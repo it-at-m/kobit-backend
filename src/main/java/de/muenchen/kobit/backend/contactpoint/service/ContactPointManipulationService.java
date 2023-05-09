@@ -21,8 +21,10 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class ContactPointManipulationService {
@@ -49,19 +51,20 @@ public class ContactPointManipulationService {
 
     @Transactional
     public ContactPointView updateContactPoint(ContactPointView contactPointView, UUID pathId) {
+
+        if (contactPointView.getLinks() == null) {
+            contactPointView.setLinks(Collections.emptyList());
+        }
+
+        for (ContactPointValidator validator : validators) {
+            try {
+                validator.validate(contactPointView);
+            } catch (ContactPointValidationException e) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            }
+        }
+
         try {
-            if (contactPointView.getLinks() == null) {
-                contactPointView.setLinks(Collections.emptyList());
-            }
-
-            for (ContactPointValidator validator : validators) {
-                try {
-                    validator.validate(contactPointView);
-                } catch (ContactPointValidationException e) {
-                    throw new IllegalArgumentException(e.getMessage());
-                }
-            }
-
             validateId(contactPointView.getId(), pathId);
             ContactPoint newContactPoint = createOrUpdateContactPoint(contactPointView, pathId);
             UUID id = newContactPoint.getId();
@@ -79,14 +82,14 @@ public class ContactPointManipulationService {
                     newCompetences,
                     newLinks);
         } catch (Exception e) {
-            throw new IllegalArgumentException(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
 
     private void validateId(UUID contactPointId, UUID pathID) throws InvalidContactPointException {
         if (!contactPointId.equals(pathID)) {
             throw new InvalidContactPointException(
-                    "PathId and Id in the ContactPointView were not identical!");
+                    "PathId and Id in the ContactPointView were not identical.");
         }
     }
 

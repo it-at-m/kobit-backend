@@ -23,7 +23,7 @@ class ContactServiceTest {
 
     @BeforeEach
     void init() {
-        Mockito.clearAllCaches();
+        // Mockito.clearAllCaches();
         service = new ContactService(repo);
     }
 

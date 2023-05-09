@@ -17,16 +17,16 @@ public class ValidateLinks implements ContactPointValidator<ContactPointView> {
     public void validate(ContactPointView contactPointView) throws InvalidLinkException {
         for (LinkView link : contactPointView.getLinks()) {
             if (anyFieldsNull(link)) {
-                throw new InvalidLinkException("Link fields name and url can not be null!");
+                throw new InvalidLinkException("Link fields name and url can not be null.");
             }
             if (!isURLValid(link.getUrl())) {
-                throw new InvalidLinkException("Link url is not valid!");
+                throw new InvalidLinkException("Link url is not valid.");
             }
             if (isLinkNameTooLarge(link.getName())) {
-                throw new InvalidLinkException("Link name must be not more than 100 characters!");
+                throw new InvalidLinkException("Link name must be not more than 100 characters.");
             }
             if (isLinkTooLarge(link.getUrl())) {
-                throw new InvalidLinkException("Link must be not more than 2000 characters!");
+                throw new InvalidLinkException("Link must be not more than 2000 characters.");
             }
         }
     }

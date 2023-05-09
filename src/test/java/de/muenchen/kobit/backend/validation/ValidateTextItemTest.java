@@ -1,5 +1,6 @@
 package de.muenchen.kobit.backend.validation;
 
+import static org.aspectj.bridge.MessageUtil.fail;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -8,6 +9,7 @@ import de.muenchen.kobit.backend.additional.pagecontent.model.PageType;
 import de.muenchen.kobit.backend.additional.pagecontent.view.TextItemView;
 import de.muenchen.kobit.backend.validation.additional.textitem.ValidateTextItem;
 import de.muenchen.kobit.backend.validation.exception.experiencemore.InvalidTextItemException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,7 +31,11 @@ public class ValidateTextItemTest {
         textItemView.setHeader("Header");
         textItemView.setEntry("Entry");
         textItemView.setPageType(PageType.DOWNLOADS);
-        textItemView.setLink(String.valueOf(URI.create("http://example.com/files/myfile.pdf")));
+        try {
+            textItemView.setLink("http://example.com/files/myfile.pdf");
+        } catch (MalformedURLException e) {
+            fail("Unexpected MalformedURLException: " + e.getMessage());
+        }
 
         // Act
         validateTextItem.validate(textItemView);
@@ -283,7 +289,11 @@ public class ValidateTextItemTest {
         textItemView.setHeader("Header");
         textItemView.setEntry("Entry");
         textItemView.setPageType(PageType.PREVENTION);
-        textItemView.setLink(null);
+        try {
+            textItemView.setLink(null);
+        } catch (MalformedURLException e) {
+            fail("Unexpected MalformedURLException: " + e.getMessage());
+        }
         InvalidTextItemException exception =
                 assertThrows(
                         InvalidTextItemException.class,
@@ -298,7 +308,12 @@ public class ValidateTextItemTest {
         textItemView.setHeader("Header");
         textItemView.setEntry("Entry");
         textItemView.setPageType(PageType.GLOSSARY);
-        textItemView.setLink(String.valueOf(URI.create("http://example.com/files/myfile.txt")));
+
+        try {
+            textItemView.setLink(String.valueOf(URI.create("http://example.com/files/myfile.txt")));
+        } catch (MalformedURLException e) {
+            fail("Unexpected MalformedURLException: " + e.getMessage());
+        }
 
         InvalidTextItemException exception =
                 assertThrows(
@@ -315,7 +330,12 @@ public class ValidateTextItemTest {
         textItemView.setHeader("Header");
         textItemView.setEntry("Entry");
         textItemView.setPageType(PageType.GLOSSARY);
-        textItemView.setLink(String.valueOf(URI.create("http://example.com/files/myfile.pdf")));
+
+        try {
+            textItemView.setLink(String.valueOf(URI.create("http://example.com/files/myfile.pdf")));
+        } catch (MalformedURLException e) {
+            fail("Unexpected MalformedURLException: " + e.getMessage());
+        }
 
         // When, Then
         assertDoesNotThrow(() -> validateTextItem.validate(textItemView));

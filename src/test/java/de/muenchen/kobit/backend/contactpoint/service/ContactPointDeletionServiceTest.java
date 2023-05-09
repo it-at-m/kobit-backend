@@ -22,7 +22,7 @@ class ContactPointDeletionServiceTest {
 
     @BeforeEach
     void init() {
-        clearAllCaches();
+        // clearAllCaches();
         deletionService =
                 new ContactPointDeletionService(
                         contactPointRepository, contactService, linkService, competenceService);

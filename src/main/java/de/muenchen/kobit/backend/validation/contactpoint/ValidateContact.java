@@ -17,17 +17,17 @@ public class ValidateContact implements ContactPointValidator<ContactPointView> 
     @Override
     public void validate(ContactPointView contactPointView) throws ContactPointValidationException {
         if (contactPointView.getContact() == null) {
-            throw new InvalidContactPointException("Contact can not be null!");
+            throw new InvalidContactPointException("Contact can not be null.");
         } else if (contactPointView.getContact().size() < 1) {
-            throw new InvalidContactPointException("At least one contact is needed!");
+            throw new InvalidContactPointException("At least one contact is needed.");
         } else {
             for (ContactView contact : contactPointView.getContact()) {
                 if (!isMailValid(contact.getEmail())) {
-                    throw new InvalidContactException("Contact need mail address is invalid!");
+                    throw new InvalidContactException("Contact need mail address is invalid.");
                 }
                 if (isEmailTooLarge(contact.getEmail())) {
                     throw new InvalidContactException(
-                            "Contact must be not more than 500 characters!");
+                            "Contact must be not more than 500 characters.");
                 }
             }
         }

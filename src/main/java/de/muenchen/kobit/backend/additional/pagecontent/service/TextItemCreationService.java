@@ -26,15 +26,15 @@ public class TextItemCreationService {
 
     @Transactional
     public TextItemView createTextItem(TextItemView textItemView) {
-        try {
-            for (TextItemValidator validator : validators) {
-                try {
-                    validator.validate(textItemView);
-                } catch (TextItemValidationException e) {
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-                }
-            }
 
+        for (TextItemValidator validator : validators) {
+            try {
+                validator.validate(textItemView);
+            } catch (TextItemValidationException e) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            }
+        }
+        try {
             TextItem newTextItem = createNewTextItem(textItemView);
             return new TextItemView(
                     newTextItem.getId(),

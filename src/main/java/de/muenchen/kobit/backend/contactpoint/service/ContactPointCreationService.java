@@ -17,8 +17,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class ContactPointCreationService {
@@ -44,19 +46,20 @@ public class ContactPointCreationService {
 
     @Transactional
     public ContactPointView createContactPoint(ContactPointView contactPointView) {
+
+        if (contactPointView.getLinks() == null) {
+            contactPointView.setLinks(Collections.emptyList());
+        }
+
+        for (ContactPointValidator validator : validators) {
+            try {
+                validator.validate(contactPointView);
+            } catch (ContactPointValidationException e) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            }
+        }
+
         try {
-            if (contactPointView.getLinks() == null) {
-                contactPointView.setLinks(Collections.emptyList());
-            }
-
-            for (ContactPointValidator validator : validators) {
-                try {
-                    validator.validate(contactPointView);
-                } catch (ContactPointValidationException e) {
-                    throw new IllegalArgumentException(e.getMessage());
-                }
-            }
-
             ContactPoint newContactPoint = createNewContactPoint(contactPointView);
             UUID id = newContactPoint.getId();
             List<ContactView> newContact = createContacts(id, contactPointView.getContact());
@@ -73,7 +76,7 @@ public class ContactPointCreationService {
                     newCompetences,
                     newLinks);
         } catch (Exception e) {
-            throw new IllegalArgumentException(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
 

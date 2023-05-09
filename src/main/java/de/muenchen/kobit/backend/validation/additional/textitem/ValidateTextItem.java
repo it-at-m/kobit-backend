@@ -17,7 +17,7 @@ public class ValidateTextItem implements TextItemValidator<TextItemView> {
     @Override
     public void validate(TextItemView textItemView) throws InvalidTextItemException {
         if (textItemView == null) {
-            throw new InvalidTextItemException("TextItemView can not be null!");
+            throw new InvalidTextItemException("TextItemView can not be null.");
         }
         if (textItemView.getHeader() == null || textItemView.getHeader().trim().isEmpty()) {
             throw new InvalidTextItemException("Header cannot be null or an empty string.");
@@ -28,16 +28,21 @@ public class ValidateTextItem implements TextItemValidator<TextItemView> {
         if (textItemView.getPageType() == null) {
             throw new InvalidTextItemException("PageType cannot be null.");
         }
+        if (textItemView.getPageType() != PageType.GLOSSARY
+                && textItemView.getPageType() != PageType.FAQ
+                && textItemView.getPageType() != PageType.DOWNLOADS) {
+            throw new InvalidTextItemException("Operation not supported for this page type.");
+        }
         if (isHeaderOutOfRange(textItemView.getHeader())) {
             throw new InvalidTextItemException(
-                    "Header must be at least 3 characters and not more than 250!");
+                    "Header must be at least 3 characters and not more than 250.");
         }
         if (isEntryCutOutOfRange(textItemView.getEntry())) {
             throw new InvalidTextItemException(
-                    "Entry must be at least 5 characters and not more than 1500!");
+                    "Entry must be at least 5 characters and not more than 1500.");
         }
         if (textItemView.getLink() == null && textItemView.getPageType() == PageType.DOWNLOADS) {
-            throw new InvalidTextItemException("File cannot be null");
+            throw new InvalidTextItemException("File cannot be null.");
         }
 
         if (textItemView.getLink() != null) {

@@ -26,7 +26,7 @@ class LinkServiceTest {
 
     @BeforeEach
     void init() {
-        Mockito.reset(repo);
+        // Mockito.reset(repo);
         service = new LinkService(repo);
     }
 

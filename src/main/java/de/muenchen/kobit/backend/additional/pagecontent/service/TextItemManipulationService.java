@@ -7,8 +7,10 @@ import de.muenchen.kobit.backend.validation.TextItemValidator;
 import de.muenchen.kobit.backend.validation.exception.TextItemValidationException;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class TextItemManipulationService {
@@ -26,16 +28,12 @@ public class TextItemManipulationService {
 
     @Transactional
     public TextItemView updateTextItem(UUID itemId, TextItemView newTextItem) {
-        // Validate newTextItem is not null and content is not blank
-        if (newTextItem == null) {
-            throw new IllegalArgumentException("TextItem cannot be null.");
-        }
 
         for (TextItemValidator validator : validators) {
             try {
                 validator.validate(newTextItem);
             } catch (TextItemValidationException e) {
-                throw new IllegalArgumentException(e.getMessage(), e);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
             }
         }
 
@@ -45,8 +43,9 @@ public class TextItemManipulationService {
                             .findById(itemId)
                             .orElseThrow(
                                     () ->
-                                            new IllegalArgumentException(
-                                                    "TextItem not found with the given ID."));
+                                            new ResponseStatusException(
+                                                    HttpStatus.BAD_REQUEST,
+                                                    "Text item not found with the given ID."));
 
             TextItem updatedTextItem = newTextItem.toTextItem();
             updatedTextItem.setId(itemId);
@@ -54,7 +53,7 @@ public class TextItemManipulationService {
             return TextItemView.toView(savedTextItem);
 
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
 }

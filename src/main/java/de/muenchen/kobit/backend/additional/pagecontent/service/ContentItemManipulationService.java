@@ -8,8 +8,10 @@ import de.muenchen.kobit.backend.validation.ContentItemValidator;
 import de.muenchen.kobit.backend.validation.exception.ContentItemValidationException;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class ContentItemManipulationService {
@@ -28,16 +30,11 @@ public class ContentItemManipulationService {
     @Transactional
     public ContentItemView updateContentItem(UUID itemId, ContentItemView newContentItem) {
 
-        // Validate newContentItem is not null and content is not blank
-        if (newContentItem == null) {
-            throw new IllegalArgumentException("ContentItem cannot be null.");
-        }
-
         for (ContentItemValidator validator : validators) {
             try {
                 validator.validate(newContentItem);
             } catch (ContentItemValidationException e) {
-                throw new IllegalArgumentException(e.getMessage());
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
             }
         }
 
@@ -47,28 +44,21 @@ public class ContentItemManipulationService {
                             .findById(itemId)
                             .orElseThrow(
                                     () ->
-                                            new IllegalArgumentException(
-                                                    "ContentItem not found with the given ID."));
+                                            new ResponseStatusException(
+                                                    HttpStatus.BAD_REQUEST,
+                                                    "Content item not found with the given ID."));
 
             PageType pageType = existingContentItem.getPageType();
-            if (!isTextPage(pageType)) {
-                ContentItem updatedContentItem = newContentItem.toContentItem();
-                updatedContentItem.setId(itemId);
-                updatedContentItem.setPageType(pageType);
-                ContentItem savedContentItem = contentItemRepository.save(updatedContentItem);
-                ContentItemView savedContentView = ContentItemView.toView(savedContentItem);
-                return savedContentView;
-            }
-            throw new UnsupportedOperationException("Operation not supported for this page type.");
-        } catch (Exception e) {
-            throw new IllegalArgumentException(e.getMessage());
-        }
-    }
 
-    private static boolean isTextPage(PageType pageType) {
-        return pageType == PageType.FAQ
-                || pageType == PageType.GLOSSARY
-                || pageType == PageType.DOWNLOADS
-                || pageType == PageType.PRIVACY_POLICY;
+            ContentItem updatedContentItem = newContentItem.toContentItem();
+            updatedContentItem.setId(itemId);
+            updatedContentItem.setPageType(pageType);
+            ContentItem savedContentItem = contentItemRepository.save(updatedContentItem);
+            ContentItemView savedContentView = ContentItemView.toView(savedContentItem);
+            return savedContentView;
+
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
 }

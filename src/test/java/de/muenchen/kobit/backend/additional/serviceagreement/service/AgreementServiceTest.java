@@ -2,7 +2,6 @@ package de.muenchen.kobit.backend.additional.serviceagreement.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.clearAllCaches;
 import static org.mockito.Mockito.when;
 
 import de.muenchen.kobit.backend.additional.serviceagreement.UnknownStepException;
@@ -35,7 +34,7 @@ class AgreementServiceTest {
 
     @BeforeEach
     void init() {
-        clearAllCaches();
+        // clearAllCaches();
         agreementService =
                 new AgreementService(
                         optionalTextRepository,
