@@ -3,14 +3,16 @@ package de.muenchen.kobit.backend.user.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.muenchen.kobit.backend.user.client.UserInfoClient;
 import de.muenchen.kobit.backend.user.model.User;
+import de.muenchen.kobit.backend.user.model.UserInfoView;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -21,26 +23,19 @@ import org.springframework.stereotype.Service;
 public class UserDataResolver {
 
     private static final String TOKEN_EMAIL = "email";
-
-    private static final String TOKEN_DEPARTMENT = "department";
     private static final String RESOURCE_FIELD = "resource_access";
     private static final String KOBIT_FIELD = "kobit";
     private static final String ROLES_FIELD = "roles";
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
+    private final UserInfoClient userInfoClient;
+
+    public UserDataResolver(UserInfoClient userInfoClient) {
+        this.userInfoClient = userInfoClient;
+    }
+
     public final User getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        var t = authentication.getPrincipal();
-        log.info(t.toString());
-        log.info(authentication.getDetails().toString());
-        log.info(String.valueOf(authentication.getPrincipal()));
-        log.info(String.valueOf(authentication.getDetails()));
-        try {
-            ((DefaultOidcUser) authentication.getPrincipal()).getIdToken().getTokenValue();
-        } catch (Exception e) {
-            log.error("Error", e);
-        }
         return readUserFromToken(SecurityContextHolder.getContext().getAuthentication());
     }
 
@@ -51,7 +46,7 @@ public class UserDataResolver {
             try {
                 return new User(
                         getUserMail(tokenAttributes),
-                        getDepartment(tokenAttributes),
+                        getDepartment(jwtToken.getToken().getTokenValue()),
                         getRoles(tokenAttributes));
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
@@ -90,11 +85,13 @@ public class UserDataResolver {
         return tokenDetails.get(TOKEN_EMAIL).toString();
     }
 
-    private static String getDepartment(Map<String, Object> tokenDetails) {
+    private String getDepartment(String jwtToken) {
+        Map<String, Object> headerMap = new HashMap<>();
+        headerMap.put("Authorization", "Bearer " + jwtToken);
+        UserInfoView userInfoView = userInfoClient.getUserInformation(headerMap);
         // splits the two parts of the department
         // expected looks: DEPARTMENT-UNIT exp. ITM-KM55
-        log.info(String.valueOf(tokenDetails));
         String splitter = "-";
-        return tokenDetails.get(TOKEN_DEPARTMENT).toString().toUpperCase().split(splitter)[0];
+        return userInfoView.getDepartment().toUpperCase().split(splitter)[0];
     }
 }

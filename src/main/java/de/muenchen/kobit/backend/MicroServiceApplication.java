@@ -4,10 +4,16 @@
  */
 package de.muenchen.kobit.backend;
 
+import de.muenchen.kobit.backend.user.client.UserInfoClient;
+import feign.Feign;
+import feign.jackson.JacksonDecoder;
+import feign.jackson.JacksonEncoder;
 import io.swagger.v3.oas.annotations.Hidden;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
@@ -39,5 +45,14 @@ public class MicroServiceApplication implements WebMvcConfigurer {
         UrlPathHelper urlPathHelper = new UrlPathHelper();
         urlPathHelper.setUrlDecode(false);
         configurer.setUrlPathHelper(urlPathHelper);
+    }
+
+    @Bean
+    public UserInfoClient userInfoClient(
+            @Value("${security.oauth2.resource.user-info-uri}") String userInfoUri) {
+        return Feign.builder()
+                .decoder(new JacksonDecoder())
+                .encoder(new JacksonEncoder())
+                .target(UserInfoClient.class, userInfoUri);
     }
 }
