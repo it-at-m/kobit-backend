@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class DecisionTreeService {
@@ -51,6 +52,7 @@ public class DecisionTreeService {
         this.competenceService = competenceService;
     }
 
+    @Transactional(readOnly = true)
     public DecisionContactPointWrapper getNextDecisionPointOrContactPoints(
             List<Competence> selectedCompetences) {
         if (selectedCompetences.isEmpty()) {

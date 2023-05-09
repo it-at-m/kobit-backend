@@ -1,6 +1,8 @@
 package de.muenchen.kobit.backend.additional.pagecontent.model;
 
 import de.muenchen.kobit.backend.additional.pagecontent.view.TextItemView;
+
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.UUID;
 import javax.persistence.*;
@@ -19,7 +21,6 @@ public class TextItem {
     private UUID id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "page_type")
     private PageType pageType;
 
     @Size(min = 3, message = "violation if minimal name length")
@@ -81,18 +82,23 @@ public class TextItem {
     }
 
     public TextItem() {
-        // Required by JPA
+
     }
 
     public TextItemView toView() {
-        TextItemView view = new TextItemView();
-        view.setId(id);
-        view.setPageType(pageType);
-        view.setHeader(header);
-        view.setEntry(entry);
+        try {
+            TextItemView view = new TextItemView();
+            view.setId(id);
+            view.setPageType(pageType);
+            view.setHeader(header);
+            view.setEntry(entry);
 
-        view.setLink(link != null ? link.toString() : null);
+            view.setLink(link != null ? link.toString() : null);
 
-        return view;
+            return view;
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("Error while converting TextItem to TextItemView", e);
+        }
     }
+
 }

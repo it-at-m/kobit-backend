@@ -11,6 +11,10 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import de.muenchen.kobit.backend.validation.S3FileValidator;
 import de.muenchen.kobit.backend.validation.exception.S3FileValidationException;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -73,7 +77,15 @@ public class S3ManipulationService {
             validator.validate(file);
         }
 
-        String fileName = link.substring(link.lastIndexOf("/") + 1);
+        String fileName;
+        try {
+            URI uri = new URI(link);
+            Path path = Paths.get(uri.getPath());
+            fileName = path.getFileName().toString();
+        } catch (URISyntaxException | NullPointerException e) {
+            throw new IllegalArgumentException("Invalid URL: " + link);
+        }
+
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(file.getSize());
         getS3Client()
@@ -82,6 +94,8 @@ public class S3ManipulationService {
                                 bucketName, fileName, file.getInputStream(), metadata));
         return fileName;
     }
+
+
 
     public void deleteFile(String fileName) {
         getS3Client().deleteObject(new DeleteObjectRequest(bucketName, fileName));

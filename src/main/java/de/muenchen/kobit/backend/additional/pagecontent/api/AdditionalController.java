@@ -58,12 +58,11 @@ public class AdditionalController {
             @PathVariable PageType pageType, @RequestBody TextItemView textItemView)
             throws IOException, S3FileValidationException {
 
-        ResponseEntity<?> response = textItemCreationService.createTextItem(textItemView);
-
         if (pageType == PageType.DOWNLOADS && textItemView.getLink() == null) {
             throw new IllegalStateException(
                     "Link cannot be null in created text item for downloads");
         } else {
+            ResponseEntity<?> response = textItemCreationService.createTextItem(textItemView);
             return response;
         }
     }

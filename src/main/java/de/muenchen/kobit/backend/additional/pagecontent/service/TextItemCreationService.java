@@ -37,7 +37,6 @@ public class TextItemCreationService {
             }
 
             TextItem newTextItem = createNewTextItem(textItemView);
-            // newTextItem.setId(UUID.randomUUID());
             return ResponseEntity.ok(
                     new TextItemView(
                             newTextItem.getId(),
@@ -51,12 +50,8 @@ public class TextItemCreationService {
         }
     }
 
-    private TextItem createNewTextItem(TextItemView textItemView) {
-        try {
-            return textItemRepository.save(textItemView.toTextItem());
-        } catch (MalformedURLException e) {
-            // Handle the exception (e.g., log the error and return null)
-            return null;
-        }
+    @Transactional
+    private TextItem createNewTextItem(TextItemView textItemView) throws MalformedURLException {
+        return textItemRepository.save(textItemView.toTextItem());
     }
 }

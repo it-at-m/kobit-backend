@@ -18,6 +18,7 @@ public class TextItemDeletionService {
         deleteTextItem(id);
     }
 
+    @Transactional
     private void deleteTextItem(UUID id) {
         textItemRepository.deleteById(id);
     }

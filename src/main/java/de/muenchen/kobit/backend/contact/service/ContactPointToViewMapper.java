@@ -14,6 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class ContactPointToViewMapper {
@@ -39,6 +40,7 @@ public class ContactPointToViewMapper {
         this.linkService = linkService;
     }
 
+    @Transactional(readOnly = true)
     public ContactPointView contactPointToView(UUID id) {
         Optional<ContactPoint> contactPoint = contactPointRepository.findById(id);
         if (contactPoint.isEmpty()) {
@@ -50,6 +52,7 @@ public class ContactPointToViewMapper {
         return createContactPointView(contactPoint.get(), competences, contacts, links);
     }
 
+    @Transactional(readOnly = true)
     public ContactPointView contactPointToView(ContactPoint contactPoint) {
         List<Contact> contacts = contactService.getContactsByContactPointId(contactPoint.getId());
         List<LinkView> links = linkService.getLinkViewsByContactPointId(contactPoint.getId());

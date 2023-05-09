@@ -11,6 +11,7 @@ import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CompetenceService {
@@ -28,6 +29,7 @@ public class CompetenceService {
         this.mapper = mapper;
     }
 
+    @Transactional(readOnly = true)
     public List<ContactPointView> findAllContactPointsForCompetences(List<Competence> competences) {
         Set<UUID> keys = getContactPointIds(competences);
         if (isSpecialCase(competences)) {
@@ -38,14 +40,16 @@ public class CompetenceService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public void deleteCompetencesByContactPointId(UUID contactPointId) {
         competenceRepository.deleteAllByContactPointId(contactPointId);
     }
 
+    @Transactional
     public void createCompetenceToContactPoint(UUID contactPointId, Competence competence) {
         createCompetenceToContactPoint(new CompetenceToContactPoint(contactPointId, competence));
     }
-
+    @Transactional
     public void createCompetenceToContactPoint(CompetenceToContactPoint competence) {
         competenceRepository.save(competence);
     }

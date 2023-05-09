@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.UUID;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ContentItemManipulationService {
@@ -26,6 +27,7 @@ public class ContentItemManipulationService {
         this.validators = validators;
     }
 
+    @Transactional
     public ResponseEntity<?> updateContentItem(UUID itemId, ContentItemView newContentItem) {
 
         // Validate newContentItem is not null and content is not blank

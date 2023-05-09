@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TextItemView {
 
-    private UUID id; // Replace 'uuid' with 'id'
+    private UUID id;
 
     private PageType pageType;
 
@@ -22,11 +22,11 @@ public class TextItemView {
 
     private URL link;
 
-    public UUID getId() { // Replace 'getUuid' with 'getId'
+    public UUID getId() {
         return id;
     }
 
-    public void setId(UUID id) { // Replace 'setUuid' with 'setId'
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -58,12 +58,11 @@ public class TextItemView {
         return link;
     }
 
-    // modified to accept a String and convert it to a URL
-    public void setLink(String link) {
-        try {
-            this.link = link != null ? new URL(link) : null;
-        } catch (MalformedURLException e) {
-            // Handle the exception (e.g., log the error and set the link to null)
+
+    public void setLink(String link) throws MalformedURLException {
+        if (link != null) {
+            this.link = new URL(link);
+        } else {
             this.link = null;
         }
     }
@@ -72,9 +71,9 @@ public class TextItemView {
         return new TextItem(this.pageType, this.header, this.entry, this.link);
     }
 
-    public static TextItemView toView(TextItem textItem) {
+    public static TextItemView toView(TextItem textItem) throws MalformedURLException {
         TextItemView view = new TextItemView();
-        view.setId(textItem.getId()); // Replace 'setUuid' with 'setId'
+        view.setId(textItem.getId());
         view.setPageType(textItem.getPageType());
         view.setHeader(textItem.getHeader());
         view.setEntry(textItem.getEntry());
