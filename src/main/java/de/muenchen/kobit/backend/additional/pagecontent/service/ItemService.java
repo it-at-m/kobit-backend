@@ -11,8 +11,10 @@ import de.muenchen.kobit.backend.additional.pagecontent.view.TextItemView;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class ItemService {
@@ -67,7 +69,8 @@ public class ItemService {
             textItem.setPageType(pageType);
             return textItemRepository.save(textItem);
         }
-        throw new UnsupportedOperationException("Operation not supported for this page type.");
+        throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST, "Operation not supported for this page type.");
     }
 
     @Transactional
@@ -86,7 +89,8 @@ public class ItemService {
             newTextItem.setPageType(pageType);
             return textItemRepository.save(newTextItem);
         }
-        throw new UnsupportedOperationException("Operation not supported for this page type.");
+        throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST, "Operation not supported for this page type.");
     }
 
     @Transactional
@@ -105,7 +109,8 @@ public class ItemService {
             newContentItem.setPageType(pageType);
             return contentItemRepository.save(newContentItem);
         }
-        throw new UnsupportedOperationException("Operation not supported for this page type.");
+        throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST, "Operation not supported for this page type.");
     }
 
     @Transactional
@@ -122,7 +127,8 @@ public class ItemService {
         if (isTextPage(pageType)) {
             textItemRepository.delete(textItem);
         } else {
-            throw new UnsupportedOperationException("Operation not supported for this page type.");
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Operation not supported for this page type.");
         }
     }
 
