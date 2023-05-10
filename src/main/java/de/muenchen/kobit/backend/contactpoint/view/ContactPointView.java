@@ -21,12 +21,12 @@ public class ContactPointView {
     String name;
     String shortCut;
     String description;
-    String department;
+    List<String> departments;
     List<ContactView> contact;
     List<Competence> competences;
     List<LinkView> links;
 
     public final ContactPoint toContactPoint() {
-        return new ContactPoint(this.name, this.shortCut, this.description, this.department);
+        return new ContactPoint(this.name, this.shortCut, this.description, this.departments);
     }
 }

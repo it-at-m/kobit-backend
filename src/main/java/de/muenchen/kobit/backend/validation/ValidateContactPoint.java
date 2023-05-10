@@ -12,7 +12,6 @@ public class ValidateContactPoint implements Validator {
     private static final int SHORT_CUT_MIN = 3;
     private static final int SHORT_CUT_MAX = 10;
     private static final int DESCRIPTION_MAX_SIZE = 2000;
-    private static final String SHORT_CUT_PATTERN = "^[a-zA-ZäöüÄÖÜß\u0020]*$";
 
     @Override
     public void validate(ContactPointView contactPointView) throws InvalidContactPointException {
@@ -34,9 +33,6 @@ public class ValidateContactPoint implements Validator {
         if (isShortCutOutOfRange(contactPointView.getShortCut())) {
             throw new InvalidContactPointException(
                     "ShortCut must be at least 3 letters and not more than 10!");
-        }
-        if (!isShortCutValid(contactPointView.getShortCut())) {
-            throw new InvalidContactPointException("Shortcut can only be letters!");
         }
         if (isDescriptionTooLarge(contactPointView.getDescription())) {
             throw new InvalidContactPointException(
@@ -66,9 +62,5 @@ public class ValidateContactPoint implements Validator {
 
     private boolean isDescriptionTooLarge(String description) {
         return description.length() > DESCRIPTION_MAX_SIZE;
-    }
-
-    private boolean isShortCutValid(String shortcut) {
-        return shortcut.matches(SHORT_CUT_PATTERN);
     }
 }

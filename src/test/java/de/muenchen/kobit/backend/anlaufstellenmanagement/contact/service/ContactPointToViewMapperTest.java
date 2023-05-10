@@ -10,21 +10,16 @@ import de.muenchen.kobit.backend.contact.model.Contact;
 import de.muenchen.kobit.backend.contact.service.ContactPointToViewMapper;
 import de.muenchen.kobit.backend.contact.service.ContactService;
 import de.muenchen.kobit.backend.contactpoint.model.ContactPoint;
-import de.muenchen.kobit.backend.contactpoint.repository.ContactPointRepository;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
 import de.muenchen.kobit.backend.links.service.LinkService;
 import de.muenchen.kobit.backend.links.view.LinkView;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 class ContactPointToViewMapperTest {
-
-    private final ContactPointRepository contactPointRepository =
-            Mockito.mock(ContactPointRepository.class);
     private final CompetenceRepository competenceRepository =
             Mockito.mock(CompetenceRepository.class);
     private final ContactService contactService = Mockito.mock(ContactService.class);
@@ -35,43 +30,14 @@ class ContactPointToViewMapperTest {
     @BeforeEach
     void init() {
         clearAllCaches();
-        mapper =
-                new ContactPointToViewMapper(
-                        contactPointRepository, competenceRepository, contactService, linkService);
-    }
-
-    @Test
-    void contactPointToView_UUIDTest() {
-        ContactPoint contactPoint =
-                new ContactPoint(UUID.randomUUID(), "test", "test", "Beschreibung", "test");
-        List<Contact> contacts = List.of(new Contact(contactPoint.getId(), "mail"));
-        List<LinkView> links = List.of(new LinkView(contactPoint.getId(), "test", "test", false));
-        List<CompetenceToContactPoint> competenceToContactPoint =
-                List.of(
-                        new CompetenceToContactPoint(
-                                contactPoint.getId(), Competence.DISCRIMINATION),
-                        new CompetenceToContactPoint(contactPoint.getId(), Competence.EMPLOYEE));
-        Mockito.when(contactPointRepository.findById(contactPoint.getId()))
-                .thenReturn(Optional.of(contactPoint));
-        Mockito.when(contactService.getContactsByContactPointId(contactPoint.getId()))
-                .thenReturn(contacts);
-        Mockito.when(linkService.getLinkViewsByContactPointId(contactPoint.getId()))
-                .thenReturn(links);
-        Mockito.when(competenceRepository.findAllByContactPointId(contactPoint.getId()))
-                .thenReturn(competenceToContactPoint);
-
-        ContactPointView result = mapper.contactPointToView(contactPoint.getId());
-
-        assertThat(result.getLinks().stream().findFirst().get().getUrl())
-                .isEqualTo(links.stream().findFirst().get().getUrl());
-        assertThat(result.getCompetences().size()).isEqualTo(2);
-        assertThat(result.getDescription()).isEqualTo(contactPoint.getDescription());
+        mapper = new ContactPointToViewMapper(competenceRepository, contactService, linkService);
     }
 
     @Test
     void contactPointToView_ObjectTest() {
         ContactPoint contactPoint =
-                new ContactPoint(UUID.randomUUID(), "test", "test", "Beschreibung", "test");
+                new ContactPoint(
+                        UUID.randomUUID(), "test", "test", "Beschreibung", List.of("test"));
         List<Contact> contacts = List.of(new Contact(contactPoint.getId(), "mail"));
         List<LinkView> links = List.of(new LinkView(contactPoint.getId(), "test", "test", false));
         List<CompetenceToContactPoint> competenceToContactPoint =

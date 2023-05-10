@@ -1,5 +1,7 @@
 package de.muenchen.kobit.backend.contactpoint.service;
 
+import de.muenchen.kobit.backend.admin.model.AdminUserView;
+import de.muenchen.kobit.backend.admin.service.AdminService;
 import de.muenchen.kobit.backend.competence.Competence;
 import de.muenchen.kobit.backend.competence.service.CompetenceService;
 import de.muenchen.kobit.backend.contact.model.Contact;
@@ -15,13 +17,13 @@ import de.muenchen.kobit.backend.links.view.LinkView;
 import de.muenchen.kobit.backend.validation.Validator;
 import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
 import de.muenchen.kobit.backend.validation.exception.InvalidContactPointException;
+import de.muenchen.kobit.backend.validation.exception.InvalidUserException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +35,8 @@ public class ContactPointManipulationService {
     private final LinkService linkService;
     private final CompetenceService competenceService;
 
+    private final AdminService adminService;
+
     private final List<Validator> validators;
 
     ContactPointManipulationService(
@@ -40,50 +44,43 @@ public class ContactPointManipulationService {
             ContactService contactService,
             LinkService linkService,
             CompetenceService competenceService,
+            AdminService adminService,
             List<Validator> validators) {
         this.contactPointRepository = contactPointRepository;
         this.contactService = contactService;
         this.linkService = linkService;
         this.competenceService = competenceService;
+        this.adminService = adminService;
         this.validators = validators;
     }
 
     @Transactional
-    public ResponseEntity<?> updateContactPoint(ContactPointView contactPointView, UUID pathId) {
-        try {
-            if (contactPointView.getLinks() == null) {
-                contactPointView.setLinks(Collections.emptyList());
-            }
-
-            for (Validator validator : validators) {
-                try {
-                    validator.validate(contactPointView);
-                } catch (ContactPointValidationException e) {
-                    return ResponseEntity.badRequest()
-                            .body(Collections.singletonMap("error", e.getMessage()));
-                }
-            }
-            validateId(contactPointView.getId(), pathId);
-            ContactPoint newContactPoint = createOrUpdateContactPoint(contactPointView, pathId);
-            UUID id = newContactPoint.getId();
-            List<ContactView> newContact = updateContact(id, contactPointView.getContact());
-            List<LinkView> newLinks = updateLink(id, contactPointView.getLinks());
-            List<Competence> newCompetences =
-                    updateCompetences(id, contactPointView.getCompetences());
-            return ResponseEntity.ok(
-                    new ContactPointView(
-                            newContactPoint.getId(),
-                            newContactPoint.getName(),
-                            newContactPoint.getShortCut(),
-                            newContactPoint.getDescription(),
-                            newContactPoint.getDepartment(),
-                            newContact,
-                            newCompetences,
-                            newLinks));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest()
-                    .body(Collections.singletonMap("error", e.getMessage()));
+    public ContactPointView updateContactPoint(ContactPointView contactPointView, UUID pathId)
+            throws ContactPointValidationException {
+        if (contactPointView.getLinks() == null) {
+            contactPointView.setLinks(Collections.emptyList());
         }
+        for (Validator validator : validators) {
+            validator.validate(contactPointView);
+        }
+        if (!isUserAuthorized(contactPointView.getDepartments())) {
+            throw new InvalidUserException("The User has not the needed permission!");
+        }
+        validateId(contactPointView.getId(), pathId);
+        ContactPoint newContactPoint = createOrUpdateContactPoint(contactPointView, pathId);
+        UUID id = newContactPoint.getId();
+        List<ContactView> newContact = updateContact(id, contactPointView.getContact());
+        List<LinkView> newLinks = updateLink(id, contactPointView.getLinks());
+        List<Competence> newCompetences = updateCompetences(id, contactPointView.getCompetences());
+        return new ContactPointView(
+                newContactPoint.getId(),
+                newContactPoint.getName(),
+                newContactPoint.getShortCut(),
+                newContactPoint.getDescription(),
+                newContactPoint.getDepartments(),
+                newContact,
+                newCompetences,
+                newLinks);
     }
 
     private void validateId(UUID contactPointId, UUID pathID) throws InvalidContactPointException {
@@ -107,6 +104,7 @@ public class ContactPointManipulationService {
             contactPointToUpdate.setName(contactPointView.getName());
             contactPointToUpdate.setShortCut(contactPointView.getShortCut());
             contactPointToUpdate.setDescription(contactPointView.getDescription());
+            contactPointToUpdate.setDepartments(contactPointView.getDepartments());
             return contactPointRepository.save(contactPointToUpdate);
         } catch (EntityNotFoundException exception) {
             return contactPointRepository.save(contactPointView.toContactPoint());
@@ -153,5 +151,17 @@ public class ContactPointManipulationService {
             }
         }
         return savedContacts.stream().map(Contact::toView).collect(Collectors.toList());
+    }
+
+    private boolean isUserAuthorized(List<String> contactPointDepartments) {
+        AdminUserView adminInfo = adminService.getAdminUserInfo();
+        if (adminInfo.isCentralAdmin()) {
+            return true;
+        }
+        if (adminInfo.isDepartmentAdmin()) {
+            return contactPointDepartments.stream()
+                    .anyMatch(it -> it.equals(adminInfo.getDepartment()));
+        }
+        return false;
     }
 }

@@ -3,7 +3,6 @@ package de.muenchen.kobit.backend.competence.service;
 import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.clearAllCaches;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -32,7 +31,6 @@ class CompetenceServiceTest {
 
     @BeforeEach
     void init() {
-        clearAllCaches();
         service = new CompetenceService(competenceRepository, contactPointRepository, mapper);
     }
 
@@ -66,9 +64,9 @@ class CompetenceServiceTest {
                         new CompetenceToContactPoint(noMatch, Competence.WORKPLACE_CONFLICT),
                         new CompetenceToContactPoint(noMatch1, Competence.MOBBING),
                         new CompetenceToContactPoint(noMatch1, Competence.EMPLOYEE));
-        var contactPoint = new ContactPoint(matchId, "test", "t", "test", "");
-        var contactPoint1 = new ContactPoint(matchId1, "test1", "t1", "test1", "");
-        var contactPoint2 = new ContactPoint(matchId2, "test2", "t2", "test2", "");
+        var contactPoint = new ContactPoint(matchId, "test", "t", "test", List.of("ITM"));
+        var contactPoint1 = new ContactPoint(matchId1, "test1", "t1", "test1", List.of("ITM"));
+        var contactPoint2 = new ContactPoint(matchId2, "test2", "t2", "test2", List.of("ITM"));
         var contactPoints = List.of(contactPoint, contactPoint1, contactPoint2);
         var view =
                 new ContactPointView(
@@ -76,7 +74,7 @@ class CompetenceServiceTest {
                         "test",
                         "t",
                         "test",
-                        "",
+                        List.of(""),
                         new ArrayList<>(),
                         new ArrayList<>(),
                         new ArrayList<>());
@@ -86,7 +84,7 @@ class CompetenceServiceTest {
                         "test1",
                         "t1",
                         "test1",
-                        "",
+                        List.of(""),
                         new ArrayList<>(),
                         new ArrayList<>(),
                         new ArrayList<>());
@@ -96,7 +94,7 @@ class CompetenceServiceTest {
                         "test2",
                         "t2",
                         "test2",
-                        "",
+                        List.of(""),
                         new ArrayList<>(),
                         new ArrayList<>(),
                         new ArrayList<>());
@@ -108,7 +106,7 @@ class CompetenceServiceTest {
         when(mapper.contactPointToView(contactPoint1)).thenReturn(view1);
         when(mapper.contactPointToView(contactPoint2)).thenReturn(view2);
 
-        var result = service.findAllContactPointsForCompetences(competences);
+        var result = service.findAllContactPointsForCompetences(competences, "ITM");
 
         assertThat(result.size()).isEqualTo(contactPointViews.size());
         assertThat(result.containsAll(contactPointViews)).isTrue();
@@ -121,6 +119,7 @@ class CompetenceServiceTest {
         var matchId2 = randomUUID();
         var noMatch = randomUUID();
         var noMatch1 = randomUUID();
+        var department = "ITM";
 
         var competences =
                 List.of(
@@ -155,9 +154,9 @@ class CompetenceServiceTest {
                         new CompetenceToContactPoint(noMatch, Competence.WORKPLACE_CONFLICT),
                         new CompetenceToContactPoint(noMatch1, Competence.MOBBING),
                         new CompetenceToContactPoint(noMatch1, Competence.EMPLOYEE));
-        var contactPoint = new ContactPoint(matchId, "test", "t", "test", "");
-        var contactPoint1 = new ContactPoint(matchId1, "test1", "t1", "test1", "");
-        var contactPoint2 = new ContactPoint(matchId2, "test2", "t2", "test2", "");
+        var contactPoint = new ContactPoint(matchId, "test", "t", "test", List.of(department));
+        var contactPoint1 = new ContactPoint(matchId1, "test1", "t1", "test1", List.of(department));
+        var contactPoint2 = new ContactPoint(matchId2, "test2", "t2", "test2", List.of(department));
         var contactPoints = List.of(contactPoint, contactPoint1, contactPoint2);
         var view =
                 new ContactPointView(
@@ -165,7 +164,7 @@ class CompetenceServiceTest {
                         "test",
                         "t",
                         "test",
-                        "",
+                        List.of(""),
                         new ArrayList<>(),
                         new ArrayList<>(),
                         new ArrayList<>());
@@ -175,7 +174,7 @@ class CompetenceServiceTest {
                         "test1",
                         "t1",
                         "test1",
-                        "",
+                        List.of(""),
                         new ArrayList<>(),
                         new ArrayList<>(),
                         new ArrayList<>());
@@ -185,7 +184,7 @@ class CompetenceServiceTest {
                         "test2",
                         "t2",
                         "test2",
-                        "",
+                        List.of(""),
                         new ArrayList<>(),
                         new ArrayList<>(),
                         new ArrayList<>());
@@ -197,7 +196,7 @@ class CompetenceServiceTest {
         when(mapper.contactPointToView(contactPoint1)).thenReturn(view1);
         when(mapper.contactPointToView(contactPoint2)).thenReturn(view2);
 
-        var result = service.findAllContactPointsForCompetences(competences);
+        var result = service.findAllContactPointsForCompetences(competences, department);
 
         assertThat(result.size()).isEqualTo(contactPointViews.size());
         assertThat(result.containsAll(contactPointViews)).isTrue();

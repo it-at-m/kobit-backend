@@ -36,8 +36,8 @@ class AdminServiceTest {
     @Test
     void isAdminTest_true() {
         when(userDataResolver.getCurrentUser())
-                .thenReturn(new User("test@test.test", List.of(DEPARTMENT_ADMIN, KOBIT_ADMIN)));
-        //        when(SecurityContextHolder.getContext().getAuthentication()).thenReturn(any());
+                .thenReturn(
+                        new User("test@test.test", "ITM", List.of(DEPARTMENT_ADMIN, KOBIT_ADMIN)));
         val isAdmin = adminService.isUserAdmin();
         assertThat(isAdmin).isTrue();
     }
@@ -45,14 +45,15 @@ class AdminServiceTest {
     @Test
     void isAdminTest_trueOnlyOne() {
         when(userDataResolver.getCurrentUser())
-                .thenReturn(new User("test@test.test", List.of(KOBIT_ADMIN)));
+                .thenReturn(new User("test@test.test", "ITM", List.of(KOBIT_ADMIN)));
         val isAdmin = adminService.isUserAdmin();
         assertThat(isAdmin).isTrue();
     }
 
     @Test
     void isAdminTest_false() {
-        when(userDataResolver.getCurrentUser()).thenReturn(new User("test@test.test", List.of()));
+        when(userDataResolver.getCurrentUser())
+                .thenReturn(new User("test@test.test", "ITM", List.of()));
         val isAdmin = adminService.isUserAdmin();
         assertThat(isAdmin).isFalse();
     }
@@ -60,7 +61,7 @@ class AdminServiceTest {
     @Test
     void isKobitAdminTest_true() {
         when(userDataResolver.getCurrentUser())
-                .thenReturn(new User("test@test.test", List.of(KOBIT_ADMIN)));
+                .thenReturn(new User("test@test.test", "ITM", List.of(KOBIT_ADMIN)));
         val isAdmin = adminService.isUserKobitAdmin();
         assertThat(isAdmin).isTrue();
     }
@@ -68,7 +69,7 @@ class AdminServiceTest {
     @Test
     void isKobitAdminTest_false() {
         when(userDataResolver.getCurrentUser())
-                .thenReturn(new User("test@test.test", List.of(DEPARTMENT_ADMIN)));
+                .thenReturn(new User("test@test.test", "ITM", List.of(DEPARTMENT_ADMIN)));
         val isAdmin = adminService.isUserKobitAdmin();
         assertThat(isAdmin).isFalse();
     }
@@ -76,7 +77,7 @@ class AdminServiceTest {
     @Test
     void isDepartmentAdminTest_trueDepartment() {
         when(userDataResolver.getCurrentUser())
-                .thenReturn(new User("test@test.test", List.of(DEPARTMENT_ADMIN)));
+                .thenReturn(new User("test@test.test", "ITM", List.of(DEPARTMENT_ADMIN)));
         val isAdmin = adminService.isUserDepartmentAdmin();
         assertThat(isAdmin).isTrue();
     }
@@ -84,14 +85,15 @@ class AdminServiceTest {
     @Test
     void isDepartmentAdminTest_trueKobit() {
         when(userDataResolver.getCurrentUser())
-                .thenReturn(new User("test@test.test", List.of(KOBIT_ADMIN)));
+                .thenReturn(new User("test@test.test", "ITM", List.of(KOBIT_ADMIN)));
         val isAdmin = adminService.isUserDepartmentAdmin();
         assertThat(isAdmin).isTrue();
     }
 
     @Test
     void isDepartmentAdminTest_false() {
-        when(userDataResolver.getCurrentUser()).thenReturn(new User("test@test.test", List.of()));
+        when(userDataResolver.getCurrentUser())
+                .thenReturn(new User("test@test.test", "ITM", List.of()));
         val isAdmin = adminService.isUserDepartmentAdmin();
         assertThat(isAdmin).isFalse();
     }

@@ -21,7 +21,7 @@ class ValidateContactTest {
                         "test",
                         "test",
                         "test",
-                        "test",
+                        List.of("test"),
                         List.of(new ContactView("mail@mail.de")),
                         List.of(),
                         List.of());
@@ -36,7 +36,7 @@ class ValidateContactTest {
                         "test",
                         "test",
                         "test",
-                        "test",
+                        List.of("test"),
                         List.of(new ContactView("mail@mail....de")),
                         List.of(),
                         List.of());

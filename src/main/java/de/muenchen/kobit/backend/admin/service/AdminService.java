@@ -24,7 +24,10 @@ public class AdminService {
     }
 
     public AdminUserView getAdminUserInfo() {
-        return new AdminUserView(isUserKobitAdmin(), isUserDepartmentAdmin(), "");
+        return new AdminUserView(
+                isUserKobitAdmin(),
+                isUserDepartmentAdmin(),
+                userDataResolver.getCurrentUser().getDepartment());
     }
 
     public boolean isUserKobitAdmin() {

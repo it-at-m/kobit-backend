@@ -21,7 +21,7 @@ class ValidateContactPointTest {
                         "testName",
                         "test",
                         "test",
-                        "test",
+                        List.of("test"),
                         List.of(),
                         List.of(),
                         List.of());
@@ -36,7 +36,7 @@ class ValidateContactPointTest {
                         null,
                         "test",
                         "test",
-                        "test",
+                        List.of("test"),
                         List.of(),
                         List.of(),
                         List.of());
@@ -56,7 +56,7 @@ class ValidateContactPointTest {
                         "testName",
                         null,
                         "test",
-                        "test",
+                        List.of("test"),
                         List.of(),
                         List.of(),
                         List.of());
@@ -76,7 +76,7 @@ class ValidateContactPointTest {
                         "testName",
                         "test",
                         null,
-                        "test",
+                        List.of("test"),
                         List.of(),
                         List.of(),
                         List.of());
@@ -96,7 +96,7 @@ class ValidateContactPointTest {
                         "  ",
                         "test",
                         "test",
-                        "test",
+                        List.of("test"),
                         List.of(),
                         List.of(),
                         List.of());
@@ -116,7 +116,7 @@ class ValidateContactPointTest {
                         "testName",
                         "",
                         "test",
-                        "test",
+                        List.of("test"),
                         List.of(),
                         List.of(),
                         List.of());
@@ -136,7 +136,7 @@ class ValidateContactPointTest {
                         "testName",
                         "test",
                         "   ",
-                        "test",
+                        List.of("test"),
                         List.of(),
                         List.of(),
                         List.of());
@@ -156,7 +156,7 @@ class ValidateContactPointTest {
                         "testName",
                         "tt",
                         "test",
-                        "test",
+                        List.of("test"),
                         List.of(),
                         List.of(),
                         List.of());
@@ -176,7 +176,7 @@ class ValidateContactPointTest {
                         "testName",
                         "testTooLong",
                         "test",
-                        "test",
+                        List.of("test"),
                         List.of(),
                         List.of(),
                         List.of());
@@ -196,7 +196,7 @@ class ValidateContactPointTest {
                         "test",
                         "test",
                         "test",
-                        "test",
+                        List.of("test"),
                         List.of(),
                         List.of(),
                         List.of());
