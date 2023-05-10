@@ -5,7 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import de.muenchen.kobit.backend.competence.Competence;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
-import de.muenchen.kobit.backend.validation.exception.InvalidCompetenceException;
+import de.muenchen.kobit.backend.validation.contactpoint.ValidateCompetence;
+import de.muenchen.kobit.backend.validation.exception.contactpoint.InvalidCompetenceException;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;

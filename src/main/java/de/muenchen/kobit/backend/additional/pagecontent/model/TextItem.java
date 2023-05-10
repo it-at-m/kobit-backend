@@ -1,21 +1,16 @@
 package de.muenchen.kobit.backend.additional.pagecontent.model;
 
 import de.muenchen.kobit.backend.additional.pagecontent.view.TextItemView;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.UUID;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import javax.validation.constraints.Size;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "text_item")
 public class TextItem {
 
     @Id
@@ -24,14 +19,18 @@ public class TextItem {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     private PageType pageType;
 
-    @NotNull private String header;
+    @Size(min = 3, message = "violation if minimal name length")
+    @Column(name = "header", columnDefinition = "TEXT")
+    private String header;
 
-    @NotNull private String entry;
+    @Size(min = 5, message = "violation if minimal name length")
+    @Column(name = "entry", columnDefinition = "TEXT")
+    private String entry;
 
+    @Column(name = "link")
     private URL link;
 
     public UUID getId() {
@@ -81,7 +80,21 @@ public class TextItem {
         this.link = link;
     }
 
+    public TextItem() {}
+
     public TextItemView toView() {
-        return new TextItemView(header, entry, link);
+        try {
+            TextItemView view = new TextItemView();
+            view.setId(id);
+            view.setPageType(pageType);
+            view.setHeader(header);
+            view.setEntry(entry);
+
+            view.setLink(link != null ? link.toString() : null);
+
+            return view;
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("Error while converting TextItem to TextItemView", e);
+        }
     }
 }

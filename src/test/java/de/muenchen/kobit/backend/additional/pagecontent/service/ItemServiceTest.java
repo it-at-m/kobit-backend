@@ -2,7 +2,6 @@ package de.muenchen.kobit.backend.additional.pagecontent.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.clearAllCaches;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -29,7 +28,7 @@ class ItemServiceTest {
 
     @BeforeEach
     void init() {
-        clearAllCaches();
+        // clearAllCaches();
         itemService = new ItemService(textItemRepository, contentItemRepository);
     }
 
@@ -51,11 +50,7 @@ class ItemServiceTest {
         PageType pageType = PageType.DOWNLOADS;
         TextItem textItem =
                 new TextItem(
-                        UUID.randomUUID(),
-                        PageType.DOWNLOADS,
-                        "header",
-                        "entry",
-                        new URL("http://localhost:8080"));
+                        PageType.DOWNLOADS, "header", "entry", new URL("http://localhost:8080"));
         when(textItemRepository.findAllByPageType(pageType)).thenReturn(List.of(textItem));
         var result = itemService.getItemsForPage(pageType);
         verify(contentItemRepository, never()).findAllByPageType(any());

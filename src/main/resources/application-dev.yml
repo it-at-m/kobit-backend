@@ -5,6 +5,15 @@ spring:
     url: ${DATABASE_ADDRESS}
     username: ${DATABASE_USERNAME}
     password: ${database-secret-dev}
+  aws:
+    s3:
+      bucket-name: ${AWS_S3_BUCKET_NAME}
+      access-key: ${AWS_S3_ACCESS_KEY}
+      secret-key: ${AWS_S3_SECRET_KEY}
+      hostname: ${AWS_S3_HOSTNAME}
+      region:
+        static: eu-central-1
+        auto: false
   liquibase:
     default-schema: ${DATABASE_SCHEMA}
   jpa:

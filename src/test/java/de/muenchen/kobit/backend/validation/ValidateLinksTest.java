@@ -5,7 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
 import de.muenchen.kobit.backend.links.view.LinkView;
-import de.muenchen.kobit.backend.validation.exception.InvalidLinkException;
+import de.muenchen.kobit.backend.validation.contactpoint.ValidateLinks;
+import de.muenchen.kobit.backend.validation.exception.contactpoint.InvalidLinkException;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;

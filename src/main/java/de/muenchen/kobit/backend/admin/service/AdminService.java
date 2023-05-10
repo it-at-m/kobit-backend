@@ -19,8 +19,10 @@ public class AdminService {
     }
 
     public boolean isUserAdmin() {
-        return getUserRoles().stream()
-                .anyMatch(it -> it.equals(DEPARTMENT_ADMIN) || it.equals(KOBIT_ADMIN));
+        boolean isAdmin =
+                getUserRoles().stream()
+                        .anyMatch(it -> it.equals(DEPARTMENT_ADMIN) || it.equals(KOBIT_ADMIN));
+        return isAdmin;
     }
 
     public AdminUserView getAdminUserInfo() {

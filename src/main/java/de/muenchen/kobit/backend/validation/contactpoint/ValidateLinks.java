@@ -1,13 +1,14 @@
-package de.muenchen.kobit.backend.validation;
+package de.muenchen.kobit.backend.validation.contactpoint;
 
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
 import de.muenchen.kobit.backend.links.view.LinkView;
-import de.muenchen.kobit.backend.validation.exception.InvalidLinkException;
+import de.muenchen.kobit.backend.validation.ContactPointValidator;
+import de.muenchen.kobit.backend.validation.exception.contactpoint.InvalidLinkException;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ValidateLinks implements Validator {
+public class ValidateLinks implements ContactPointValidator<ContactPointView> {
 
     private static final int LINK_NAME_MAX_SIZE = 100;
     private static final int LINK_MAX_SIZE = 2000;
@@ -16,16 +17,16 @@ public class ValidateLinks implements Validator {
     public void validate(ContactPointView contactPointView) throws InvalidLinkException {
         for (LinkView link : contactPointView.getLinks()) {
             if (anyFieldsNull(link)) {
-                throw new InvalidLinkException("Link fields name and url can not be null!");
+                throw new InvalidLinkException("Link fields name and url can not be null.");
             }
             if (!isURLValid(link.getUrl())) {
-                throw new InvalidLinkException("Link url is not valid!");
+                throw new InvalidLinkException("Link url is not valid.");
             }
             if (isLinkNameTooLarge(link.getName())) {
-                throw new InvalidLinkException("Link name must be not more than 100 characters!");
+                throw new InvalidLinkException("Link name must be not more than 100 characters.");
             }
             if (isLinkTooLarge(link.getUrl())) {
-                throw new InvalidLinkException("Link must be not more than 2000 characters!");
+                throw new InvalidLinkException("Link must be not more than 2000 characters.");
             }
         }
     }
