@@ -7,6 +7,8 @@ import de.muenchen.kobit.backend.contactpoint.service.ContactPointManipulationSe
 import de.muenchen.kobit.backend.contactpoint.service.ContactPointService;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointListItem;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
+import de.muenchen.kobit.backend.user.service.Department;
+import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -44,13 +46,14 @@ public class ContactPointController {
     }
 
     @GetMapping("/anlaufstellen")
-    public List<ContactPointListItem> getContactPointList() {
-        return contactPointService.getContactPointList();
+    public List<ContactPointListItem> getContactPointList(@Department String department) {
+        return contactPointService.getContactPointList(department);
     }
 
     @GetMapping("/anlaufstellen/{id}")
-    public ResponseEntity<ContactPointView> getContactPointById(@PathVariable UUID id) {
-        Optional<ContactPointView> contactPoint = contactPointService.findById(id);
+    public ResponseEntity<ContactPointView> getContactPointById(
+            @PathVariable UUID id, @Department String department) {
+        Optional<ContactPointView> contactPoint = contactPointService.findById(id, department);
         return contactPoint
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -63,13 +66,15 @@ public class ContactPointController {
     }
 
     @PostMapping("/anlaufstellen")
-    public ContactPointView createContactPoint(@RequestBody ContactPointView view) {
+    public ContactPointView createContactPoint(@RequestBody ContactPointView view)
+            throws ContactPointValidationException {
         return creationService.createContactPoint(view);
     }
 
     @PutMapping("/anlaufstellen/{id}")
     public ContactPointView setContactPoint(
-            @PathVariable("id") UUID id, @RequestBody ContactPointView view) {
+            @PathVariable("id") UUID id, @RequestBody ContactPointView view)
+            throws ContactPointValidationException {
         return manipulationService.updateContactPoint(view, id);
     }
 

@@ -1,5 +1,7 @@
 package de.muenchen.kobit.backend.contactpoint.service;
 
+import de.muenchen.kobit.backend.admin.model.AdminUserView;
+import de.muenchen.kobit.backend.admin.service.AdminService;
 import de.muenchen.kobit.backend.competence.Competence;
 import de.muenchen.kobit.backend.competence.service.CompetenceService;
 import de.muenchen.kobit.backend.contact.model.Contact;
@@ -10,17 +12,16 @@ import de.muenchen.kobit.backend.contactpoint.repository.ContactPointRepository;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
 import de.muenchen.kobit.backend.links.service.LinkService;
 import de.muenchen.kobit.backend.links.view.LinkView;
-import de.muenchen.kobit.backend.validation.ContactPointValidator;
+import de.muenchen.kobit.backend.validation.Validator;
 import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
+import de.muenchen.kobit.backend.validation.exception.InvalidUserException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class ContactPointCreationService {
@@ -29,55 +30,51 @@ public class ContactPointCreationService {
     private final ContactService contactService;
     private final LinkService linkService;
     private final CompetenceService competenceService;
-    private final List<ContactPointValidator> validators;
+    private final AdminService adminService;
+    private final List<Validator> validators;
 
     ContactPointCreationService(
             ContactPointRepository contactPointRepository,
             ContactService contactService,
             LinkService linkService,
             CompetenceService competenceService,
-            List<ContactPointValidator> validators) {
+            AdminService adminService,
+            List<Validator> validators) {
         this.contactPointRepository = contactPointRepository;
         this.contactService = contactService;
         this.linkService = linkService;
         this.competenceService = competenceService;
+        this.adminService = adminService;
         this.validators = validators;
     }
 
     @Transactional
-    public ContactPointView createContactPoint(ContactPointView contactPointView) {
-
+    public ContactPointView createContactPoint(ContactPointView contactPointView)
+            throws ContactPointValidationException {
         if (contactPointView.getLinks() == null) {
             contactPointView.setLinks(Collections.emptyList());
         }
-
-        for (ContactPointValidator validator : validators) {
-            try {
-                validator.validate(contactPointView);
-            } catch (ContactPointValidationException e) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-            }
+        if (!isUserAuthorized(contactPointView.getDepartments())) {
+            throw new InvalidUserException("The User has not the needed permission!");
         }
-
-        try {
-            ContactPoint newContactPoint = createNewContactPoint(contactPointView);
-            UUID id = newContactPoint.getId();
-            List<ContactView> newContact = createContacts(id, contactPointView.getContact());
-            List<LinkView> newLinks = createLinks(id, contactPointView.getLinks());
-            List<Competence> newCompetences =
-                    createCompetencesIfPresent(id, contactPointView.getCompetences());
-            return new ContactPointView(
-                    newContactPoint.getId(),
-                    newContactPoint.getName(),
-                    newContactPoint.getShortCut(),
-                    newContactPoint.getDescription(),
-                    newContactPoint.getDepartment(),
-                    newContact,
-                    newCompetences,
-                    newLinks);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        for (Validator validator : validators) {
+            validator.validate(contactPointView);
         }
+        ContactPoint newContactPoint = createNewContactPoint(contactPointView);
+        UUID id = newContactPoint.getId();
+        List<ContactView> newContact = createContacts(id, contactPointView.getContact());
+        List<LinkView> newLinks = createLinks(id, contactPointView.getLinks());
+        List<Competence> newCompetences =
+                createCompetencesIfPresent(id, contactPointView.getCompetences());
+        return new ContactPointView(
+                newContactPoint.getId(),
+                newContactPoint.getName(),
+                newContactPoint.getShortCut(),
+                newContactPoint.getDescription(),
+                newContactPoint.getDepartments(),
+                newContact,
+                newCompetences,
+                newLinks);
     }
 
     private ContactPoint createNewContactPoint(ContactPointView contactPointView) {
@@ -110,5 +107,17 @@ public class ContactPointCreationService {
             savedContacts.add(contactService.createContact(new Contact(id, contact.getEmail())));
         }
         return savedContacts.stream().map(Contact::toView).collect(Collectors.toList());
+    }
+
+    private boolean isUserAuthorized(List<String> contactPointDepartment) {
+        AdminUserView adminInfo = adminService.getAdminUserInfo();
+        if (adminInfo.isCentralAdmin()) {
+            return true;
+        }
+        if (adminInfo.isDepartmentAdmin()) {
+            return contactPointDepartment.stream()
+                    .anyMatch(it -> it.equals(adminInfo.getDepartment()));
+        }
+        return false;
     }
 }

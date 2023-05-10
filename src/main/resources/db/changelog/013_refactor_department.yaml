@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: ex.schuetze
+      preConditions:
+        onError: CONTINUE
+        onFail: CONTINUE
+        columnExists:
+          tableName: contact_point
+          columnName: department
+      changes:
+        - dropColumn:
+            tableName: contact_point
+            columnName: department

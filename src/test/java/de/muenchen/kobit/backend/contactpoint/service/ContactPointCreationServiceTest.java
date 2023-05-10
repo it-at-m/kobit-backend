@@ -4,6 +4,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+import de.muenchen.kobit.backend.admin.model.AdminUserView;
+import de.muenchen.kobit.backend.admin.service.AdminService;
 import de.muenchen.kobit.backend.competence.Competence;
 import de.muenchen.kobit.backend.competence.service.CompetenceService;
 import de.muenchen.kobit.backend.contact.model.Contact;
@@ -13,7 +15,7 @@ import de.muenchen.kobit.backend.contactpoint.repository.ContactPointRepository;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
 import de.muenchen.kobit.backend.links.service.LinkService;
 import de.muenchen.kobit.backend.links.view.LinkView;
-import de.muenchen.kobit.backend.validation.ContactPointValidator;
+import de.muenchen.kobit.backend.validation.Validator;
 import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
 import java.util.List;
 import java.util.UUID;
@@ -27,19 +29,20 @@ class ContactPointCreationServiceTest {
     private final ContactService contactService = mock(ContactService.class);
     private final LinkService linkService = mock(LinkService.class);
     private final CompetenceService competenceService = mock(CompetenceService.class);
-    private final List<ContactPointValidator> validators =
-            List.of(mock(ContactPointValidator.class));
+    private final AdminService adminService = mock(AdminService.class);
+    private final List<Validator> validators = List.of(mock(Validator.class));
+
     private ContactPointCreationService contactCreationService;
 
     @BeforeEach
     void init() {
-        // clearAllCaches();
         contactCreationService =
                 new ContactPointCreationService(
                         contactPointRepository,
                         contactService,
                         linkService,
                         competenceService,
+                        adminService,
                         validators);
     }
 
@@ -52,26 +55,34 @@ class ContactPointCreationServiceTest {
         var savedLink = new LinkView(id, "link", "https://test-test.com/", false);
         var view =
                 new ContactPointView(
-                        id, "test", "tes", "test test", "t", contacts, competences, linkViews);
+                        id,
+                        "test",
+                        "tes",
+                        "test test",
+                        List.of("t"),
+                        contacts,
+                        competences,
+                        linkViews);
         var contactPoint = view.toContactPoint();
         contactPoint.setId(id);
         when(contactPointRepository.save(any())).thenReturn(contactPoint);
         when(linkService.createLink(any())).thenReturn(savedLink);
         when(contactService.createContact(any()))
                 .thenReturn(new Contact(id, contacts.get(0).getEmail()));
+        when(adminService.getAdminUserInfo()).thenReturn(new AdminUserView(true, false, "ITM"));
 
-        var resultView = contactCreationService.createContactPoint(view);
+        var result = contactCreationService.createContactPoint(view);
 
         verify(linkService).createLink(any());
         verify(competenceService, times(2)).createCompetenceToContactPoint(eq(id), any());
         verify(contactService).createContact(any());
         verify(contactPointRepository).save(any());
 
-        assertThat(resultView).isInstanceOf(ContactPointView.class);
-        assertThat(resultView.getContact().size()).isEqualTo(contacts.size());
-        assertThat(resultView.getLinks().size()).isEqualTo(linkViews.size());
-        assertThat(resultView.getCompetences().size()).isEqualTo(competences.size());
-        assertThat(resultView.getContact().get(0).getEmail()).isEqualTo(contacts.get(0).getEmail());
-        assertThat(resultView.getLinks().get(0).getContactPointId()).isEqualTo(id);
+        assertThat(result).isInstanceOf(ContactPointView.class);
+        assertThat(result.getContact().size()).isEqualTo(contacts.size());
+        assertThat(result.getLinks().size()).isEqualTo(linkViews.size());
+        assertThat(result.getCompetences().size()).isEqualTo(competences.size());
+        assertThat(result.getContact().get(0).getEmail()).isEqualTo(contacts.get(0).getEmail());
+        assertThat(result.getLinks().get(0).getContactPointId()).isEqualTo(id);
     }
 }

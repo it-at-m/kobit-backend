@@ -1,5 +1,6 @@
 package de.muenchen.kobit.backend.contactpoint.service;
 
+import de.muenchen.kobit.backend.admin.service.AdminService;
 import de.muenchen.kobit.backend.contact.service.ContactPointToViewMapper;
 import de.muenchen.kobit.backend.contactpoint.ContactPointNotFoundException;
 import de.muenchen.kobit.backend.contactpoint.model.ContactPoint;
@@ -22,22 +23,37 @@ public class ContactPointService {
     private final ContactPointRepository repo;
     private final ContactPointToViewMapper mapper;
 
-    public ContactPointService(ContactPointRepository repo, ContactPointToViewMapper mapper) {
+    private final AdminService adminService;
+
+    public ContactPointService(
+            ContactPointRepository repo,
+            ContactPointToViewMapper mapper,
+            AdminService adminService) {
         Objects.requireNonNull(repo);
         this.repo = repo;
         this.mapper = mapper;
+        this.adminService = adminService;
     }
 
     @Transactional
-    public List<ContactPointListItem> getContactPointList() {
-        List<ContactPointListItem> listItems =
-                repo.findAll().stream().map(ContactPoint::toListView).collect(Collectors.toList());
-        return orderByName(listItems);
+    public List<ContactPointListItem> getContactPointList(String department) {
+        List<ContactPoint> listItems;
+        if (adminService.isUserKobitAdmin()) {
+            listItems = repo.findAll();
+        } else {
+            listItems = repo.findAllByDepartmentLikeOrNull(department);
+        }
+        return orderByName(
+                listItems.stream().map(ContactPoint::toListView).collect(Collectors.toList()));
     }
 
     @Transactional(readOnly = true)
-    public Optional<ContactPointView> findById(UUID id) {
-        return repo.findById(id).map(mapper::contactPointToView);
+    public Optional<ContactPointView> findById(UUID id, String department) {
+        if (adminService.isUserKobitAdmin()) {
+            return repo.findById(id).map(mapper::contactPointToView);
+        }
+        return repo.findContactPointByIdAndDepartmentLike(id, department)
+                .map(mapper::contactPointToView);
     }
 
     @Transactional(readOnly = true)

@@ -1,47 +1,42 @@
-package de.muenchen.kobit.backend.validation.contactpoint;
+package de.muenchen.kobit.backend.validation;
 
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
-import de.muenchen.kobit.backend.validation.ContactPointValidator;
-import de.muenchen.kobit.backend.validation.exception.contactpoint.InvalidContactPointException;
+import de.muenchen.kobit.backend.validation.exception.InvalidContactPointException;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ValidateContactPoint implements ContactPointValidator<ContactPointView> {
+public class ValidateContactPoint implements Validator {
 
     private static final int NAME_MIN_SIZE = 5;
     private static final int NAME_MAX_SIZE = 100;
     private static final int SHORT_CUT_MIN = 3;
     private static final int SHORT_CUT_MAX = 10;
     private static final int DESCRIPTION_MAX_SIZE = 2000;
-    private static final String SHORT_CUT_PATTERN = "^[a-zA-ZäöüÄÖÜß\u0020]*$";
 
     @Override
     public void validate(ContactPointView contactPointView) throws InvalidContactPointException {
         if (contactPointView == null) {
-            throw new InvalidContactPointException("ContactPointView can not be null.");
+            throw new InvalidContactPointException("ContactPointView can not be null!");
         }
         if (anyFieldNull(contactPointView)) {
             throw new InvalidContactPointException(
-                    "ContactPoint Fields name, shortCut and description can not be null.");
+                    "ContactPoint Fields name, shortCut and description can not be null!");
         }
         if (anyFieldBlank(contactPointView)) {
             throw new InvalidContactPointException(
-                    "ContactPoint Fields name, shortCut and description can not be blank.");
+                    "ContactPoint Fields name, shortCut and description can not be blank!");
         }
         if (isNameOutOfRange(contactPointView.getName())) {
             throw new InvalidContactPointException(
-                    "Name must be at least 4 characters and not more than 100.");
+                    "Name must be at least 4 characters and not more than 100!");
         }
         if (isShortCutOutOfRange(contactPointView.getShortCut())) {
             throw new InvalidContactPointException(
-                    "ShortCut must be at least 3 letters and not more than 10.");
-        }
-        if (!isShortCutValid(contactPointView.getShortCut())) {
-            throw new InvalidContactPointException("Shortcut can only be letters.");
+                    "ShortCut must be at least 3 letters and not more than 10!");
         }
         if (isDescriptionTooLarge(contactPointView.getDescription())) {
             throw new InvalidContactPointException(
-                    "Description must be not more than 2000 characters.");
+                    "Description must be not more than 2000 characters!");
         }
     }
 
@@ -67,9 +62,5 @@ public class ValidateContactPoint implements ContactPointValidator<ContactPointV
 
     private boolean isDescriptionTooLarge(String description) {
         return description.length() > DESCRIPTION_MAX_SIZE;
-    }
-
-    private boolean isShortCutValid(String shortcut) {
-        return shortcut.matches(SHORT_CUT_PATTERN);
     }
 }

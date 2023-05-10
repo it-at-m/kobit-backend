@@ -24,7 +24,7 @@ class ValidateLinksTest {
                         "test",
                         "test",
                         "test",
-                        "test",
+                        List.of("test"),
                         List.of(),
                         List.of(),
                         List.of(new LinkView(id, "link", "https://google.com", false)));
@@ -40,7 +40,7 @@ class ValidateLinksTest {
                         "test",
                         "test",
                         "test",
-                        "test",
+                        List.of("test"),
                         List.of(),
                         List.of(),
                         List.of(new LinkView(null, "link", "https://google.com", false)));
@@ -56,7 +56,7 @@ class ValidateLinksTest {
                         "test",
                         "test",
                         "test",
-                        "test",
+                        List.of("test"),
                         List.of(),
                         List.of(),
                         List.of(new LinkView(id, "link", "https://google..com", false)));
@@ -75,7 +75,7 @@ class ValidateLinksTest {
                         "test",
                         "test",
                         "test",
-                        "test",
+                        List.of("test"),
                         List.of(),
                         List.of(),
                         List.of(new LinkView(id, "link", null, false)));
@@ -94,7 +94,7 @@ class ValidateLinksTest {
                         "test",
                         "test",
                         "test",
-                        "test",
+                        List.of("test"),
                         List.of(),
                         List.of(),
                         List.of(new LinkView(id, null, "https://google.com", false)));

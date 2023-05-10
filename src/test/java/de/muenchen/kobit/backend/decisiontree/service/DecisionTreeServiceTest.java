@@ -41,6 +41,7 @@ class DecisionTreeServiceTest {
 
     @Test
     void getNextDecisionPointOrContactPointsTest_decisionPoint() {
+        String department = "ITM";
         var competences = List.of(Competence.HEALTH_PROBLEMS);
         var decisionPoint =
                 new DecisionPoint(
@@ -48,8 +49,9 @@ class DecisionTreeServiceTest {
                         "question",
                         List.of(Competence.ADDICTION.toCompetenceView()));
         when(healthIssuesBranch.getNextNode(Competence.HEALTH_PROBLEMS)).thenReturn(decisionPoint);
-        var result = decisionTreeService.getNextDecisionPointOrContactPoints(competences);
-        verify(competenceService, never()).findAllContactPointsForCompetences(any());
+        var result =
+                decisionTreeService.getNextDecisionPointOrContactPoints(competences, department);
+        verify(competenceService, never()).findAllContactPointsForCompetences(any(), any());
         verify(mobbingBranch, never()).getNextNode(any());
         verify(discriminationBranch, never()).getNextNode(any());
         verify(workConflictBranch, never()).getNextNode(any());
@@ -59,6 +61,7 @@ class DecisionTreeServiceTest {
 
     @Test
     void getNextDecisionPointOrContactPointsTest_empty() {
+        String department = "ITM";
         List<Competence> competences = List.of();
         var decisionPoint =
                 new DecisionPoint(
@@ -66,8 +69,9 @@ class DecisionTreeServiceTest {
                         "question",
                         List.of(Competence.ADDICTION.toCompetenceView()));
         when(root.getRootOptions()).thenReturn(decisionPoint);
-        var result = decisionTreeService.getNextDecisionPointOrContactPoints(competences);
-        verify(competenceService, never()).findAllContactPointsForCompetences(any());
+        var result =
+                decisionTreeService.getNextDecisionPointOrContactPoints(competences, department);
+        verify(competenceService, never()).findAllContactPointsForCompetences(any(), any());
         verify(mobbingBranch, never()).getNextNode(any());
         verify(discriminationBranch, never()).getNextNode(any());
         verify(workConflictBranch, never()).getNextNode(any());
@@ -89,18 +93,34 @@ class DecisionTreeServiceTest {
 
     @Test
     void getNextDecisionPointOrContactPointsTest_end() {
+        String department = "ITM";
         var id = UUID.randomUUID();
         var contactPoints = new ArrayList<ContactPointView>();
         contactPoints.add(
                 new ContactPointView(
-                        id, "test", "test", "test", "test", List.of(), List.of(), List.of()));
+                        id,
+                        "test",
+                        "test",
+                        "test",
+                        List.of("test"),
+                        List.of(),
+                        List.of(),
+                        List.of()));
         contactPoints.add(
                 new ContactPointView(
-                        id, "test", "atest", "test", "test", List.of(), List.of(), List.of()));
+                        id,
+                        "test",
+                        "atest",
+                        "test",
+                        List.of("test"),
+                        List.of(),
+                        List.of(),
+                        List.of()));
         List<Competence> competences = List.of(Competence.ANTI_DEMOCRACY);
-        when(competenceService.findAllContactPointsForCompetences(competences))
+        when(competenceService.findAllContactPointsForCompetences(competences, department))
                 .thenReturn(contactPoints);
-        var result = decisionTreeService.getNextDecisionPointOrContactPoints(competences);
+        var result =
+                decisionTreeService.getNextDecisionPointOrContactPoints(competences, department);
         verify(healthIssuesBranch, never()).getNextNode(any());
         verify(mobbingBranch, never()).getNextNode(any());
         verify(discriminationBranch, never()).getNextNode(any());
@@ -111,51 +131,137 @@ class DecisionTreeServiceTest {
 
     @Test
     void getNextDecisionPointOrContactPointsTest_end_umlaut_sorted_alphabetical() {
+        String department = "ITM";
         var id = UUID.randomUUID();
         var contactPoints = new ArrayList<ContactPointView>();
         contactPoints.add(
                 new ContactPointView(
-                        id, "mtest", "mtest", "test", "test", List.of(), List.of(), List.of()));
+                        id,
+                        "mtest",
+                        "mtest",
+                        "test",
+                        List.of("test"),
+                        List.of(),
+                        List.of(),
+                        List.of()));
         contactPoints.add(
                 new ContactPointView(
-                        id, "test", "test", "test", "test", List.of(), List.of(), List.of()));
+                        id,
+                        "test",
+                        "test",
+                        "test",
+                        List.of("test"),
+                        List.of(),
+                        List.of(),
+                        List.of()));
         contactPoints.add(
                 new ContactPointView(
-                        id, "ätest", "ätest", "test", "test", List.of(), List.of(), List.of()));
+                        id,
+                        "ätest",
+                        "ätest",
+                        "test",
+                        List.of("test"),
+                        List.of(),
+                        List.of(),
+                        List.of()));
         contactPoints.add(
                 new ContactPointView(
-                        id, "ötest", "ötest", "test", "test", List.of(), List.of(), List.of()));
+                        id,
+                        "ötest",
+                        "ötest",
+                        "test",
+                        List.of("test"),
+                        List.of(),
+                        List.of(),
+                        List.of()));
         contactPoints.add(
                 new ContactPointView(
-                        id, "ptest", "ptest", "test", "test", List.of(), List.of(), List.of()));
+                        id,
+                        "ptest",
+                        "ptest",
+                        "test",
+                        List.of("test"),
+                        List.of(),
+                        List.of(),
+                        List.of()));
         contactPoints.add(
                 new ContactPointView(
-                        id, "atest", "atest", "test", "test", List.of(), List.of(), List.of()));
+                        id,
+                        "atest",
+                        "atest",
+                        "test",
+                        List.of("test"),
+                        List.of(),
+                        List.of(),
+                        List.of()));
 
         var contactPointsAlphabetical = new ArrayList<ContactPointView>();
         contactPointsAlphabetical.add(
                 new ContactPointView(
-                        id, "atest", "atest", "test", "test", List.of(), List.of(), List.of()));
+                        id,
+                        "atest",
+                        "atest",
+                        "test",
+                        List.of("test"),
+                        List.of(),
+                        List.of(),
+                        List.of()));
         contactPointsAlphabetical.add(
                 new ContactPointView(
-                        id, "ätest", "ätest", "test", "test", List.of(), List.of(), List.of()));
+                        id,
+                        "ätest",
+                        "ätest",
+                        "test",
+                        List.of("test"),
+                        List.of(),
+                        List.of(),
+                        List.of()));
         contactPointsAlphabetical.add(
                 new ContactPointView(
-                        id, "mtest", "mtest", "test", "test", List.of(), List.of(), List.of()));
+                        id,
+                        "mtest",
+                        "mtest",
+                        "test",
+                        List.of("test"),
+                        List.of(),
+                        List.of(),
+                        List.of()));
         contactPointsAlphabetical.add(
                 new ContactPointView(
-                        id, "ötest", "ötest", "test", "test", List.of(), List.of(), List.of()));
+                        id,
+                        "ötest",
+                        "ötest",
+                        "test",
+                        List.of("test"),
+                        List.of(),
+                        List.of(),
+                        List.of()));
         contactPointsAlphabetical.add(
                 new ContactPointView(
-                        id, "ptest", "ptest", "test", "test", List.of(), List.of(), List.of()));
+                        id,
+                        "ptest",
+                        "ptest",
+                        "test",
+                        List.of("test"),
+                        List.of(),
+                        List.of(),
+                        List.of()));
         contactPointsAlphabetical.add(
                 new ContactPointView(
-                        id, "test", "test", "test", "test", List.of(), List.of(), List.of()));
+                        id,
+                        "test",
+                        "test",
+                        "test",
+                        List.of("test"),
+                        List.of(),
+                        List.of(),
+                        List.of()));
 
         List<Competence> competences = List.of(Competence.ANTI_DEMOCRACY);
-        when(competenceService.findAllContactPointsForCompetences(competences))
+        when(competenceService.findAllContactPointsForCompetences(competences, department))
                 .thenReturn(contactPoints);
-        var result = decisionTreeService.getNextDecisionPointOrContactPoints(competences);
+        var result =
+                decisionTreeService.getNextDecisionPointOrContactPoints(competences, department);
         verify(healthIssuesBranch, never()).getNextNode(any());
         verify(mobbingBranch, never()).getNextNode(any());
         verify(discriminationBranch, never()).getNextNode(any());

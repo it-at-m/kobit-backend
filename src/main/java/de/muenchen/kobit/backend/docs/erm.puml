@@ -8,7 +8,7 @@ class Anlaufstelle {
     Beschreibung: String
     Kontakt: Kontakt
     Link: Link
-    Referat: Referat
+    Referate: List<String>
 }
 
 class Kompetenzen {
@@ -24,10 +24,6 @@ enum Kompetenz {
 class Kontakt {
     anlaufstellenID: UUID
     E-Mail: String
-}
-
-enum Referat {
-    POR, KVR, ...
 }
 
 class Link {
@@ -72,13 +68,12 @@ class Zitate {
     Author: String
 }
 
-Anlaufstelle "1"-->"n" Kontakt
-Anlaufstelle "1"-->"n" Link
+
+Anlaufstelle "1"-u->"n" Kontakt
+Anlaufstelle "1"-r->"n" Link
 Anlaufstelle "1"-->"n" Kompetenzen
 Kompetenzen --> Kompetenz
 Link --> DatenTyp
-Kontakt --> Referat
-FAQGlossar --> Referat
 Seiten --> SeitenTyp
 
 @enduml

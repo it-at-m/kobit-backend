@@ -23,7 +23,7 @@ class ValidateCompetenceTest {
                         "test",
                         "test",
                         "test",
-                        "test",
+                        List.of("test"),
                         List.of(),
                         List.of(Competence.DISCRIMINATION),
                         List.of());
@@ -38,7 +38,7 @@ class ValidateCompetenceTest {
                         "test",
                         "test",
                         "test",
-                        "test",
+                        List.of("test"),
                         List.of(),
                         List.of(),
                         List.of());
@@ -57,7 +57,7 @@ class ValidateCompetenceTest {
                         "test",
                         "test",
                         "test",
-                        "test",
+                        List.of("test"),
                         List.of(),
                         null,
                         List.of());

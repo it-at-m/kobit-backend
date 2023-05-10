@@ -54,7 +54,7 @@ public class DecisionTreeService {
 
     @Transactional(readOnly = true)
     public DecisionContactPointWrapper getNextDecisionPointOrContactPoints(
-            List<Competence> selectedCompetences) {
+            List<Competence> selectedCompetences, String department) {
         if (selectedCompetences.isEmpty()) {
             return getRoot();
         }
@@ -72,7 +72,7 @@ public class DecisionTreeService {
             return new DecisionContactPointWrapper(
                     orderAlphabetically(
                             competenceService.findAllContactPointsForCompetences(
-                                    selectedCompetences)));
+                                    selectedCompetences, department)));
         } else {
             return new DecisionContactPointWrapper(result);
         }
