@@ -6,44 +6,26 @@ import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import de.muenchen.kobit.backend.configuration.S3Config;
+import org.springframework.stereotype.Component;
 
-@Slf4j
-@Service
-public class S3DeletionService {
+@Component
+public class S3DeletionService extends S3Config {
 
-    @Value("${spring.aws.s3.bucket-name}")
-    private String bucketName;
-
-    @Value("${spring.aws.s3.access-key}")
-    private String accessKey;
-
-    @Value("${spring.aws.s3.secret-key}")
-    private String secretKey;
-
-    @Value("${spring.aws.s3.hostname}")
-    private String hostname;
-
-    @Value("${spring.aws.s3.region.static}")
-    private String signingRegion;
-
-    private AmazonS3 getS3Client() {
+    public AmazonS3 getClient() {
         return AmazonS3ClientBuilder.standard()
                 .withEndpointConfiguration(
-                        new AwsClientBuilder.EndpointConfiguration(hostname, signingRegion))
+                        new AwsClientBuilder.EndpointConfiguration(
+                                getHostname(), getSigningRegion()))
                 .withCredentials(
                         new AWSStaticCredentialsProvider(
-                                new BasicAWSCredentials(accessKey, secretKey)))
+                                new BasicAWSCredentials(getAccessKey(), getSecretKey())))
                 .build();
     }
 
     public void deleteFileByLink(String link) {
-
         String[] parts = link.split("/");
-
         String fileName = parts[parts.length - 1];
-        getS3Client().deleteObject(new DeleteObjectRequest(bucketName, fileName));
+        getClient().deleteObject(new DeleteObjectRequest(getBucketName(), fileName));
     }
 }

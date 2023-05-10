@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ContentItemView {
 
-    private UUID id; // Replace 'uuid' with 'id'
+    private UUID id;
 
     private PageType pageType;
 
@@ -46,7 +46,7 @@ public class ContentItemView {
 
     public static ContentItemView toView(ContentItem contentItem) {
         ContentItemView view = new ContentItemView();
-        view.setId(contentItem.getId()); // Replace 'setUuid' with 'setId'
+        view.setId(contentItem.getId());
         view.setPageType(contentItem.getPageType());
         view.setContent(contentItem.getContent());
 

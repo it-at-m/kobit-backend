@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import de.muenchen.kobit.backend.configuration.S3Config;
 import de.muenchen.kobit.backend.validation.S3FileValidator;
 import de.muenchen.kobit.backend.validation.exception.S3FileValidationException;
 import java.io.IOException;
@@ -15,37 +16,22 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class S3UploadService {
-
-    @Value("${spring.aws.s3.bucket-name}")
-    private String bucketName;
-
-    @Value("${spring.aws.s3.access-key}")
-    private String accessKey;
-
-    @Value("${spring.aws.s3.secret-key}")
-    private String secretKey;
-
-    @Value("${spring.aws.s3.hostname}")
-    private String hostname;
-
-    @Value("${spring.aws.s3.region.static}")
-    private String signingRegion;
+public class S3UploadService extends S3Config {
 
     private final List<S3FileValidator> validators;
 
     private AmazonS3 getS3Client() {
         return AmazonS3ClientBuilder.standard()
                 .withEndpointConfiguration(
-                        new AwsClientBuilder.EndpointConfiguration(hostname, signingRegion))
+                        new AwsClientBuilder.EndpointConfiguration(
+                                getHostname(), getSigningRegion()))
                 .withCredentials(
                         new AWSStaticCredentialsProvider(
-                                new BasicAWSCredentials(accessKey, secretKey)))
+                                new BasicAWSCredentials(getAccessKey(), getSecretKey())))
                 .build();
     }
 
