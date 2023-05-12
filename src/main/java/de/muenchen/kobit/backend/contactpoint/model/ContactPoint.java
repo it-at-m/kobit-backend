@@ -1,6 +1,7 @@
 package de.muenchen.kobit.backend.contactpoint.model;
 
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointListItem;
+import java.net.URL;
 import java.util.List;
 import java.util.UUID;
 import javax.persistence.CollectionTable;
@@ -51,17 +52,20 @@ public class ContactPoint {
     @Column(name = "department")
     private List<String> departments;
 
-    //Add Image Link as a column
+    // Add Image Link as a column
+    @Column(name = "image")
+    private URL image;
 
     public ContactPoint(
-            String name, String shortCut, String description, List<String> departments) {
+            String name, String shortCut, String description, List<String> departments, URL image) {
         this.name = name;
         this.description = description;
         this.shortCut = shortCut;
         this.departments = departments;
+        this.image = image;
     }
 
     public ContactPointListItem toListView() {
-        return new ContactPointListItem(id, name, shortCut, departments);
+        return new ContactPointListItem(id, name, shortCut, departments, image);
     }
 }

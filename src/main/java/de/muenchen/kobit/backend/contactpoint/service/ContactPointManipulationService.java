@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,7 +65,8 @@ public class ContactPointManipulationService {
             validator.validate(contactPointView);
         }
         if (!isUserAuthorized(contactPointView.getDepartments())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"The User has not the needed permission!");
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "The User has not the needed permission!");
         }
         validateId(contactPointView.getId(), pathId);
         ContactPoint newContactPoint = createOrUpdateContactPoint(contactPointView, pathId);
@@ -82,7 +82,8 @@ public class ContactPointManipulationService {
                 newContactPoint.getDepartments(),
                 newContact,
                 newCompetences,
-                newLinks);
+                newLinks,
+                newContactPoint.getImage());
     }
 
     private void validateId(UUID contactPointId, UUID pathID) throws InvalidContactPointException {

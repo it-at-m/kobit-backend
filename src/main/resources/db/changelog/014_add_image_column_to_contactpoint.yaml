@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - changeSet:
+      id: add_image_column_1
+      author: thomas.fink
+      preConditions:
+        onError: CONTINUE
+        onFail: CONTINUE
+      changes:
+        - addColumn:
+            tableName: contact_point
+            columns:
+              - column:
+                  name: image
+                  type: varchar(2048)
+                  constraints:
+                    nullable: true

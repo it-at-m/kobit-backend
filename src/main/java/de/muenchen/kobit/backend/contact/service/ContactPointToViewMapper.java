@@ -60,6 +60,7 @@ public class ContactPointToViewMapper {
                 contactPoint.getDepartments(),
                 contacts.stream().map(Contact::toView).collect(Collectors.toList()),
                 competences,
-                links);
+                links,
+                contactPoint.getImage());
     }
 }

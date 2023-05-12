@@ -19,7 +19,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,7 +56,8 @@ public class ContactPointCreationService {
             contactPointView.setLinks(Collections.emptyList());
         }
         if (!isUserAuthorized(contactPointView.getDepartments())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The User has not the needed permission!");
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "The User has not the needed permission!");
         }
         for (Validator validator : validators) {
             validator.validate(contactPointView);
@@ -76,7 +76,8 @@ public class ContactPointCreationService {
                 newContactPoint.getDepartments(),
                 newContact,
                 newCompetences,
-                newLinks);
+                newLinks,
+                newContactPoint.getImage());
     }
 
     private ContactPoint createNewContactPoint(ContactPointView contactPointView) {
