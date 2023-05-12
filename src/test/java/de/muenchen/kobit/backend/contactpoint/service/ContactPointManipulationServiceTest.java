@@ -19,6 +19,9 @@ import de.muenchen.kobit.backend.links.service.LinkService;
 import de.muenchen.kobit.backend.links.view.LinkView;
 import de.muenchen.kobit.backend.validation.Validator;
 import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,8 +52,9 @@ class ContactPointManipulationServiceTest {
     }
 
     @Test
-    void updateContactPointTest() throws ContactPointValidationException {
+    void updateContactPointTest() throws ContactPointValidationException, MalformedURLException {
         var id = UUID.randomUUID();
+        URL imageUrl = new URL("https://example.com/image.jpg");
         var contactViews = List.of(new ContactView("test-mail@mail.de"));
         var contacts = List.of(new Contact(id, "test-mail@mail.de"));
         var competences = List.of(Competence.EMPLOYEE, Competence.DOMESTIC_VIOLENCE);
@@ -66,7 +70,8 @@ class ContactPointManipulationServiceTest {
                         List.of("ITM"),
                         contactViews,
                         competences,
-                        linkViews);
+                        linkViews,
+                        imageUrl);
         var contactPoint = view.toContactPoint();
         contactPoint.setId(id);
         when(contactPointRepository.getReferenceById(id))
@@ -76,7 +81,8 @@ class ContactPointManipulationServiceTest {
                                 view.getName(),
                                 view.getShortCut(),
                                 view.getDescription(),
-                                view.getDepartments()));
+                                view.getDepartments(),
+                                imageUrl));
         when(linkService.getLinksByContactPointId(id)).thenReturn(links);
         when(contactService.getContactsByContactPointId(id)).thenReturn(contacts);
         when(contactPointRepository.save(any())).thenReturn(contactPoint);
@@ -107,8 +113,9 @@ class ContactPointManipulationServiceTest {
     }
 
     @Test
-    void updateContactPoint_WrongUser() {
+    void updateContactPoint_WrongUser() throws MalformedURLException {
         var id = UUID.randomUUID();
+        URL imageUrl = new URL("https://example.com/image.jpg");
         var contactViews = List.of(new ContactView("test-mail@mail.de"));
         var contacts = List.of(new Contact(id, "test-mail@mail.de"));
         var competences = List.of(Competence.EMPLOYEE, Competence.DOMESTIC_VIOLENCE);
@@ -124,7 +131,8 @@ class ContactPointManipulationServiceTest {
                         List.of("TST"),
                         contactViews,
                         competences,
-                        linkViews);
+                        linkViews,
+                        imageUrl);
         when(adminService.getAdminUserInfo()).thenReturn(new AdminUserView(false, true, "ITM"));
         Exception ex =
                 assertThrows(

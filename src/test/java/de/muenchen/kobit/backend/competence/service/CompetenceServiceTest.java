@@ -13,6 +13,9 @@ import de.muenchen.kobit.backend.contact.service.ContactPointToViewMapper;
 import de.muenchen.kobit.backend.contactpoint.model.ContactPoint;
 import de.muenchen.kobit.backend.contactpoint.repository.ContactPointRepository;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,12 +38,14 @@ class CompetenceServiceTest {
     }
 
     @Test
-    void testFindAllContactPointsForCompetences() {
+    void testFindAllContactPointsForCompetences() throws MalformedURLException {
         var matchId = randomUUID();
         var matchId1 = randomUUID();
         var matchId2 = randomUUID();
         var noMatch = randomUUID();
         var noMatch1 = randomUUID();
+
+        URL imageUrl = new URL("https://text.com/image.jpg");
 
         var competences =
                 List.of(Competence.DISCRIMINATION, Competence.EMPLOYEE, Competence.ETHNIC_RACIAL);
@@ -64,9 +69,9 @@ class CompetenceServiceTest {
                         new CompetenceToContactPoint(noMatch, Competence.WORKPLACE_CONFLICT),
                         new CompetenceToContactPoint(noMatch1, Competence.MOBBING),
                         new CompetenceToContactPoint(noMatch1, Competence.EMPLOYEE));
-        var contactPoint = new ContactPoint(matchId, "test", "t", "test", List.of("ITM"));
-        var contactPoint1 = new ContactPoint(matchId1, "test1", "t1", "test1", List.of("ITM"));
-        var contactPoint2 = new ContactPoint(matchId2, "test2", "t2", "test2", List.of("ITM"));
+        var contactPoint = new ContactPoint(matchId, "test", "t", "test", List.of("ITM"), imageUrl);
+        var contactPoint1 = new ContactPoint(matchId1, "test1", "t1", "test1", List.of("ITM"), imageUrl);
+        var contactPoint2 = new ContactPoint(matchId2, "test2", "t2", "test2", List.of("ITM"), imageUrl);
         var contactPoints = List.of(contactPoint, contactPoint1, contactPoint2);
         var view =
                 new ContactPointView(
@@ -77,7 +82,8 @@ class CompetenceServiceTest {
                         List.of(""),
                         new ArrayList<>(),
                         new ArrayList<>(),
-                        new ArrayList<>());
+                        new ArrayList<>(),
+                        imageUrl);
         var view1 =
                 new ContactPointView(
                         matchId1,
@@ -87,7 +93,8 @@ class CompetenceServiceTest {
                         List.of(""),
                         new ArrayList<>(),
                         new ArrayList<>(),
-                        new ArrayList<>());
+                        new ArrayList<>(),
+                        imageUrl);
         var view2 =
                 new ContactPointView(
                         matchId2,
@@ -97,7 +104,8 @@ class CompetenceServiceTest {
                         List.of(""),
                         new ArrayList<>(),
                         new ArrayList<>(),
-                        new ArrayList<>());
+                        new ArrayList<>(),
+                        imageUrl);
         var contactPointViews = List.of(view, view1, view2);
         when(competenceRepository.findAllByCompetenceIn(competences))
                 .thenReturn(competenceToContactPoints);
@@ -113,13 +121,15 @@ class CompetenceServiceTest {
     }
 
     @Test
-    void testFindAllContactPointsForCompetences_with_edge_case() {
+    void testFindAllContactPointsForCompetences_with_edge_case() throws MalformedURLException {
         var matchId = randomUUID();
         var matchId1 = randomUUID();
         var matchId2 = randomUUID();
         var noMatch = randomUUID();
         var noMatch1 = randomUUID();
         var department = "ITM";
+
+        URL imageUrl = new URL("https://text.com/image.jpg");
 
         var competences =
                 List.of(
@@ -154,9 +164,9 @@ class CompetenceServiceTest {
                         new CompetenceToContactPoint(noMatch, Competence.WORKPLACE_CONFLICT),
                         new CompetenceToContactPoint(noMatch1, Competence.MOBBING),
                         new CompetenceToContactPoint(noMatch1, Competence.EMPLOYEE));
-        var contactPoint = new ContactPoint(matchId, "test", "t", "test", List.of(department));
-        var contactPoint1 = new ContactPoint(matchId1, "test1", "t1", "test1", List.of(department));
-        var contactPoint2 = new ContactPoint(matchId2, "test2", "t2", "test2", List.of(department));
+        var contactPoint = new ContactPoint(matchId, "test", "t", "test", List.of(department), imageUrl);
+        var contactPoint1 = new ContactPoint(matchId1, "test1", "t1", "test1", List.of(department), imageUrl);
+        var contactPoint2 = new ContactPoint(matchId2, "test2", "t2", "test2", List.of(department), imageUrl);
         var contactPoints = List.of(contactPoint, contactPoint1, contactPoint2);
         var view =
                 new ContactPointView(
@@ -167,7 +177,8 @@ class CompetenceServiceTest {
                         List.of(""),
                         new ArrayList<>(),
                         new ArrayList<>(),
-                        new ArrayList<>());
+                        new ArrayList<>(),
+                        imageUrl);
         var view1 =
                 new ContactPointView(
                         matchId1,
@@ -177,7 +188,8 @@ class CompetenceServiceTest {
                         List.of(""),
                         new ArrayList<>(),
                         new ArrayList<>(),
-                        new ArrayList<>());
+                        new ArrayList<>(),
+                        imageUrl);
         var view2 =
                 new ContactPointView(
                         matchId2,
@@ -187,7 +199,8 @@ class CompetenceServiceTest {
                         List.of(""),
                         new ArrayList<>(),
                         new ArrayList<>(),
-                        new ArrayList<>());
+                        new ArrayList<>(),
+                        imageUrl);
         var contactPointViews = List.of(view, view1, view2);
         when(competenceRepository.findAllByCompetenceIn(competences))
                 .thenReturn(competenceToContactPoints);
