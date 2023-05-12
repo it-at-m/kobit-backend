@@ -51,6 +51,8 @@ public class ContactPoint {
     @Column(name = "department")
     private List<String> departments;
 
+    //Add Image Link as a column
+
     public ContactPoint(
             String name, String shortCut, String description, List<String> departments) {
         this.name = name;

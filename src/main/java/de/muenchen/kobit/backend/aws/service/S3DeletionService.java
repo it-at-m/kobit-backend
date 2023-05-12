@@ -1,4 +1,4 @@
-package de.muenchen.kobit.backend.additional.pagecontent.service;
+package de.muenchen.kobit.backend.aws.service;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
