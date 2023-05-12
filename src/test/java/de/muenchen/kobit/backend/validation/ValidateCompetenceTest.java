@@ -7,7 +7,6 @@ import de.muenchen.kobit.backend.competence.Competence;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
 import de.muenchen.kobit.backend.validation.contactpoint.ValidateCompetence;
 import de.muenchen.kobit.backend.validation.exception.contactpoint.InvalidCompetenceException;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;

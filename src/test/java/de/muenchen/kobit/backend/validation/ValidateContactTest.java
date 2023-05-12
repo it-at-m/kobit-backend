@@ -6,7 +6,6 @@ import de.muenchen.kobit.backend.contact.view.ContactView;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
 import de.muenchen.kobit.backend.validation.contactpoint.ValidateContact;
 import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;

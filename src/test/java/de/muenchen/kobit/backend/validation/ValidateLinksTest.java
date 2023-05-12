@@ -3,12 +3,10 @@ package de.muenchen.kobit.backend.validation;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import de.muenchen.kobit.backend.contactpoint.model.ContactPoint;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
 import de.muenchen.kobit.backend.links.view.LinkView;
 import de.muenchen.kobit.backend.validation.contactpoint.ValidateLinks;
 import de.muenchen.kobit.backend.validation.exception.contactpoint.InvalidLinkException;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -38,7 +36,8 @@ class ValidateLinksTest {
     }
 
     @Test
-    void validateTest_isValidContactPointIdNull() throws InvalidLinkException, MalformedURLException {
+    void validateTest_isValidContactPointIdNull()
+            throws InvalidLinkException, MalformedURLException {
         UUID id = UUID.randomUUID();
         URL imageUrl = new URL("https://example.com/image.jpg");
         ContactPointView contactPointView =

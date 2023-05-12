@@ -19,7 +19,6 @@ import de.muenchen.kobit.backend.links.service.LinkService;
 import de.muenchen.kobit.backend.links.view.LinkView;
 import de.muenchen.kobit.backend.validation.Validator;
 import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;

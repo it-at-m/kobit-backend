@@ -9,7 +9,6 @@ import de.muenchen.kobit.backend.competence.service.CompetenceService;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
 import de.muenchen.kobit.backend.decisiontree.branches.*;
 import de.muenchen.kobit.backend.decisiontree.view.DecisionPoint;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -136,7 +135,8 @@ class DecisionTreeServiceTest {
     }
 
     @Test
-    void getNextDecisionPointOrContactPointsTest_end_umlaut_sorted_alphabetical() throws MalformedURLException {
+    void getNextDecisionPointOrContactPointsTest_end_umlaut_sorted_alphabetical()
+            throws MalformedURLException {
         String department = "ITM";
         var id = UUID.randomUUID();
         URL imageUrl = new URL("https://example.com/image.jpg");

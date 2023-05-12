@@ -13,7 +13,6 @@ import de.muenchen.kobit.backend.contact.service.ContactPointToViewMapper;
 import de.muenchen.kobit.backend.contactpoint.model.ContactPoint;
 import de.muenchen.kobit.backend.contactpoint.repository.ContactPointRepository;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -70,8 +69,10 @@ class CompetenceServiceTest {
                         new CompetenceToContactPoint(noMatch1, Competence.MOBBING),
                         new CompetenceToContactPoint(noMatch1, Competence.EMPLOYEE));
         var contactPoint = new ContactPoint(matchId, "test", "t", "test", List.of("ITM"), imageUrl);
-        var contactPoint1 = new ContactPoint(matchId1, "test1", "t1", "test1", List.of("ITM"), imageUrl);
-        var contactPoint2 = new ContactPoint(matchId2, "test2", "t2", "test2", List.of("ITM"), imageUrl);
+        var contactPoint1 =
+                new ContactPoint(matchId1, "test1", "t1", "test1", List.of("ITM"), imageUrl);
+        var contactPoint2 =
+                new ContactPoint(matchId2, "test2", "t2", "test2", List.of("ITM"), imageUrl);
         var contactPoints = List.of(contactPoint, contactPoint1, contactPoint2);
         var view =
                 new ContactPointView(
@@ -164,9 +165,12 @@ class CompetenceServiceTest {
                         new CompetenceToContactPoint(noMatch, Competence.WORKPLACE_CONFLICT),
                         new CompetenceToContactPoint(noMatch1, Competence.MOBBING),
                         new CompetenceToContactPoint(noMatch1, Competence.EMPLOYEE));
-        var contactPoint = new ContactPoint(matchId, "test", "t", "test", List.of(department), imageUrl);
-        var contactPoint1 = new ContactPoint(matchId1, "test1", "t1", "test1", List.of(department), imageUrl);
-        var contactPoint2 = new ContactPoint(matchId2, "test2", "t2", "test2", List.of(department), imageUrl);
+        var contactPoint =
+                new ContactPoint(matchId, "test", "t", "test", List.of(department), imageUrl);
+        var contactPoint1 =
+                new ContactPoint(matchId1, "test1", "t1", "test1", List.of(department), imageUrl);
+        var contactPoint2 =
+                new ContactPoint(matchId2, "test2", "t2", "test2", List.of(department), imageUrl);
         var contactPoints = List.of(contactPoint, contactPoint1, contactPoint2);
         var view =
                 new ContactPointView(

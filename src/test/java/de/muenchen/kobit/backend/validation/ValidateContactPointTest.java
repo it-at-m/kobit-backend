@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
 import de.muenchen.kobit.backend.validation.contactpoint.ValidateContactPoint;
 import de.muenchen.kobit.backend.validation.exception.contactpoint.InvalidContactPointException;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;

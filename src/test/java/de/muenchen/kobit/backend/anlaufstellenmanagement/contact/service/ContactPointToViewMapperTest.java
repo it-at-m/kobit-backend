@@ -13,7 +13,6 @@ import de.muenchen.kobit.backend.contactpoint.model.ContactPoint;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
 import de.muenchen.kobit.backend.links.service.LinkService;
 import de.muenchen.kobit.backend.links.view.LinkView;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -39,11 +38,15 @@ class ContactPointToViewMapperTest {
     @Test
     void contactPointToView_ObjectTest() throws MalformedURLException {
 
-
-
-            URL imageUrl = new URL("https://text.com/image.jpg");
-            ContactPoint contactPoint = new ContactPoint(
-                    UUID.randomUUID(), "test", "test", "Beschreibung", List.of("test"), imageUrl);
+        URL imageUrl = new URL("https://text.com/image.jpg");
+        ContactPoint contactPoint =
+                new ContactPoint(
+                        UUID.randomUUID(),
+                        "test",
+                        "test",
+                        "Beschreibung",
+                        List.of("test"),
+                        imageUrl);
 
         List<Contact> contacts = List.of(new Contact(contactPoint.getId(), "mail"));
         List<LinkView> links = List.of(new LinkView(contactPoint.getId(), "test", "test", false));
