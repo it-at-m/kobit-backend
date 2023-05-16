@@ -62,10 +62,22 @@ public class S3UploadService extends S3Config {
 
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(file.getSize());
-        getS3Client()
-                .putObject(
-                        new PutObjectRequest(
-                                bucketName, newFileName, file.getInputStream(), metadata));
+        if (extension.equalsIgnoreCase(".pdf")) {
+            metadata.setContentDisposition("inline; filename=\"" + originalFileName + "\"");
+            metadata.setContentType("application/pdf");
+        } else if (extension.equalsIgnoreCase(".jpg") || extension.equalsIgnoreCase(".jpeg")) {
+            metadata.setContentDisposition("inline; filename=\"" + originalFileName + "\"");
+            metadata.setContentType("image/jpeg");
+        } else if (extension.equalsIgnoreCase(".png")) {
+            metadata.setContentDisposition("inline; filename=\"" + originalFileName + "\"");
+            metadata.setContentType("image/png");
+        }
+
+        PutObjectRequest putObjectRequest =
+                new PutObjectRequest(bucketName, newFileName, file.getInputStream(), metadata);
+        putObjectRequest.setMetadata(metadata);
+
+        getS3Client().putObject(putObjectRequest);
 
         String fileLink = "https://" + hostname + "/" + bucketName + "/" + newFileName;
 
