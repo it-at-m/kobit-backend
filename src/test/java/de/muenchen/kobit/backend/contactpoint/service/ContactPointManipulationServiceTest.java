@@ -132,4 +132,39 @@ class ContactPointManipulationServiceTest {
                         () -> contactPointManipulationService.updateContactPoint(view, id));
         assertThat(ex.getMessage()).isEqualTo("The User has not the needed permission!");
     }
+
+    @Test
+    void updateContactPoints_NoMatch() {
+        var id1 = UUID.randomUUID();
+        var id2 = UUID.randomUUID();
+        var contactViews = List.of(new ContactView("test-mail@mail.de"));
+        var contacts = List.of(new Contact(id1, "test-mail@mail.de"));
+        var competences = List.of(Competence.EMPLOYEE, Competence.DOMESTIC_VIOLENCE);
+        var linkViews = List.of(new LinkView(id1, "link", "https://test-test.com/", false));
+        var links =
+                List.of(new Link(UUID.randomUUID(), id1, "link", "https://test-test.com/", false));
+        var view1 =
+                new ContactPointView(
+                        id1,
+                        "test",
+                        "tes",
+                        "test test",
+                        List.of("TST"),
+                        contactViews,
+                        competences,
+                        linkViews);
+
+        var view2 = new ContactPointView(
+                UUID.randomUUID(),
+                "test",
+                "tes",
+                "test test",
+                List.of("TST"),
+                contactViews,
+                competences,
+                linkViews);
+
+        Exception ex = assertThrows(ContactPointValidationException.class, () -> contactPointManipulationService.updateContactPoints(List.of(view1, view2), List.of(id1, id2)));
+        assertThat(ex.getMessage()).isEqualTo("id not present in ContactPoints for updates!");
+    }
 }

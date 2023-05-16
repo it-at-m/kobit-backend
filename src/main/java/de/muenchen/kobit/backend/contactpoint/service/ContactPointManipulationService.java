@@ -24,6 +24,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
+
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,6 +55,23 @@ public class ContactPointManipulationService {
         this.competenceService = competenceService;
         this.adminService = adminService;
         this.validators = validators;
+    }
+
+    public List<ContactPointView> updateContactPoints(List<ContactPointView> contactPoints, List<UUID> ids) throws ContactPointValidationException {
+        //inlining is possible but the exception handling in a map is not good designed or readable at all
+        List<Pair<UUID, ContactPointView>> pairs = new ArrayList<>();
+        List<ContactPointView> contactPointViews = new ArrayList<>();
+        for (UUID id : ids) {
+            pairs.add(new ImmutablePair<>(id, contactPointForIdOrThrow(contactPoints, id)));
+        }
+        for (Pair<UUID, ContactPointView> pair : pairs) {
+            contactPointViews.add(updateContactPoint(pair.getValue(), pair.getKey()));
+        }
+        return contactPointViews;
+    }
+
+    private ContactPointView contactPointForIdOrThrow(List<ContactPointView> contactPoints, UUID it) throws InvalidContactPointException{
+        return contactPoints.stream().filter(cp -> cp.getId() == it).findFirst().orElseThrow(() -> new InvalidContactPointException("id not present in ContactPoints for updates!"));
     }
 
     @Transactional

@@ -78,6 +78,13 @@ public class ContactPointController {
         return manipulationService.updateContactPoint(view, id);
     }
 
+    @PutMapping("/anlaufstellen/{ids}")
+    public List<ContactPointView> setContactPoints(
+            @PathVariable("ids") List<UUID> ids, @RequestBody List<ContactPointView> views)
+            throws ContactPointValidationException {
+        return manipulationService.updateContactPoints(views, ids);
+    }
+
     @DeleteMapping("/anlaufstellen/{id}")
     public void deleteContactPoint(@PathVariable("id") UUID id) {
         deletionService.deleteContactPointView(id);
