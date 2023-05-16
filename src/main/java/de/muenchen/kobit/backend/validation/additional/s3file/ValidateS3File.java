@@ -32,9 +32,6 @@ public class ValidateS3File implements S3FileValidator<MultipartFile> {
                     "Invalid file type. Only PDF, DOC, DOCX, and ODF files are allowed.");
         }
 
-        System.out.println(MAX_FILE_SIZE);
-        System.out.println(file.getSize());
-
         if (file.getSize() > MAX_FILE_SIZE) {
             throw new InvalidS3FileException("File is too large (max " + MAX_FILE_SIZE + " bytes)");
         }

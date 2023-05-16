@@ -58,6 +58,7 @@ public class ContactPointManipulationService {
     @Transactional
     public ContactPointView updateContactPoint(ContactPointView contactPointView, UUID pathId)
             throws ContactPointValidationException {
+
         if (contactPointView.getLinks() == null) {
             contactPointView.setLinks(Collections.emptyList());
         }
@@ -108,6 +109,7 @@ public class ContactPointManipulationService {
             contactPointToUpdate.setShortCut(contactPointView.getShortCut());
             contactPointToUpdate.setDescription(contactPointView.getDescription());
             contactPointToUpdate.setDepartments(contactPointView.getDepartments());
+            contactPointToUpdate.setImage(contactPointView.getImage());
             return contactPointRepository.save(contactPointToUpdate);
         } catch (EntityNotFoundException exception) {
             return contactPointRepository.save(contactPointView.toContactPoint());
