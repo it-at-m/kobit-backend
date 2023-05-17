@@ -48,8 +48,7 @@ public class CompetenceService {
                 .collect(Collectors.toList());
     }
 
-    public List<ContactPointView> findAllContactPointsForCompetences(
-            List<Competence> competences) {
+    public List<ContactPointView> findAllContactPointsForCompetences(List<Competence> competences) {
         Set<UUID> keys = getContactPointIds(competences);
         if (isSpecialCase(competences)) {
             keys.addAll(specialCaseContactPoints(competences));
@@ -60,7 +59,9 @@ public class CompetenceService {
     }
 
     public List<Competence> findAllCompetencesForId(UUID contactPointId) {
-        return competenceRepository.findAllByContactPointId(contactPointId).stream().map(CompetenceToContactPoint::getCompetence).collect(toList());
+        return competenceRepository.findAllByContactPointId(contactPointId).stream()
+                .map(CompetenceToContactPoint::getCompetence)
+                .collect(toList());
     }
 
     private List<ContactPoint> getMatchingContactPoints(String department, Set<UUID> keys) {
@@ -80,8 +81,10 @@ public class CompetenceService {
     }
 
     @Transactional
-    public void deleteCompetenceAndContactPointPair(UUID contactPointId, List<Competence> competences) {
-        competences.forEach(it -> competenceRepository.deleteByContactPointIdAndCompetence(contactPointId, it));
+    public void deleteCompetenceAndContactPointPair(
+            UUID contactPointId, List<Competence> competences) {
+        competences.forEach(
+                it -> competenceRepository.deleteByContactPointIdAndCompetence(contactPointId, it));
     }
 
     public void createCompetenceToContactPoint(UUID contactPointId, Competence competence) {

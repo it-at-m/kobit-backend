@@ -1,7 +1,6 @@
 package de.muenchen.kobit.backend.contactpoint.service;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 import de.muenchen.kobit.backend.admin.model.AdminUserView;
@@ -105,5 +104,4 @@ class ContactPointManipulationServiceTest {
         assertThat(result.getContact().get(0).getEmail()).isEqualTo(contactViews.get(0).getEmail());
         assertThat(result.getLinks().get(0).getContactPointId()).isEqualTo(id);
     }
-
 }

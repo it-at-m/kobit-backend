@@ -23,13 +23,9 @@ import de.muenchen.kobit.backend.validation.exception.contactpoint.InvalidContac
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
-
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,12 +56,19 @@ public class ContactPointManipulationService {
         this.validators = validators;
     }
 
-    public void updateContactPointCompetence(List<ListItemToCompetenceView> competenceViews) throws InvalidCompetenceException {
-        List<Competence> competences = competenceViews.stream().findFirst().orElseThrow(() -> new InvalidCompetenceException("There must be an single entity present!")).getCompetences();
+    public void updateContactPointCompetence(List<ListItemToCompetenceView> competenceViews)
+            throws InvalidCompetenceException {
+        List<Competence> competences =
+                competenceViews.stream()
+                        .findFirst()
+                        .orElseThrow(
+                                () ->
+                                        new InvalidCompetenceException(
+                                                "There must be an single entity present!"))
+                        .getCompetences();
         removeContactPointsForCompetence(competences);
-        competenceViews.forEach(it -> {
-            saveNewCompetencePair(it.getListItem().getId(), it.getCompetences());
-        });
+        competenceViews.forEach(
+                it -> saveNewCompetencePair(it.getListItem().getId(), it.getCompetences()));
     }
 
     @Transactional
@@ -86,10 +89,11 @@ public class ContactPointManipulationService {
         List<ContactView> newContact = updateContact(id, contactPointView.getContact());
         List<LinkView> newLinks = updateLink(id, contactPointView.getLinks());
         /**
-         * Competences should never be updated with this Method.
-         * Competences can only be manipulated via the separated endpoint.
+         * Competences should never be updated with this Method. Competences can only be manipulated
+         * via the separated endpoint.
          */
-        List<Competence> competences = competenceService.findAllCompetencesForId(newContactPoint.getId());
+        List<Competence> competences =
+                competenceService.findAllCompetencesForId(newContactPoint.getId());
         return new ContactPointView(
                 newContactPoint.getId(),
                 newContactPoint.getName(),
@@ -110,7 +114,10 @@ public class ContactPointManipulationService {
 
     private void removeContactPointsForCompetence(List<Competence> competences) {
         var existingCompetences = competenceService.findAllContactPointsForCompetences(competences);
-        existingCompetences.forEach(it -> competenceService.deleteCompetenceAndContactPointPair(it.getId(), competences));
+        existingCompetences.forEach(
+                it ->
+                        competenceService.deleteCompetenceAndContactPointPair(
+                                it.getId(), competences));
     }
 
     private void saveNewCompetencePair(UUID id, List<Competence> competences) {

@@ -18,5 +18,4 @@ public interface CompetenceRepository
     void deleteAllByContactPointId(UUID contactPointId);
 
     void deleteByContactPointIdAndCompetence(UUID contactPointId, Competence competence);
-
 }

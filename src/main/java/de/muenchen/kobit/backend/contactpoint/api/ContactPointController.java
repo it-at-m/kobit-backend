@@ -80,7 +80,8 @@ public class ContactPointController {
     }
 
     @PutMapping("/anlaufstellen/competences")
-    public void setContactPoints(@RequestBody List<ListItemToCompetenceView> views) throws ContactPointValidationException {
+    public void setContactPoints(@RequestBody List<ListItemToCompetenceView> views)
+            throws ContactPointValidationException {
         manipulationService.updateContactPointCompetence(views);
     }
 
