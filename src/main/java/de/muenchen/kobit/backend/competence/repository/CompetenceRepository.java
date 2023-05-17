@@ -16,4 +16,7 @@ public interface CompetenceRepository
     List<CompetenceToContactPoint> findAllByContactPointId(UUID contactPointId);
 
     void deleteAllByContactPointId(UUID contactPointId);
+
+    void deleteByContactPointIdAndCompetence(UUID contactPointId, Competence competence);
+
 }
