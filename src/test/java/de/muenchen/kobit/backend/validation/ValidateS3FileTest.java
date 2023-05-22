@@ -5,8 +5,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import de.muenchen.kobit.backend.validation.additional.s3file.ValidateS3File;
-import de.muenchen.kobit.backend.validation.exception.experiencemore.InvalidS3FileException;
+import de.muenchen.kobit.backend.validation.aws.ValidateS3File;
+import de.muenchen.kobit.backend.validation.exception.aws.InvalidS3FileException;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;

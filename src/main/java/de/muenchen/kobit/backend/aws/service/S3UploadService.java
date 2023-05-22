@@ -22,7 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class S3UploadService extends S3Config {
 
-    private final List<S3FileValidator> validators;
+    private final List<S3FileValidator<MultipartFile>> validators;
 
     private AmazonS3 getS3Client() {
         return AmazonS3ClientBuilder.standard()
@@ -35,12 +35,13 @@ public class S3UploadService extends S3Config {
                 .build();
     }
 
-    public S3UploadService(List<S3FileValidator> validators) {
+    public S3UploadService(List<S3FileValidator<MultipartFile>> validators) {
         this.validators = validators;
     }
 
     public String uploadFile(MultipartFile file)
             throws IOException, S3FileValidationException, NoSuchAlgorithmException {
+
         for (S3FileValidator validator : validators) {
             validator.validate(file);
         }

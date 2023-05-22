@@ -1,9 +1,11 @@
-package de.muenchen.kobit.backend.validation.additional.s3file;
+package de.muenchen.kobit.backend.validation.aws;
 
 import de.muenchen.kobit.backend.validation.S3FileValidator;
-import de.muenchen.kobit.backend.validation.exception.experiencemore.InvalidS3FileException;
+import de.muenchen.kobit.backend.validation.exception.aws.InvalidS3FileException;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+@Component
 public class ValidateS3File implements S3FileValidator<MultipartFile> {
 
     private static final int MAX_FILENAME_LENGTH = 250;
@@ -27,7 +29,8 @@ public class ValidateS3File implements S3FileValidator<MultipartFile> {
                     "Filename is too long (max " + MAX_FILENAME_LENGTH + " characters)");
         }
 
-        if (!filename.matches(".*\\.(pdf|doc|docx|odf)")) {
+        if (!filename.matches(
+                ".*\\.(pdf|doc|docx|odf|jpg|jpeg|png|PDF|DOC|DOCX|ODF|JPG|JPEG|PNG)")) {
             throw new InvalidS3FileException(
                     "Invalid file type. Only PDF, DOC, DOCX, and ODF files are allowed.");
         }
