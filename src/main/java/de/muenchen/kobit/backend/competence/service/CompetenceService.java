@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CompetenceService {
@@ -47,6 +48,22 @@ public class CompetenceService {
                 .collect(Collectors.toList());
     }
 
+    public List<ContactPointView> findAllContactPointsForCompetences(List<Competence> competences) {
+        Set<UUID> keys = getContactPointIds(competences);
+        if (isSpecialCase(competences)) {
+            keys.addAll(specialCaseContactPoints(competences));
+        }
+        return contactPointRepository.findAllByIdIn(keys).stream()
+                .map(mapper::contactPointToView)
+                .collect(Collectors.toList());
+    }
+
+    public List<Competence> findAllCompetencesForId(UUID contactPointId) {
+        return competenceRepository.findAllByContactPointId(contactPointId).stream()
+                .map(CompetenceToContactPoint::getCompetence)
+                .collect(toList());
+    }
+
     private List<ContactPoint> getMatchingContactPoints(String department, Set<UUID> keys) {
         return keys.stream()
                 .map(
@@ -58,14 +75,23 @@ public class CompetenceService {
                 .collect(toList());
     }
 
+    @Transactional
     public void deleteCompetencesByContactPointId(UUID contactPointId) {
         competenceRepository.deleteAllByContactPointId(contactPointId);
+    }
+
+    @Transactional
+    public void deleteCompetenceAndContactPointPair(
+            UUID contactPointId, List<Competence> competences) {
+        competences.forEach(
+                it -> competenceRepository.deleteByContactPointIdAndCompetence(contactPointId, it));
     }
 
     public void createCompetenceToContactPoint(UUID contactPointId, Competence competence) {
         createCompetenceToContactPoint(new CompetenceToContactPoint(contactPointId, competence));
     }
 
+    @Transactional
     public void createCompetenceToContactPoint(CompetenceToContactPoint competence) {
         competenceRepository.save(competence);
     }

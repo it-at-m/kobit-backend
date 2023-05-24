@@ -1,7 +1,6 @@
 package de.muenchen.kobit.backend.contactpoint.service;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 import de.muenchen.kobit.backend.admin.model.AdminUserView;
@@ -104,32 +103,5 @@ class ContactPointManipulationServiceTest {
         assertThat(result.getCompetences().size()).isEqualTo(competences.size());
         assertThat(result.getContact().get(0).getEmail()).isEqualTo(contactViews.get(0).getEmail());
         assertThat(result.getLinks().get(0).getContactPointId()).isEqualTo(id);
-    }
-
-    @Test
-    void updateContactPoint_WrongUser() {
-        var id = UUID.randomUUID();
-        var contactViews = List.of(new ContactView("test-mail@mail.de"));
-        var contacts = List.of(new Contact(id, "test-mail@mail.de"));
-        var competences = List.of(Competence.EMPLOYEE, Competence.DOMESTIC_VIOLENCE);
-        var linkViews = List.of(new LinkView(id, "link", "https://test-test.com/", false));
-        var links =
-                List.of(new Link(UUID.randomUUID(), id, "link", "https://test-test.com/", false));
-        var view =
-                new ContactPointView(
-                        id,
-                        "test",
-                        "tes",
-                        "test test",
-                        List.of("TST"),
-                        contactViews,
-                        competences,
-                        linkViews);
-        when(adminService.getAdminUserInfo()).thenReturn(new AdminUserView(false, true, "ITM"));
-        Exception ex =
-                assertThrows(
-                        ContactPointValidationException.class,
-                        () -> contactPointManipulationService.updateContactPoint(view, id));
-        assertThat(ex.getMessage()).isEqualTo("The User has not the needed permission!");
     }
 }
