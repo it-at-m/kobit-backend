@@ -10,6 +10,7 @@ import de.muenchen.kobit.backend.contactpoint.service.ContactPointManipulationSe
 import de.muenchen.kobit.backend.contactpoint.service.ContactPointService;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointListItem;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
+import de.muenchen.kobit.backend.contactpoint.view.ListItemToCompetenceView;
 import de.muenchen.kobit.backend.user.service.Department;
 import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
 import java.util.List;
@@ -82,6 +83,12 @@ public class ContactPointController {
             @PathVariable("id") UUID id, @RequestBody ContactPointView view)
             throws ContactPointValidationException {
         return manipulationService.updateContactPoint(view, id);
+    }
+
+    @PutMapping("/anlaufstellen/competences")
+    public void setContactPoints(@RequestBody List<ListItemToCompetenceView> views)
+            throws ContactPointValidationException {
+        manipulationService.updateContactPointCompetence(views);
     }
 
     @DeleteMapping("/anlaufstellen/{id}")
