@@ -17,7 +17,6 @@ import de.muenchen.kobit.backend.links.service.LinkService;
 import de.muenchen.kobit.backend.links.view.LinkView;
 import de.muenchen.kobit.backend.validation.Validator;
 import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
-import de.muenchen.kobit.backend.validation.exception.InvalidUserException;
 import de.muenchen.kobit.backend.validation.exception.contactpoint.InvalidCompetenceException;
 import de.muenchen.kobit.backend.validation.exception.contactpoint.InvalidContactPointException;
 import java.util.ArrayList;
@@ -104,11 +103,9 @@ public class ContactPointManipulationService {
                 newContactPoint.getDescription(),
                 newContactPoint.getDepartments(),
                 newContact,
-                newCompetences,
+                competences,
                 newLinks,
                 newContactPoint.getImage());
-                competences,
-                newLinks);
     }
 
     private void validateId(UUID contactPointId, UUID pathID) throws InvalidContactPointException {
