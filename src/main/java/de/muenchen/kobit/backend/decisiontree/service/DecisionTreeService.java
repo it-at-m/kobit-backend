@@ -19,13 +19,15 @@ import java.util.Locale;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static de.muenchen.kobit.backend.competence.Competence.PRIVATE_PROBLEMS;
+
 @Service
 public class DecisionTreeService {
 
     private static final List<Competence> competenceWithoutQuestions =
             List.of(
                     Competence.ANTI_DEMOCRACY,
-                    Competence.PRIVATE_PROBLEMS,
+                    PRIVATE_PROBLEMS,
                     Competence.DOMESTIC_VIOLENCE,
                     Competence.SEXUAL_HARASSMENT);
 
@@ -69,10 +71,24 @@ public class DecisionTreeService {
         Competence lastSelectedDecision = getLastElement(selectedCompetences);
         DecisionPoint result = getNextDecisionPointOrNull(lastSelectedDecision, rootSelection);
         if (result == null) {
-            return new DecisionContactPointWrapper(
-                    orderAlphabetically(
-                            competenceService.findAllContactPointsForCompetences(
-                                    selectedCompetences, department)));
+            System.out.println(selectedCompetences);
+
+            if(selectedCompetences.contains(PRIVATE_PROBLEMS)){
+                System.out.println("Change order.");
+                // If there's a set order use that order otherwise use Alphabetical order
+
+
+                return new DecisionContactPointWrapper(
+                                competenceService.findAllContactPointsForCompetences(
+                                        selectedCompetences, department));
+            } else {
+                return new DecisionContactPointWrapper(
+                        orderAlphabetically(
+                                competenceService.findAllContactPointsForCompetences(
+                                        selectedCompetences, department)));
+
+            }
+
         } else {
             return new DecisionContactPointWrapper(result);
         }

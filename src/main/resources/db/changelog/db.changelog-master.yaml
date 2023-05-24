@@ -38,3 +38,9 @@ databaseChangeLog:
   - include:
       file: 013_refactor_department.yaml
       relativeToChangelogFile: true
+  - include:
+      file: 014_add_image_column_to_contactpoint.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: 015_create_offers.yaml
+      relativeToChangelogFile: true
