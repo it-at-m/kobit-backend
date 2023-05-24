@@ -3,14 +3,15 @@ databaseChangeLog:
       id: add_image_column_1
       author: thomas.fink
       preConditions:
-        onError: CONTINUE
-        onFail: CONTINUE
+        onFail: MARK_RAN
+        not:
+          columnExists:
+            tableName: contact_point
+            columnName: image
       changes:
         - addColumn:
             tableName: contact_point
             columns:
               - column:
                   name: image
-                  type: varchar(2048)
-                  constraints:
-                    nullable: true
+                  type: VARCHAR(2048)
