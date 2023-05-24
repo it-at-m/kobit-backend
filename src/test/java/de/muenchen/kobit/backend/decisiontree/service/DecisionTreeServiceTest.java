@@ -9,6 +9,8 @@ import de.muenchen.kobit.backend.competence.service.CompetenceService;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
 import de.muenchen.kobit.backend.decisiontree.branches.*;
 import de.muenchen.kobit.backend.decisiontree.view.DecisionPoint;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -92,9 +94,10 @@ class DecisionTreeServiceTest {
     }
 
     @Test
-    void getNextDecisionPointOrContactPointsTest_end() {
+    void getNextDecisionPointOrContactPointsTest_end() throws MalformedURLException {
         String department = "ITM";
         var id = UUID.randomUUID();
+        URL imageUrl = new URL("https://example.com/image.jpg");
         var contactPoints = new ArrayList<ContactPointView>();
         contactPoints.add(
                 new ContactPointView(
@@ -105,7 +108,8 @@ class DecisionTreeServiceTest {
                         List.of("test"),
                         List.of(),
                         List.of(),
-                        List.of()));
+                        List.of(),
+                        imageUrl));
         contactPoints.add(
                 new ContactPointView(
                         id,
@@ -115,7 +119,8 @@ class DecisionTreeServiceTest {
                         List.of("test"),
                         List.of(),
                         List.of(),
-                        List.of()));
+                        List.of(),
+                        imageUrl));
         List<Competence> competences = List.of(Competence.ANTI_DEMOCRACY);
         when(competenceService.findAllContactPointsForCompetences(competences, department))
                 .thenReturn(contactPoints);
@@ -130,9 +135,11 @@ class DecisionTreeServiceTest {
     }
 
     @Test
-    void getNextDecisionPointOrContactPointsTest_end_umlaut_sorted_alphabetical() {
+    void getNextDecisionPointOrContactPointsTest_end_umlaut_sorted_alphabetical()
+            throws MalformedURLException {
         String department = "ITM";
         var id = UUID.randomUUID();
+        URL imageUrl = new URL("https://example.com/image.jpg");
         var contactPoints = new ArrayList<ContactPointView>();
         contactPoints.add(
                 new ContactPointView(
@@ -143,7 +150,8 @@ class DecisionTreeServiceTest {
                         List.of("test"),
                         List.of(),
                         List.of(),
-                        List.of()));
+                        List.of(),
+                        imageUrl));
         contactPoints.add(
                 new ContactPointView(
                         id,
@@ -153,7 +161,8 @@ class DecisionTreeServiceTest {
                         List.of("test"),
                         List.of(),
                         List.of(),
-                        List.of()));
+                        List.of(),
+                        imageUrl));
         contactPoints.add(
                 new ContactPointView(
                         id,
@@ -163,7 +172,8 @@ class DecisionTreeServiceTest {
                         List.of("test"),
                         List.of(),
                         List.of(),
-                        List.of()));
+                        List.of(),
+                        imageUrl));
         contactPoints.add(
                 new ContactPointView(
                         id,
@@ -173,7 +183,8 @@ class DecisionTreeServiceTest {
                         List.of("test"),
                         List.of(),
                         List.of(),
-                        List.of()));
+                        List.of(),
+                        imageUrl));
         contactPoints.add(
                 new ContactPointView(
                         id,
@@ -183,7 +194,8 @@ class DecisionTreeServiceTest {
                         List.of("test"),
                         List.of(),
                         List.of(),
-                        List.of()));
+                        List.of(),
+                        imageUrl));
         contactPoints.add(
                 new ContactPointView(
                         id,
@@ -193,7 +205,8 @@ class DecisionTreeServiceTest {
                         List.of("test"),
                         List.of(),
                         List.of(),
-                        List.of()));
+                        List.of(),
+                        imageUrl));
 
         var contactPointsAlphabetical = new ArrayList<ContactPointView>();
         contactPointsAlphabetical.add(
@@ -205,7 +218,8 @@ class DecisionTreeServiceTest {
                         List.of("test"),
                         List.of(),
                         List.of(),
-                        List.of()));
+                        List.of(),
+                        imageUrl));
         contactPointsAlphabetical.add(
                 new ContactPointView(
                         id,
@@ -215,7 +229,8 @@ class DecisionTreeServiceTest {
                         List.of("test"),
                         List.of(),
                         List.of(),
-                        List.of()));
+                        List.of(),
+                        imageUrl));
         contactPointsAlphabetical.add(
                 new ContactPointView(
                         id,
@@ -225,7 +240,8 @@ class DecisionTreeServiceTest {
                         List.of("test"),
                         List.of(),
                         List.of(),
-                        List.of()));
+                        List.of(),
+                        imageUrl));
         contactPointsAlphabetical.add(
                 new ContactPointView(
                         id,
@@ -235,7 +251,8 @@ class DecisionTreeServiceTest {
                         List.of("test"),
                         List.of(),
                         List.of(),
-                        List.of()));
+                        List.of(),
+                        imageUrl));
         contactPointsAlphabetical.add(
                 new ContactPointView(
                         id,
@@ -245,7 +262,8 @@ class DecisionTreeServiceTest {
                         List.of("test"),
                         List.of(),
                         List.of(),
-                        List.of()));
+                        List.of(),
+                        imageUrl));
         contactPointsAlphabetical.add(
                 new ContactPointView(
                         id,
@@ -255,7 +273,8 @@ class DecisionTreeServiceTest {
                         List.of("test"),
                         List.of(),
                         List.of(),
-                        List.of()));
+                        List.of(),
+                        imageUrl));
 
         List<Competence> competences = List.of(Competence.ANTI_DEMOCRACY);
         when(competenceService.findAllContactPointsForCompetences(competences, department))

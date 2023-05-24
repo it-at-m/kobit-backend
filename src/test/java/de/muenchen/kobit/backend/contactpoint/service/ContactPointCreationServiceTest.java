@@ -17,6 +17,8 @@ import de.muenchen.kobit.backend.links.service.LinkService;
 import de.muenchen.kobit.backend.links.view.LinkView;
 import de.muenchen.kobit.backend.validation.Validator;
 import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,8 +49,9 @@ class ContactPointCreationServiceTest {
     }
 
     @Test
-    void createNewContactPointTest() throws ContactPointValidationException {
+    void createNewContactPointTest() throws ContactPointValidationException, MalformedURLException {
         var id = UUID.randomUUID();
+        URL imageUrl = new URL("https://example.com/image.jpg");
         var contacts = List.of(new ContactView("test-mail@mail.de"));
         var competences = List.of(Competence.EMPLOYEE, Competence.DOMESTIC_VIOLENCE);
         var linkViews = List.of(new LinkView(null, "link", "https://test-test.com/", false));
@@ -62,7 +65,8 @@ class ContactPointCreationServiceTest {
                         List.of("t"),
                         contacts,
                         competences,
-                        linkViews);
+                        linkViews,
+                        imageUrl);
         var contactPoint = view.toContactPoint();
         contactPoint.setId(id);
         when(contactPointRepository.save(any())).thenReturn(contactPoint);

@@ -1,5 +1,6 @@
 package de.muenchen.kobit.backend.contactpoint.view;
 
+import java.net.URL;
 import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -20,4 +21,6 @@ public class ContactPointListItem {
     String shortCut;
 
     List<String> departments;
+
+    URL image;
 }

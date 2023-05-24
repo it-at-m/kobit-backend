@@ -17,7 +17,6 @@ import de.muenchen.kobit.backend.links.service.LinkService;
 import de.muenchen.kobit.backend.links.view.LinkView;
 import de.muenchen.kobit.backend.validation.Validator;
 import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
-import de.muenchen.kobit.backend.validation.exception.InvalidUserException;
 import de.muenchen.kobit.backend.validation.exception.contactpoint.InvalidCompetenceException;
 import de.muenchen.kobit.backend.validation.exception.contactpoint.InvalidContactPointException;
 import java.util.ArrayList;
@@ -26,8 +25,10 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class ContactPointManipulationService {
@@ -81,7 +82,8 @@ public class ContactPointManipulationService {
             validator.validate(contactPointView);
         }
         if (!isUserAuthorized(contactPointView.getDepartments())) {
-            throw new InvalidUserException("The User has not the needed permission!");
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "The User has not the needed permission!");
         }
         validateId(contactPointView.getId(), pathId);
         ContactPoint newContactPoint = createOrUpdateContactPoint(contactPointView, pathId);
@@ -102,7 +104,8 @@ public class ContactPointManipulationService {
                 newContactPoint.getDepartments(),
                 newContact,
                 competences,
-                newLinks);
+                newLinks,
+                newContactPoint.getImage());
     }
 
     private void validateId(UUID contactPointId, UUID pathID) throws InvalidContactPointException {
@@ -133,6 +136,7 @@ public class ContactPointManipulationService {
             contactPointToUpdate.setShortCut(contactPointView.getShortCut());
             contactPointToUpdate.setDescription(contactPointView.getDescription());
             contactPointToUpdate.setDepartments(contactPointView.getDepartments());
+            contactPointToUpdate.setImage(contactPointView.getImage());
             return contactPointRepository.save(contactPointToUpdate);
         } catch (EntityNotFoundException exception) {
             return contactPointRepository.save(contactPointView.toContactPoint());

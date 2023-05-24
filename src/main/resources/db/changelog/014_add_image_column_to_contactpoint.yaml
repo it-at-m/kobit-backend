@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: add_image_column_1
+      author: thomas.fink
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          columnExists:
+            tableName: contact_point
+            columnName: image
+      changes:
+        - addColumn:
+            tableName: contact_point
+            columns:
+              - column:
+                  name: image
+                  type: VARCHAR(2048)
