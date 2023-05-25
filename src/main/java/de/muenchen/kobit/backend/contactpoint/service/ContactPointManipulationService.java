@@ -11,11 +11,13 @@ import de.muenchen.kobit.backend.contact.view.ContactView;
 import de.muenchen.kobit.backend.contactpoint.model.ContactPoint;
 import de.muenchen.kobit.backend.contactpoint.repository.ContactPointRepository;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
+import de.muenchen.kobit.backend.contactpoint.view.ListItemToCompetenceView;
 import de.muenchen.kobit.backend.links.model.Link;
 import de.muenchen.kobit.backend.links.service.LinkService;
 import de.muenchen.kobit.backend.links.view.LinkView;
 import de.muenchen.kobit.backend.validation.ContactPointValidator;
 import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
+import de.muenchen.kobit.backend.validation.exception.contactpoint.InvalidCompetenceException;
 import de.muenchen.kobit.backend.validation.exception.contactpoint.InvalidContactPointException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,10 +57,24 @@ public class ContactPointManipulationService {
         this.validators = validators;
     }
 
+    public void updateContactPointCompetence(List<ListItemToCompetenceView> competenceViews)
+            throws InvalidCompetenceException {
+        List<Competence> competences =
+                competenceViews.stream()
+                        .findFirst()
+                        .orElseThrow(
+                                () ->
+                                        new InvalidCompetenceException(
+                                                "There must be an single entity present!"))
+                        .getCompetences();
+        removeContactPointsForCompetence(competences);
+        competenceViews.forEach(
+                it -> saveNewCompetencePair(it.getListItem().getId(), it.getCompetences()));
+    }
+
     @Transactional
     public ContactPointView updateContactPoint(ContactPointView contactPointView, UUID pathId)
             throws ContactPointValidationException {
-
         if (contactPointView.getLinks() == null) {
             contactPointView.setLinks(Collections.emptyList());
         }
@@ -74,7 +90,12 @@ public class ContactPointManipulationService {
         UUID id = newContactPoint.getId();
         List<ContactView> newContact = updateContact(id, contactPointView.getContact());
         List<LinkView> newLinks = updateLink(id, contactPointView.getLinks());
-        List<Competence> newCompetences = updateCompetences(id, contactPointView.getCompetences());
+        /**
+         * Competences should never be updated with this Method. Competences can only be manipulated
+         * via the separated endpoint.
+         */
+        List<Competence> competences =
+                competenceService.findAllCompetencesForId(newContactPoint.getId());
         return new ContactPointView(
                 newContactPoint.getId(),
                 newContactPoint.getName(),
@@ -82,7 +103,7 @@ public class ContactPointManipulationService {
                 newContactPoint.getDescription(),
                 newContactPoint.getDepartments(),
                 newContact,
-                newCompetences,
+                competences,
                 newLinks,
                 newContactPoint.getImage());
     }
@@ -94,12 +115,18 @@ public class ContactPointManipulationService {
         }
     }
 
-    private List<Competence> updateCompetences(UUID id, List<Competence> competences) {
-        competenceService.deleteCompetencesByContactPointId(id);
+    private void removeContactPointsForCompetence(List<Competence> competences) {
+        var existingCompetences = competenceService.findAllContactPointsForCompetences(competences);
+        existingCompetences.forEach(
+                it ->
+                        competenceService.deleteCompetenceAndContactPointPair(
+                                it.getId(), competences));
+    }
+
+    private void saveNewCompetencePair(UUID id, List<Competence> competences) {
         for (Competence competence : competences) {
             competenceService.createCompetenceToContactPoint(id, competence);
         }
-        return competences;
     }
 
     private ContactPoint createOrUpdateContactPoint(ContactPointView contactPointView, UUID id) {

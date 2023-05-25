@@ -73,19 +73,10 @@ public class DecisionTreeService {
         if (result == null) {
             System.out.println(selectedCompetences);
 
-            if (selectedCompetences.contains(PRIVATE_PROBLEMS)) {
-                System.out.println("Change order.");
-                // If there's a set order use that order otherwise use Alphabetical order
-
-                return new DecisionContactPointWrapper(
-                        competenceService.findAllContactPointsForCompetences(
-                                selectedCompetences, department));
-            } else {
-                return new DecisionContactPointWrapper(
-                        orderAlphabetically(
-                                competenceService.findAllContactPointsForCompetences(
-                                        selectedCompetences, department)));
-            }
+            return new DecisionContactPointWrapper(
+                    orderAlphabetically(
+                            competenceService.findAllContactPointsForCompetences(
+                                    selectedCompetences, department)));
 
         } else {
             return new DecisionContactPointWrapper(result);

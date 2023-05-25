@@ -66,7 +66,7 @@ public class ContactPointCreationService {
         UUID id = newContactPoint.getId();
         List<ContactView> newContact = createContacts(id, contactPointView.getContact());
         List<LinkView> newLinks = createLinks(id, contactPointView.getLinks());
-        List<Competence> newCompetences =
+        List<Competence> competences =
                 createCompetencesIfPresent(id, contactPointView.getCompetences());
         return new ContactPointView(
                 newContactPoint.getId(),
@@ -75,7 +75,7 @@ public class ContactPointCreationService {
                 newContactPoint.getDescription(),
                 newContactPoint.getDepartments(),
                 newContact,
-                newCompetences,
+                competences,
                 newLinks,
                 newContactPoint.getImage());
     }
