@@ -9,6 +9,6 @@ import java.util.UUID;
 
 public interface OfferRepository extends JpaRepository<Offer, UUID> {
 
-    @Query("SELECT o FROM Offer o ORDER BY o.startDate")
+    @Query("SELECT o FROM Offer o ORDER BY o.startDate desc")
     List<Offer> findAllByOrderByStartDate();
 }
