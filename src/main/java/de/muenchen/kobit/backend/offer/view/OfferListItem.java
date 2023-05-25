@@ -1,13 +1,12 @@
 package de.muenchen.kobit.backend.offer.view;
 
+import java.net.URL;
+import java.sql.Date;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.net.URL;
-import java.sql.Date;
-import java.util.UUID;
 
 @Getter
 @Setter

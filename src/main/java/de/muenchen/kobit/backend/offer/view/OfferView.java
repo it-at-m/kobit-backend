@@ -1,7 +1,6 @@
 package de.muenchen.kobit.backend.offer.view;
 
 import de.muenchen.kobit.backend.offer.model.Offer;
-
 import java.net.URL;
 import java.sql.Date;
 import java.util.UUID;

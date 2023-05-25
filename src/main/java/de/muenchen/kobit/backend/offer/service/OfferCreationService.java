@@ -5,10 +5,9 @@ import de.muenchen.kobit.backend.offer.repository.OfferRepository;
 import de.muenchen.kobit.backend.offer.view.OfferView;
 import de.muenchen.kobit.backend.validation.OfferValidator;
 import de.muenchen.kobit.backend.validation.exception.OfferValidationException;
+import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 public class OfferCreationService {
@@ -35,8 +34,7 @@ public class OfferCreationService {
                 newOffer.getEndDate(),
                 newOffer.getTitle(),
                 newOffer.getDescription(),
-                newOffer.getImageLink()
-        );
+                newOffer.getImageLink());
     }
 
     private Offer createNewOffer(OfferView offerView) {

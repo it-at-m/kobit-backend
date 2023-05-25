@@ -6,18 +6,18 @@ import de.muenchen.kobit.backend.offer.view.OfferView;
 import de.muenchen.kobit.backend.validation.OfferValidator;
 import de.muenchen.kobit.backend.validation.exception.OfferValidationException;
 import de.muenchen.kobit.backend.validation.exception.offer.InvalidOfferException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.UUID;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class OfferManipulationService {
     private final OfferRepository offerRepository;
     private final List<OfferValidator> validators;
 
-    public OfferManipulationService(OfferRepository offerRepository, List<OfferValidator> validators) {
+    public OfferManipulationService(
+            OfferRepository offerRepository, List<OfferValidator> validators) {
         this.offerRepository = offerRepository;
         this.validators = validators;
     }
@@ -46,8 +46,7 @@ public class OfferManipulationService {
     }
 
     private Offer createOrUpdateOffer(OfferView offerView, UUID id) {
-        Offer existingOffer = offerRepository.findById(id)
-                .orElse(new Offer());
+        Offer existingOffer = offerRepository.findById(id).orElse(new Offer());
 
         // Update the properties of the existing Offer with the values from the OfferView
         existingOffer.setStartDate(offerView.getStartDate());
@@ -68,7 +67,6 @@ public class OfferManipulationService {
                 offer.getEndDate(),
                 offer.getTitle(),
                 offer.getDescription(),
-                offer.getImageLink()
-        );
+                offer.getImageLink());
     }
 }

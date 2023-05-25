@@ -1,5 +1,7 @@
 package de.muenchen.kobit.backend.decisiontree.service;
 
+import static de.muenchen.kobit.backend.competence.Competence.PRIVATE_PROBLEMS;
+
 import de.muenchen.kobit.backend.competence.Competence;
 import de.muenchen.kobit.backend.competence.service.CompetenceService;
 import de.muenchen.kobit.backend.competence.view.CompetenceView;
@@ -18,8 +20,6 @@ import java.util.List;
 import java.util.Locale;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import static de.muenchen.kobit.backend.competence.Competence.PRIVATE_PROBLEMS;
 
 @Service
 public class DecisionTreeService {
@@ -73,20 +73,18 @@ public class DecisionTreeService {
         if (result == null) {
             System.out.println(selectedCompetences);
 
-            if(selectedCompetences.contains(PRIVATE_PROBLEMS)){
+            if (selectedCompetences.contains(PRIVATE_PROBLEMS)) {
                 System.out.println("Change order.");
                 // If there's a set order use that order otherwise use Alphabetical order
 
-
                 return new DecisionContactPointWrapper(
-                                competenceService.findAllContactPointsForCompetences(
-                                        selectedCompetences, department));
+                        competenceService.findAllContactPointsForCompetences(
+                                selectedCompetences, department));
             } else {
                 return new DecisionContactPointWrapper(
                         orderAlphabetically(
                                 competenceService.findAllContactPointsForCompetences(
                                         selectedCompetences, department)));
-
             }
 
         } else {

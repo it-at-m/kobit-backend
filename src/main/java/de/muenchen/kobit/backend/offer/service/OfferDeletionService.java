@@ -1,10 +1,9 @@
 package de.muenchen.kobit.backend.offer.service;
 
 import de.muenchen.kobit.backend.offer.repository.OfferRepository;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.UUID;
 
 @Service
 public class OfferDeletionService {
@@ -19,6 +18,5 @@ public class OfferDeletionService {
     public void deleteOffer(UUID id) {
 
         offerRepository.deleteById(id);
-
     }
 }

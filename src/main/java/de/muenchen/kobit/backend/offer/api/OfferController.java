@@ -7,10 +7,9 @@ import de.muenchen.kobit.backend.offer.service.OfferService;
 import de.muenchen.kobit.backend.offer.view.OfferListItem;
 import de.muenchen.kobit.backend.offer.view.OfferView;
 import de.muenchen.kobit.backend.validation.exception.OfferValidationException;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.UUID;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/offers")
@@ -48,7 +47,8 @@ public class OfferController {
     }
 
     @PutMapping("/{id}")
-    public OfferView updateOffer(@PathVariable UUID id, @RequestBody OfferView offerView) throws OfferValidationException {
+    public OfferView updateOffer(@PathVariable UUID id, @RequestBody OfferView offerView)
+            throws OfferValidationException {
         return manipulationService.updateOffer(offerView, id);
     }
 

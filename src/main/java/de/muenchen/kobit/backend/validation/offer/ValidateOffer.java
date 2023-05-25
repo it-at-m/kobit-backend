@@ -28,19 +28,22 @@ public class ValidateOffer implements OfferValidator<OfferView> {
             throw new InvalidOfferException("Title cannot be null.");
         }
         if (offerView.getTitle().length() > TITLE_MAX_LENGTH) {
-            throw new InvalidOfferException("Title cannot exceed " + TITLE_MAX_LENGTH + " characters.");
+            throw new InvalidOfferException(
+                    "Title cannot exceed " + TITLE_MAX_LENGTH + " characters.");
         }
         if (offerView.getDescription() == null) {
             throw new InvalidOfferException("Description cannot be null.");
         }
         if (offerView.getDescription().length() > DESCRIPTION_MAX_LENGTH) {
-            throw new InvalidOfferException("Description cannot exceed " + DESCRIPTION_MAX_LENGTH + " characters.");
+            throw new InvalidOfferException(
+                    "Description cannot exceed " + DESCRIPTION_MAX_LENGTH + " characters.");
         }
         if (offerView.getImageLink() == null) {
             throw new InvalidOfferException("Image link cannot be null.");
         }
         if (offerView.getImageLink().toString().length() > IMAGE_LINK_MAX_LENGTH) {
-            throw new InvalidOfferException("Image link cannot exceed " + IMAGE_LINK_MAX_LENGTH + " characters.");
+            throw new InvalidOfferException(
+                    "Image link cannot exceed " + IMAGE_LINK_MAX_LENGTH + " characters.");
         }
     }
 }

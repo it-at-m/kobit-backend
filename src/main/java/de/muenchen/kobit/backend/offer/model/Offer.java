@@ -1,26 +1,24 @@
 package de.muenchen.kobit.backend.offer.model;
 
 import de.muenchen.kobit.backend.offer.view.OfferListItem;
+import de.muenchen.kobit.backend.offer.view.OfferView;
+import java.net.URL;
+import java.sql.Date;
+import java.util.UUID;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-
-import de.muenchen.kobit.backend.offer.view.OfferView;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
-import java.net.URL;
-import java.util.UUID;
-import java.sql.Date;
 
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="offer")
+@Table(name = "offer")
 public class Offer {
 
     @Id
@@ -49,8 +47,7 @@ public class Offer {
     @Column(name = "image_link", length = 2048)
     private URL imageLink;
 
-    public Offer(
-            Date startDate, Date endDate, String title, String description, URL imageLink) {
+    public Offer(Date startDate, Date endDate, String title, String description, URL imageLink) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.title = title;
