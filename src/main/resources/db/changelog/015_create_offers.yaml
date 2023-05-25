@@ -20,12 +20,12 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: start_date
-                  type: date
+                  type: varchar(10)
                   constraints:
                     nullable: false
               - column:
                   name: end_date
-                  type: date
+                  type: varchar(10)
                   constraints:
                     nullable: false
               - column:
@@ -37,9 +37,9 @@ databaseChangeLog:
                   name: description
                   type: text
                   constraints:
-                    nullable: true
+                    nullable: false
               - column:
                   name: image_link
                   type: varchar(2048)
                   constraints:
-                    nullable: true
+                    nullable: false

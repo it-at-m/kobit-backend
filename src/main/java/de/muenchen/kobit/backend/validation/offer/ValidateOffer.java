@@ -21,9 +21,6 @@ public class ValidateOffer implements OfferValidator<OfferView> {
         if (offerView.getEndDate() == null) {
             throw new InvalidOfferException("End date cannot be null.");
         }
-        if (offerView.getStartDate().after(offerView.getEndDate())) {
-            throw new InvalidOfferException("Start date cannot be later than end date.");
-        }
         if (offerView.getTitle() == null) {
             throw new InvalidOfferException("Title cannot be null.");
         }

@@ -1,7 +1,6 @@
 package de.muenchen.kobit.backend.offer.view;
 
 import java.net.URL;
-import java.sql.Date;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,9 +15,9 @@ public class OfferListItem {
 
     UUID id;
 
-    Date startDate;
+    String startDate;
 
-    Date endDate;
+    String endDate;
 
     String title;
 

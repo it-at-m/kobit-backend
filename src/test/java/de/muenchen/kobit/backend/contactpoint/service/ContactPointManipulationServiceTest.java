@@ -35,7 +35,8 @@ class ContactPointManipulationServiceTest {
     private final LinkService linkService = mock(LinkService.class);
     private final CompetenceService competenceService = mock(CompetenceService.class);
     private final AdminService adminService = mock(AdminService.class);
-    private final List<ContactPointValidator> validators = List.of(mock(ContactPointValidator.class));
+    private final List<ContactPointValidator> validators =
+            List.of(mock(ContactPointValidator.class));
 
     private ContactPointManipulationService contactPointManipulationService;
 
