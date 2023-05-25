@@ -15,7 +15,7 @@ import de.muenchen.kobit.backend.contactpoint.repository.ContactPointRepository;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
 import de.muenchen.kobit.backend.links.service.LinkService;
 import de.muenchen.kobit.backend.links.view.LinkView;
-import de.muenchen.kobit.backend.validation.Validator;
+import de.muenchen.kobit.backend.validation.ContactPointValidator;
 import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -32,7 +32,7 @@ class ContactPointCreationServiceTest {
     private final LinkService linkService = mock(LinkService.class);
     private final CompetenceService competenceService = mock(CompetenceService.class);
     private final AdminService adminService = mock(AdminService.class);
-    private final List<Validator> validators = List.of(mock(Validator.class));
+    private final List<ContactPointValidator> validators = List.of(mock(ContactPointValidator.class));
 
     private ContactPointCreationService contactCreationService;
 
