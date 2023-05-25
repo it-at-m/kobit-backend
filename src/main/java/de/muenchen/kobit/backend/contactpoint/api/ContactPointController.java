@@ -1,5 +1,8 @@
 package de.muenchen.kobit.backend.contactpoint.api;
 
+import de.muenchen.kobit.backend.aws.service.S3DeletionService;
+import de.muenchen.kobit.backend.aws.service.S3ManipulationService;
+import de.muenchen.kobit.backend.aws.service.S3UploadService;
 import de.muenchen.kobit.backend.contactpoint.ContactPointNotFoundException;
 import de.muenchen.kobit.backend.contactpoint.service.ContactPointCreationService;
 import de.muenchen.kobit.backend.contactpoint.service.ContactPointDeletionService;
@@ -7,6 +10,7 @@ import de.muenchen.kobit.backend.contactpoint.service.ContactPointManipulationSe
 import de.muenchen.kobit.backend.contactpoint.service.ContactPointService;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointListItem;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
+import de.muenchen.kobit.backend.contactpoint.view.ListItemToCompetenceView;
 import de.muenchen.kobit.backend.user.service.Department;
 import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
 import java.util.List;
@@ -27,15 +31,25 @@ public class ContactPointController {
     private final ContactPointCreationService creationService;
     private final ContactPointDeletionService deletionService;
 
+    private final S3UploadService s3UploadService;
+    private final S3DeletionService s3DeletionService;
+    private final S3ManipulationService s3ManipulationService;
+
     ContactPointController(
             ContactPointService contactPointService,
             ContactPointManipulationService manipulationService,
             ContactPointCreationService creationService,
-            ContactPointDeletionService deletionService) {
+            ContactPointDeletionService deletionService,
+            S3UploadService s3UploadService,
+            S3DeletionService s3DeletionService,
+            S3ManipulationService s3ManipulationService) {
         this.contactPointService = contactPointService;
         this.manipulationService = manipulationService;
         this.creationService = creationService;
         this.deletionService = deletionService;
+        this.s3UploadService = s3UploadService;
+        this.s3DeletionService = s3DeletionService;
+        this.s3ManipulationService = s3ManipulationService;
     }
 
     @GetMapping("/anlaufstellen")
@@ -69,6 +83,12 @@ public class ContactPointController {
             @PathVariable("id") UUID id, @RequestBody ContactPointView view)
             throws ContactPointValidationException {
         return manipulationService.updateContactPoint(view, id);
+    }
+
+    @PutMapping("/anlaufstellen/competences")
+    public void setContactPoints(@RequestBody List<ListItemToCompetenceView> views)
+            throws ContactPointValidationException {
+        manipulationService.updateContactPointCompetence(views);
     }
 
     @DeleteMapping("/anlaufstellen/{id}")

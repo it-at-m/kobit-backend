@@ -3,6 +3,7 @@ package de.muenchen.kobit.backend.contactpoint.repository;
 import de.muenchen.kobit.backend.contactpoint.model.ContactPoint;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -29,4 +30,6 @@ public interface ContactPointRepository extends JpaRepository<ContactPoint, UUID
                         + " :department OR d.department IS NULL)")
     Optional<ContactPoint> findContactPointByIdAndDepartmentLike(
             @Param("id") UUID id, @Param("department") String department);
+
+    List<ContactPoint> findAllByIdIn(Set<UUID> ids);
 }

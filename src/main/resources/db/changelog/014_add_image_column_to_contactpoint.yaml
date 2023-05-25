@@ -15,4 +15,3 @@ databaseChangeLog:
               - column:
                   name: image
                   type: VARCHAR(2048)
-

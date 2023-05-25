@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.web.server.ResponseStatusException;
 
 class ContactPointManipulationServiceTest {
 
@@ -89,16 +90,13 @@ class ContactPointManipulationServiceTest {
         when(contactService.updateContact(any()))
                 .thenReturn(new Contact(id, contactViews.stream().findFirst().get().getEmail()));
         when(adminService.getAdminUserInfo()).thenReturn(new AdminUserView(true, false, "ITM"));
+        when(competenceService.findAllCompetencesForId(id)).thenReturn(competences);
 
         var result = contactPointManipulationService.updateContactPoint(view, id);
 
         verify(linkService, times(1)).getLinksByContactPointId(id);
         verify(linkService, times(1)).deleteById(links.get(0).getId());
         verify(linkService, times(1)).createLink(any());
-
-        verify(competenceService, times(1)).deleteCompetencesByContactPointId(any());
-        verify(competenceService).deleteCompetencesByContactPointId(any());
-
         verify(contactService, times(1)).getContactsByContactPointId(id);
         verify(contactService, times(1)).updateContact(any());
         verify(contactService, times(0)).deleteContact(any());
@@ -135,8 +133,10 @@ class ContactPointManipulationServiceTest {
         when(adminService.getAdminUserInfo()).thenReturn(new AdminUserView(false, true, "ITM"));
         Exception ex =
                 assertThrows(
-                        ContactPointValidationException.class,
+                        ResponseStatusException.class,
                         () -> contactPointManipulationService.updateContactPoint(view, id));
-        assertThat(ex.getMessage()).isEqualTo("The User has not the needed permission!");
+
+        assertThat(ex.getMessage())
+                .isEqualTo("400 BAD_REQUEST \"The User has not the needed permission!\"");
     }
 }
