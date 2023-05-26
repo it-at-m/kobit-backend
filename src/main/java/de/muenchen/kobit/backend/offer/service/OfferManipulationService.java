@@ -1,5 +1,6 @@
 package de.muenchen.kobit.backend.offer.service;
 
+import de.muenchen.kobit.backend.admin.service.AdminService;
 import de.muenchen.kobit.backend.offer.model.Offer;
 import de.muenchen.kobit.backend.offer.repository.OfferRepository;
 import de.muenchen.kobit.backend.offer.view.OfferView;
@@ -13,12 +14,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class OfferManipulationService {
+
     private final OfferRepository offerRepository;
+    private final AdminService adminService;
     private final List<OfferValidator> validators;
 
     public OfferManipulationService(
-            OfferRepository offerRepository, List<OfferValidator> validators) {
+            OfferRepository offerRepository,
+            AdminService adminService,
+            List<OfferValidator> validators) {
         this.offerRepository = offerRepository;
+        this.adminService = adminService;
         this.validators = validators;
     }
 
@@ -28,6 +34,8 @@ public class OfferManipulationService {
         for (OfferValidator validator : validators) {
             validator.validate(offerView);
         }
+
+        // Check for admin rights or perform any admin-related operations here
 
         // Validate the ID
         validateId(offerView.getId(), id);

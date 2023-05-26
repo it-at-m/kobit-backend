@@ -22,12 +22,12 @@ databaseChangeLog:
                   name: start_date
                   type: varchar(10)
                   constraints:
-                    nullable: false
+                    nullable: true
               - column:
                   name: end_date
                   type: varchar(10)
                   constraints:
-                    nullable: false
+                    nullable: true
               - column:
                   name: title
                   type: varchar(255)

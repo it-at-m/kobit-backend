@@ -4,37 +4,80 @@ import de.muenchen.kobit.backend.offer.view.OfferView;
 import de.muenchen.kobit.backend.validation.OfferValidator;
 import de.muenchen.kobit.backend.validation.exception.OfferValidationException;
 import de.muenchen.kobit.backend.validation.exception.offer.InvalidOfferException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ValidateOffer implements OfferValidator<OfferView> {
 
-    private static final int TITLE_MAX_LENGTH = 250;
-    private static final int DESCRIPTION_MAX_LENGTH = 2000;
+    private static final int TITLE_MIN_LENGTH = 5;
+    private static final int DESCRIPTION_MIN_LENGTH = 10;
+    private static final int TITLE_MAX_LENGTH = 100;
+    private static final int DESCRIPTION_MAX_LENGTH = 2500;
     private static final int IMAGE_LINK_MAX_LENGTH = 250;
+    private static final DateTimeFormatter DATE_FORMATTER =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Override
     public void validate(OfferView offerView) throws OfferValidationException {
-        if (offerView.getStartDate() == null) {
-            throw new InvalidOfferException("Start date cannot be null.");
+        // Validate date range
+        LocalDate startDate;
+        LocalDate endDate;
+
+        if (offerView.getStartDate() != null && offerView.getEndDate() != null) {
+            try {
+                startDate = LocalDate.parse(offerView.getStartDate(), DATE_FORMATTER);
+            } catch (DateTimeParseException e) {
+                throw new InvalidOfferException(
+                        "Start date format is invalid. It must be in 'yyyy-MM-dd' format.");
+            }
+
+            try {
+                endDate = LocalDate.parse(offerView.getEndDate(), DATE_FORMATTER);
+            } catch (DateTimeParseException e) {
+                throw new InvalidOfferException(
+                        "End date format is invalid. It must be in 'yyyy-MM-dd' format.");
+            }
+
+            if (startDate.isAfter(endDate)) {
+                throw new InvalidOfferException("Start date cannot be greater than end date.");
+            }
+
+            if (endDate.isBefore(startDate)) {
+                throw new InvalidOfferException("End date cannot be less than start date.");
+            }
         }
-        if (offerView.getEndDate() == null) {
-            throw new InvalidOfferException("End date cannot be null.");
-        }
-        if (offerView.getTitle() == null) {
+
+        // Validate title
+        String title = offerView.getTitle();
+        if (title == null) {
             throw new InvalidOfferException("Title cannot be null.");
         }
-        if (offerView.getTitle().length() > TITLE_MAX_LENGTH) {
+        if (title.length() < TITLE_MIN_LENGTH) {
+            throw new InvalidOfferException(
+                    "Title must be at least " + TITLE_MIN_LENGTH + " characters long.");
+        }
+        if (title.length() > TITLE_MAX_LENGTH) {
             throw new InvalidOfferException(
                     "Title cannot exceed " + TITLE_MAX_LENGTH + " characters.");
         }
-        if (offerView.getDescription() == null) {
+
+        // Validate description
+        String description = offerView.getDescription();
+        if (description == null) {
             throw new InvalidOfferException("Description cannot be null.");
         }
-        if (offerView.getDescription().length() > DESCRIPTION_MAX_LENGTH) {
+        if (description.length() < DESCRIPTION_MIN_LENGTH) {
+            throw new InvalidOfferException(
+                    "Description must be at least " + DESCRIPTION_MIN_LENGTH + " characters long.");
+        }
+        if (description.length() > DESCRIPTION_MAX_LENGTH) {
             throw new InvalidOfferException(
                     "Description cannot exceed " + DESCRIPTION_MAX_LENGTH + " characters.");
         }
+
         if (offerView.getImageLink() == null) {
             throw new InvalidOfferException("Image link cannot be null.");
         }

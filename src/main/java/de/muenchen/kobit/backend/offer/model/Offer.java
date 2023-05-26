@@ -4,6 +4,7 @@ import de.muenchen.kobit.backend.offer.view.OfferListItem;
 import de.muenchen.kobit.backend.offer.view.OfferView;
 import java.net.URL;
 import java.util.UUID;
+import javax.annotation.Nullable;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -26,11 +27,11 @@ public class Offer {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
-    @NotNull
+    @Nullable
     @Column(name = "start_date")
     private String startDate;
 
-    @NotNull
+    @Nullable
     @Column(name = "end_date")
     private String endDate;
 
