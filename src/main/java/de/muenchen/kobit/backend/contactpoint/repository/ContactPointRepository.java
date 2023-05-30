@@ -15,7 +15,7 @@ public interface ContactPointRepository extends JpaRepository<ContactPoint, UUID
 
     @Query(
             value =
-                    "SELECT p.id, p.name, p.short_cut, p.description, d.department FROM "
+                    "SELECT p.id, p.name, p.short_cut, p.description, p.image, d.department FROM "
                         + " {h-schema}contact_point as p LEFT JOIN {h-schema}departments as d ON"
                         + " p.id = d.contact_point_id WHERE d.department LIKE :department OR"
                         + " d.department IS NULL",
