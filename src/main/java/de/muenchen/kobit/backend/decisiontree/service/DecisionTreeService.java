@@ -1,7 +1,5 @@
 package de.muenchen.kobit.backend.decisiontree.service;
 
-import static de.muenchen.kobit.backend.competence.Competence.PRIVATE_PROBLEMS;
-
 import de.muenchen.kobit.backend.competence.Competence;
 import de.muenchen.kobit.backend.competence.service.CompetenceService;
 import de.muenchen.kobit.backend.competence.view.CompetenceView;
@@ -27,7 +25,7 @@ public class DecisionTreeService {
     private static final List<Competence> competenceWithoutQuestions =
             List.of(
                     Competence.ANTI_DEMOCRACY,
-                    PRIVATE_PROBLEMS,
+                    Competence.PRIVATE_PROBLEMS,
                     Competence.DOMESTIC_VIOLENCE,
                     Competence.SEXUAL_HARASSMENT);
 
