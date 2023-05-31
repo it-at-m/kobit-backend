@@ -16,8 +16,6 @@ public class ValidateOffer implements OfferValidator<OfferView> {
     private static final int TITLE_MAX_LENGTH = 100;
     private static final int DESCRIPTION_MAX_LENGTH = 2500;
     private static final int IMAGE_LINK_MAX_LENGTH = 250;
-    private static final DateTimeFormatter DATE_FORMATTER =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Override
     public void validate(OfferView offerView) throws OfferValidationException {
