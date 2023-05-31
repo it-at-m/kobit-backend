@@ -71,7 +71,6 @@ public class DecisionTreeService {
         Competence lastSelectedDecision = getLastElement(selectedCompetences);
         DecisionPoint result = getNextDecisionPointOrNull(lastSelectedDecision, rootSelection);
         if (result == null) {
-            System.out.println(selectedCompetences);
 
             return new DecisionContactPointWrapper(
                     orderAlphabetically(
