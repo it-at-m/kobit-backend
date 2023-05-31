@@ -6,7 +6,6 @@ import de.muenchen.kobit.backend.validation.exception.OfferValidationException;
 import de.muenchen.kobit.backend.validation.exception.offer.InvalidOfferException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -26,19 +25,19 @@ public class ValidateOffer implements OfferValidator<OfferView> {
         LocalDate startDate;
         LocalDate endDate;
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
         if (offerView.getStartDate() != null && offerView.getEndDate() != null) {
             try {
-                startDate = LocalDate.parse(offerView.getStartDate(), DATE_FORMATTER);
-            } catch (DateTimeParseException e) {
-                throw new InvalidOfferException(
-                        "Start date format is invalid. It must be in 'yyyy-MM-dd' format.");
+                startDate = LocalDate.parse(offerView.getStartDate().toString(), formatter);
+            } catch (Exception e) {
+                throw new InvalidOfferException("Failed to parse start date.");
             }
 
             try {
-                endDate = LocalDate.parse(offerView.getEndDate(), DATE_FORMATTER);
-            } catch (DateTimeParseException e) {
-                throw new InvalidOfferException(
-                        "End date format is invalid. It must be in 'yyyy-MM-dd' format.");
+                endDate = LocalDate.parse(offerView.getEndDate().toString(), formatter);
+            } catch (Exception e) {
+                throw new InvalidOfferException("Failed to parse end date.");
             }
 
             if (startDate.isAfter(endDate)) {

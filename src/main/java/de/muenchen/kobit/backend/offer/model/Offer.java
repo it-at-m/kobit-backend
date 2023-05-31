@@ -3,6 +3,7 @@ package de.muenchen.kobit.backend.offer.model;
 import de.muenchen.kobit.backend.offer.view.OfferListItem;
 import de.muenchen.kobit.backend.offer.view.OfferView;
 import java.net.URL;
+import java.sql.Date;
 import java.util.UUID;
 import javax.annotation.Nullable;
 import javax.persistence.*;
@@ -29,11 +30,11 @@ public class Offer {
 
     @Nullable
     @Column(name = "start_date")
-    private String startDate;
+    private Date startDate;
 
     @Nullable
     @Column(name = "end_date")
-    private String endDate;
+    private Date endDate;
 
     @NotNull
     @Column(length = 255)
@@ -47,8 +48,7 @@ public class Offer {
     @Column(name = "image_link", length = 2048)
     private URL imageLink;
 
-    public Offer(
-            String startDate, String endDate, String title, String description, URL imageLink) {
+    public Offer(Date startDate, Date endDate, String title, String description, URL imageLink) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.title = title;

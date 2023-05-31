@@ -12,6 +12,8 @@ import de.muenchen.kobit.backend.validation.OfferValidator;
 import de.muenchen.kobit.backend.validation.exception.OfferValidationException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,14 +36,16 @@ class OfferCreationServiceTest {
     void createNewOfferTest() throws OfferValidationException, MalformedURLException {
         var id = UUID.randomUUID();
         var imageLink = new URL("https://example.com/image.jpg");
+
+        // You are now expecting the dates as strings in "yyyy-MM-dd" format
+        var startDateString = "2023-01-01";
+        var endDateString = "2023-12-31";
+
+        var startDate = Date.valueOf(LocalDate.parse(startDateString));
+        var endDate = Date.valueOf(LocalDate.parse(endDateString));
+
         var view =
-                new OfferView(
-                        id,
-                        "Test title",
-                        "Test description",
-                        "2023-01-01",
-                        "2023-12-31",
-                        imageLink);
+                new OfferView(id, startDate, endDate, "Test title", "Test description", imageLink);
 
         var offer = view.toOffer();
         offer.setId(id);

@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: thomas.fink
+      preConditions:
+        onError: HALT
+        onFail: MARK_RAN
+        and:
+          - tableExists:
+              tableName: offer
+          - columnExists:
+              tableName: offer
+              columnName: start_date
+          - columnExists:
+              tableName: offer
+              columnName: end_date
+      changes:
+        - modifyDataType:
+            tableName: offer
+            columnName: start_date
+            newDataType: date
+        - modifyDataType:
+            tableName: offer
+            columnName: end_date
+            newDataType: date

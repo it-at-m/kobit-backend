@@ -30,6 +30,7 @@ public class OfferManipulationService {
 
     @Transactional
     public OfferView updateOffer(OfferView offerView, UUID id) throws OfferValidationException {
+
         // Perform validation using the registered validators
         for (OfferValidator validator : validators) {
             validator.validate(offerView);

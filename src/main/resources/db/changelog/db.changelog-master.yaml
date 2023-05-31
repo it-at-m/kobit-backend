@@ -44,3 +44,6 @@ databaseChangeLog:
   - include:
       file: 015_create_offers.yaml
       relativeToChangelogFile: true
+  - include:
+      file: 016_change_date_format.yaml
+      relativeToChangelogFile: true

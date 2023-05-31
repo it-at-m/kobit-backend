@@ -1,7 +1,9 @@
 package de.muenchen.kobit.backend.offer.view;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import de.muenchen.kobit.backend.offer.model.Offer;
 import java.net.URL;
+import java.sql.Date;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,9 +18,11 @@ public class OfferView {
 
     UUID id;
 
-    String startDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    Date startDate;
 
-    String endDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    Date endDate;
 
     String title;
 

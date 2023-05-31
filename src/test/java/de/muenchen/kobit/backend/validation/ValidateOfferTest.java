@@ -9,6 +9,7 @@ import de.muenchen.kobit.backend.validation.exception.offer.InvalidOfferExceptio
 import de.muenchen.kobit.backend.validation.offer.ValidateOffer;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -22,8 +23,8 @@ public class ValidateOfferTest {
         var view =
                 new OfferView(
                         id,
-                        "2023-01-01",
-                        "2023-12-31",
+                        Date.valueOf(LocalDate.parse("2023-01-01")),
+                        Date.valueOf(LocalDate.parse("2023-12-31")),
                         "Test title",
                         "Test description",
                         imageLink);
@@ -34,55 +35,13 @@ public class ValidateOfferTest {
     }
 
     @Test
-    void testInvalidStartDate() throws MalformedURLException, OfferValidationException {
-        var imageLink = new URL("https://example.com/image.jpg");
-        var id = UUID.randomUUID();
-        var view =
-                new OfferView(
-                        id,
-                        "2023/01/01",
-                        "2023-12-31",
-                        "Test title",
-                        "Test description",
-                        imageLink);
-        var validator = new ValidateOffer();
-
-        // Expecting InvalidOfferException to be thrown
-        assertThrows(InvalidOfferException.class, () -> validator.validate(view));
-    }
-
-    @Test
-    void testInvalidEndDate() throws MalformedURLException, OfferValidationException {
-        var imageLink = new URL("https://example.com/image.jpg");
-        var id = UUID.randomUUID();
-        var view =
-                new OfferView(
-                        id,
-                        "2023-01-01",
-                        "31/12/2023",
-                        "Test title",
-                        "Test description",
-                        imageLink);
-        var validator = new ValidateOffer();
-
-        // Expecting InvalidOfferException to be thrown
-        assertThrows(InvalidOfferException.class, () -> validator.validate(view));
-    }
-
-    @Test
     void testInvalidDateOrder() throws MalformedURLException, OfferValidationException {
         var imageLink = new URL("https://example.com/image.jpg");
         var id = UUID.randomUUID();
-        var startDate = LocalDate.parse("2023-02-01");
-        var endDate = LocalDate.parse("2023-01-01");
+        var startDate = Date.valueOf(LocalDate.parse("2023-02-01"));
+        var endDate = Date.valueOf(LocalDate.parse("2023-01-01"));
         var view =
-                new OfferView(
-                        id,
-                        startDate.toString(),
-                        endDate.toString(),
-                        "Test title",
-                        "Test description",
-                        imageLink);
+                new OfferView(id, startDate, endDate, "Test title", "Test description", imageLink);
         var validator = new ValidateOffer();
 
         // Expecting InvalidOfferException to be thrown for both date order rules
@@ -93,16 +52,10 @@ public class ValidateOfferTest {
     void testValidDateOrder() throws MalformedURLException, OfferValidationException {
         var imageLink = new URL("https://example.com/image.jpg");
         var id = UUID.randomUUID();
-        var startDate = LocalDate.parse("2023-01-01");
-        var endDate = LocalDate.parse("2023-02-01");
+        var startDate = Date.valueOf(LocalDate.parse("2023-01-01"));
+        var endDate = Date.valueOf(LocalDate.parse("2023-02-01"));
         var view =
-                new OfferView(
-                        id,
-                        startDate.toString(),
-                        endDate.toString(),
-                        "Test title",
-                        "Test description",
-                        imageLink);
+                new OfferView(id, startDate, endDate, "Test title", "Test description", imageLink);
         var validator = new ValidateOffer();
 
         // No exception should be thrown
@@ -113,16 +66,10 @@ public class ValidateOfferTest {
     void testTitleNull() throws MalformedURLException {
         var imageLink = new URL("https://example.com/image.jpg");
         var id = UUID.randomUUID();
-        var startDate = LocalDate.parse("2023-01-01");
-        var endDate = LocalDate.parse("2023-02-01");
+        var startDate = Date.valueOf(LocalDate.parse("2023-01-01"));
+        var endDate = Date.valueOf(LocalDate.parse("2023-02-01"));
         OfferView offerView =
-                new OfferView(
-                        id,
-                        startDate.toString(),
-                        endDate.toString(),
-                        null,
-                        "Test description",
-                        imageLink);
+                new OfferView(id, startDate, endDate, null, "Test description", imageLink);
         offerView.setTitle(null);
         var validator = new ValidateOffer();
 
@@ -137,16 +84,10 @@ public class ValidateOfferTest {
     void testTitleTooShort() throws MalformedURLException {
         var imageLink = new URL("https://example.com/image.jpg");
         var id = UUID.randomUUID();
-        var startDate = LocalDate.parse("2023-01-01");
-        var endDate = LocalDate.parse("2023-02-01");
+        var startDate = Date.valueOf(LocalDate.parse("2023-01-01"));
+        var endDate = Date.valueOf(LocalDate.parse("2023-02-01"));
         OfferView offerView =
-                new OfferView(
-                        id,
-                        startDate.toString(),
-                        endDate.toString(),
-                        "abc",
-                        "Test description",
-                        imageLink);
+                new OfferView(id, startDate, endDate, "abc", "Test description", imageLink);
         var validator = new ValidateOffer();
 
         assertThrows(
@@ -160,13 +101,13 @@ public class ValidateOfferTest {
     void testTitleMaxLengthExceeded() throws MalformedURLException {
         var imageLink = new URL("https://example.com/image.jpg");
         var id = UUID.randomUUID();
-        var startDate = LocalDate.parse("2023-01-01");
-        var endDate = LocalDate.parse("2023-02-01");
+        var startDate = Date.valueOf(LocalDate.parse("2023-01-01"));
+        var endDate = Date.valueOf(LocalDate.parse("2023-02-01"));
         OfferView offerView =
                 new OfferView(
                         id,
-                        startDate.toString(),
-                        endDate.toString(),
+                        startDate,
+                        endDate,
                         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus dapibus,"
                             + " lorem et. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
                             + " Vivamus dapibus, lorem et.",
@@ -185,16 +126,10 @@ public class ValidateOfferTest {
     void testValidTitle() throws MalformedURLException {
         var imageLink = new URL("https://example.com/image.jpg");
         var id = UUID.randomUUID();
-        var startDate = LocalDate.parse("2023-01-01");
-        var endDate = LocalDate.parse("2023-02-01");
+        var startDate = Date.valueOf(LocalDate.parse("2023-01-01"));
+        var endDate = Date.valueOf(LocalDate.parse("2023-02-01"));
         OfferView offerView =
-                new OfferView(
-                        id,
-                        startDate.toString(),
-                        endDate.toString(),
-                        "Valid Title",
-                        "Test description",
-                        imageLink);
+                new OfferView(id, startDate, endDate, "Valid Title", "Test description", imageLink);
         var validator = new ValidateOffer();
 
         assertDoesNotThrow(
@@ -207,16 +142,9 @@ public class ValidateOfferTest {
     void testDescriptionNull() throws MalformedURLException {
         var imageLink = new URL("https://example.com/image.jpg");
         var id = UUID.randomUUID();
-        var startDate = LocalDate.parse("2023-01-01");
-        var endDate = LocalDate.parse("2023-02-01");
-        OfferView offerView =
-                new OfferView(
-                        id,
-                        startDate.toString(),
-                        endDate.toString(),
-                        "Valid Title",
-                        null,
-                        imageLink);
+        var startDate = Date.valueOf(LocalDate.parse("2023-01-01"));
+        var endDate = Date.valueOf(LocalDate.parse("2023-02-01"));
+        OfferView offerView = new OfferView(id, startDate, endDate, "Valid Title", null, imageLink);
         var validator = new ValidateOffer();
 
         assertThrows(
@@ -230,16 +158,10 @@ public class ValidateOfferTest {
     void testDescriptionTooShort() throws MalformedURLException {
         var imageLink = new URL("https://example.com/image.jpg");
         var id = UUID.randomUUID();
-        var startDate = LocalDate.parse("2023-01-01");
-        var endDate = LocalDate.parse("2023-02-01");
+        var startDate = Date.valueOf(LocalDate.parse("2023-01-01"));
+        var endDate = Date.valueOf(LocalDate.parse("2023-02-01"));
         OfferView offerView =
-                new OfferView(
-                        id,
-                        startDate.toString(),
-                        endDate.toString(),
-                        "Valid Title",
-                        "Short",
-                        imageLink);
+                new OfferView(id, startDate, endDate, "Valid Title", "Short", imageLink);
         var validator = new ValidateOffer();
 
         assertThrows(
@@ -253,13 +175,13 @@ public class ValidateOfferTest {
     void testDescriptionMaxLengthExceeded() throws MalformedURLException {
         var imageLink = new URL("https://example.com/image.jpg");
         var id = UUID.randomUUID();
-        var startDate = LocalDate.parse("2023-01-01");
-        var endDate = LocalDate.parse("2023-02-01");
+        var startDate = Date.valueOf(LocalDate.parse("2023-01-01"));
+        var endDate = Date.valueOf(LocalDate.parse("2023-02-01"));
         OfferView offerView =
                 new OfferView(
                         id,
-                        startDate.toString(),
-                        endDate.toString(),
+                        startDate,
+                        endDate,
                         "Valid Title",
                         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus dapibus,"
                             + " lorem et. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
@@ -315,16 +237,11 @@ public class ValidateOfferTest {
     void testValidDescription() throws MalformedURLException {
         var imageLink = new URL("https://example.com/image.jpg");
         var id = UUID.randomUUID();
-        var startDate = LocalDate.parse("2023-01-01");
-        var endDate = LocalDate.parse("2023-02-01");
+        var startDate = Date.valueOf(LocalDate.parse("2023-01-01"));
+        var endDate = Date.valueOf(LocalDate.parse("2023-02-01"));
         OfferView offerView =
                 new OfferView(
-                        id,
-                        startDate.toString(),
-                        endDate.toString(),
-                        "Valid Title",
-                        "Valid description",
-                        imageLink);
+                        id, startDate, endDate, "Valid Title", "Valid description", imageLink);
         var validator = new ValidateOffer();
 
         assertDoesNotThrow(
@@ -337,16 +254,10 @@ public class ValidateOfferTest {
     void testImageNull() throws MalformedURLException {
 
         var id = UUID.randomUUID();
-        var startDate = LocalDate.parse("2023-01-01");
-        var endDate = LocalDate.parse("2023-02-01");
+        var startDate = Date.valueOf(LocalDate.parse("2023-01-01"));
+        var endDate = Date.valueOf(LocalDate.parse("2023-02-01"));
         OfferView offerView =
-                new OfferView(
-                        id,
-                        startDate.toString(),
-                        endDate.toString(),
-                        "Valid Title",
-                        "Valid description",
-                        null);
+                new OfferView(id, startDate, endDate, "Valid Title", "Valid description", null);
         var validator = new ValidateOffer();
 
         assertThrows(
@@ -362,16 +273,11 @@ public class ValidateOfferTest {
                 new URL(
                         "https://example.com/long-image-link-that-exceeds-the-maximum-length-long-image-link-that-exceeds-the-maximum-length-long-image-link-that-exceeds-the-maximum-length-long-image-link-that-exceeds-the-maximum-length-long-image-link-that-exceeds-the-maximum-length.jpg");
         var id = UUID.randomUUID();
-        var startDate = LocalDate.parse("2023-01-01");
-        var endDate = LocalDate.parse("2023-02-01");
+        var startDate = Date.valueOf(LocalDate.parse("2023-01-01"));
+        var endDate = Date.valueOf(LocalDate.parse("2023-02-01"));
         OfferView offerView =
                 new OfferView(
-                        id,
-                        startDate.toString(),
-                        endDate.toString(),
-                        "Valid Title",
-                        "Valid description",
-                        imageLink);
+                        id, startDate, endDate, "Valid Title", "Valid description", imageLink);
         var validator = new ValidateOffer();
 
         assertThrows(
@@ -385,16 +291,11 @@ public class ValidateOfferTest {
     void testValidImage() throws MalformedURLException {
         var imageLink = new URL("https://example.com/image.jpg");
         var id = UUID.randomUUID();
-        var startDate = LocalDate.parse("2023-01-01");
-        var endDate = LocalDate.parse("2023-02-01");
+        var startDate = Date.valueOf(LocalDate.parse("2023-01-01"));
+        var endDate = Date.valueOf(LocalDate.parse("2023-02-01"));
         OfferView offerView =
                 new OfferView(
-                        id,
-                        startDate.toString(),
-                        endDate.toString(),
-                        "Valid Title",
-                        "Valid description",
-                        imageLink);
+                        id, startDate, endDate, "Valid Title", "Valid description", imageLink);
         var validator = new ValidateOffer();
 
         assertDoesNotThrow(
