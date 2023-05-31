@@ -3,7 +3,6 @@ package de.muenchen.kobit.backend.offer.service;
 import de.muenchen.kobit.backend.admin.service.AdminService;
 import de.muenchen.kobit.backend.offer.model.Offer;
 import de.muenchen.kobit.backend.offer.repository.OfferRepository;
-import de.muenchen.kobit.backend.offer.view.OfferListItem;
 import de.muenchen.kobit.backend.offer.view.OfferView;
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +23,7 @@ public class OfferService {
     }
 
     @Transactional(readOnly = true)
-    public List<OfferListItem> getOfferList() {
+    public List<OfferView> getOfferList() {
         return repo.findAllByOrderByStartDateAsc().stream()
                 .map(Offer::toListView)
                 .collect(Collectors.toList());

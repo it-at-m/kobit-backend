@@ -1,6 +1,5 @@
 package de.muenchen.kobit.backend.offer.model;
 
-import de.muenchen.kobit.backend.offer.view.OfferListItem;
 import de.muenchen.kobit.backend.offer.view.OfferView;
 import java.net.URL;
 import java.sql.Date;
@@ -56,8 +55,8 @@ public class Offer {
         this.imageLink = imageLink;
     }
 
-    public OfferListItem toListView() {
-        return new OfferListItem(id, startDate, endDate, title, description, imageLink);
+    public OfferView toListView() {
+        return new OfferView(id, startDate, endDate, title, description, imageLink);
     }
 
     public OfferView toView() {

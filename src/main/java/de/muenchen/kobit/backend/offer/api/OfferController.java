@@ -4,7 +4,6 @@ import de.muenchen.kobit.backend.offer.service.OfferCreationService;
 import de.muenchen.kobit.backend.offer.service.OfferDeletionService;
 import de.muenchen.kobit.backend.offer.service.OfferManipulationService;
 import de.muenchen.kobit.backend.offer.service.OfferService;
-import de.muenchen.kobit.backend.offer.view.OfferListItem;
 import de.muenchen.kobit.backend.offer.view.OfferView;
 import de.muenchen.kobit.backend.validation.exception.OfferValidationException;
 import java.util.List;
@@ -32,7 +31,7 @@ public class OfferController {
     }
 
     @GetMapping
-    public List<OfferListItem> getOfferList() {
+    public List<OfferView> getOfferList() {
         return offerService.getOfferList();
     }
 
