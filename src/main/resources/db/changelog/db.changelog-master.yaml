@@ -41,3 +41,6 @@ databaseChangeLog:
   - include:
      file: 014_add_image_column_to_contactpoint.yaml
      relativeToChangelogFile: true
+  - include:
+      file: 015_add_relevance.yaml
+      relativeToChangelogFile: true

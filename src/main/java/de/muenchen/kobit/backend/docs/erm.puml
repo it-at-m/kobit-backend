@@ -47,7 +47,7 @@ enum DatenTyp {
 class FAQGlossar {
     id: String
     ---
-    Überschreift: String
+    Überschrift: String
     Antwort: String
     Referat: Referat
 }

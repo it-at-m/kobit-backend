@@ -1,0 +1,109 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: ex.schuetze
+      preConditions:
+        onError: CONTINUE
+        onFail: CONTINUE
+        not:
+          tableExists:
+            tableName: path
+      changes:
+        - createTable:
+            tableName: path
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+  - changeSet:
+      id: 2
+      author: ex.schuetze
+      preConditions:
+        onError: CONTINUE
+        onFail: CONTINUE
+        not:
+          tableExists:
+            tableName: relevance_competence
+      changes:
+        - createTable:
+            tableName: relevance_competence
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: competence
+                  type: varchar
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 3
+      author: ex.schuetze
+      preConditions:
+        onError: CONTINUE
+        onFail: CONTINUE
+        not:
+          tableExists:
+            tableName: competence_to_path
+      changes:
+        - createTable:
+            tableName: competence_to_path
+            columns:
+              - column:
+                  name: competence_id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: PK_COMPETENCE_PATH
+                    nullable: false
+              - column:
+                  name: path_id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: PK_COMPETENCE_PATH
+                    nullable: false
+  - changeSet:
+      id: 4
+      author: ex.schuetze
+      preConditions:
+        onError: CONTINUE
+        onFail: CONTINUE
+        not:
+          tableExists:
+            tableName: relevance
+      changes:
+        - createTable:
+            tableName: relevance
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: contact_point_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: FK_CONTACT_POINT_ID
+                    references: contact_point(id)
+              - column:
+                  name: path_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: FK_PATH_ID
+                    references: path(id)
+              - column:
+                  name: position
+                  type: integer
+                  constraints:
+                    nullable: false

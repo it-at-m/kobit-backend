@@ -7,6 +7,7 @@ import de.muenchen.kobit.backend.competence.Competence;
 import de.muenchen.kobit.backend.competence.service.CompetenceService;
 import de.muenchen.kobit.backend.competence.view.CompetenceView;
 import de.muenchen.kobit.backend.decisiontree.branches.*;
+import de.muenchen.kobit.backend.decisiontree.relevance.service.RelevanceService;
 import de.muenchen.kobit.backend.decisiontree.view.DecisionPoint;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +25,7 @@ public class DecisionTreeServiceIT {
     private final HealthIssuesBranch healthIssuesBranch = new HealthIssuesBranch();
 
     private final CompetenceService competenceService = Mockito.mock(CompetenceService.class);
+    private final RelevanceService relevanceService = Mockito.mock(RelevanceService.class);
 
     private DecisionTreeService decisionTreeService;
 
@@ -36,7 +38,8 @@ public class DecisionTreeServiceIT {
                         discriminationBranch,
                         healthIssuesBranch,
                         root,
-                        competenceService);
+                        competenceService,
+                        relevanceService);
     }
 
     @Test
