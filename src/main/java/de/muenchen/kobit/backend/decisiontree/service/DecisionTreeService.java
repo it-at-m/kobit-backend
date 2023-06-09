@@ -20,7 +20,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,8 +78,10 @@ public class DecisionTreeService {
         DecisionPoint result = getNextDecisionPointOrNull(lastSelectedDecision, rootSelection);
         if (result == null) {
             return new DecisionContactPointWrapper(
-                    order(competenceService.findAllContactPointsForCompetences(
-                                    selectedCompetences, department), selectedCompetences));
+                    order(
+                            competenceService.findAllContactPointsForCompetences(
+                                    selectedCompetences, department),
+                            selectedCompetences));
         } else {
             return new DecisionContactPointWrapper(result);
         }
@@ -114,15 +115,17 @@ public class DecisionTreeService {
         return selectedCompetences.get(selectedCompetences.size() - 1);
     }
 
-    private List<ContactPointView> order(List<ContactPointView> contactPointViews, List<Competence> selectedCompetences) {
-        List<RelevanceOrder> order = relevanceService.getOrderOrNull(new HashSet<>(selectedCompetences));
-        if(order == null) {
+    private List<ContactPointView> order(
+            List<ContactPointView> contactPointViews, List<Competence> selectedCompetences) {
+        List<RelevanceOrder> order =
+                relevanceService.getOrderOrNull(new HashSet<>(selectedCompetences));
+        if (order == null) {
             return orderAlphabetically(contactPointViews);
         } else {
             Collections.sort(order);
             return order.stream()
-                    .map(it -> findMatchingContactPoint(contactPointViews, it)).collect(Collectors.toList());
-
+                    .map(it -> findMatchingContactPoint(contactPointViews, it))
+                    .collect(Collectors.toList());
         }
     }
 
@@ -133,11 +136,12 @@ public class DecisionTreeService {
         return contactPointViews;
     }
 
-    private static ContactPointView findMatchingContactPoint(List<ContactPointView> contactPointViews, RelevanceOrder order) {
-        return contactPointViews
-                .stream()
+    private static ContactPointView findMatchingContactPoint(
+            List<ContactPointView> contactPointViews, RelevanceOrder order) {
+        return contactPointViews.stream()
                 .filter(cp -> cp.getId() == order.getContactPointId())
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException("The ContactPoint should be present."));
+                .orElseThrow(
+                        () -> new IllegalStateException("The ContactPoint should be present."));
     }
 }

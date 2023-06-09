@@ -1,7 +1,6 @@
 package de.muenchen.kobit.backend.decisiontree.relevance.view;
 
 import de.muenchen.kobit.backend.competence.Competence;
-
 import java.util.List;
 import java.util.Set;
 

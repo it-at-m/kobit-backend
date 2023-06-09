@@ -22,18 +22,17 @@ import de.muenchen.kobit.backend.validation.Validator;
 import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
 import de.muenchen.kobit.backend.validation.exception.contactpoint.InvalidCompetenceException;
 import de.muenchen.kobit.backend.validation.exception.contactpoint.InvalidContactPointException;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
-
-import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import javax.persistence.EntityNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class ContactPointManipulationService {
@@ -81,12 +80,16 @@ public class ContactPointManipulationService {
                 it -> saveNewCompetencePair(it.getListItem().getId(), it.getCompetences()));
     }
 
-    private void updateRelevance(List<ListItemToCompetenceView> competenceViews, List<Competence> competences) {
+    private void updateRelevance(
+            List<ListItemToCompetenceView> competenceViews, List<Competence> competences) {
         relevanceService.setRelevanceOrder(
                 new RelevanceView(
                         new HashSet<>(competences),
                         competenceViews.stream()
-                                .map(it -> new RelevanceOrder(it.getListItem().getId(), it.getPosition()))
+                                .map(
+                                        it ->
+                                                new RelevanceOrder(
+                                                        it.getListItem().getId(), it.getPosition()))
                                 .collect(Collectors.toList())));
     }
 
@@ -134,9 +137,12 @@ public class ContactPointManipulationService {
     }
 
     private void removeContactPointsForCompetence(List<Competence> competences) {
-        List<ContactPointView> existingCompetences = competenceService.findAllContactPointsForCompetences(competences);
-        existingCompetences
-                .forEach(it -> competenceService.deleteCompetenceAndContactPointPair(it.getId(), competences));
+        List<ContactPointView> existingCompetences =
+                competenceService.findAllContactPointsForCompetences(competences);
+        existingCompetences.forEach(
+                it ->
+                        competenceService.deleteCompetenceAndContactPointPair(
+                                it.getId(), competences));
     }
 
     private void saveNewCompetencePair(UUID id, List<Competence> competences) {
