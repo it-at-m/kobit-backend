@@ -9,10 +9,8 @@ import de.muenchen.kobit.backend.decisiontree.relevance.repository.RelevanceComp
 import de.muenchen.kobit.backend.decisiontree.relevance.repository.RelevanceRepository;
 import de.muenchen.kobit.backend.decisiontree.relevance.view.RelevanceOrder;
 import de.muenchen.kobit.backend.decisiontree.relevance.view.RelevanceView;
-
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -25,7 +23,10 @@ public class RelevanceService {
     private final PathRepository pathRepository;
     private final RelevanceCompetenceRepository relevanceCompetenceRepository;
 
-    RelevanceService(RelevanceRepository relevanceRepository, PathRepository pathRepository, RelevanceCompetenceRepository relevanceCompetenceRepository) {
+    RelevanceService(
+            RelevanceRepository relevanceRepository,
+            PathRepository pathRepository,
+            RelevanceCompetenceRepository relevanceCompetenceRepository) {
         this.relevanceRepository = relevanceRepository;
         this.pathRepository = pathRepository;
         this.relevanceCompetenceRepository = relevanceCompetenceRepository;
@@ -60,10 +61,8 @@ public class RelevanceService {
 
     private void createNewRelevanceOrder(List<RelevanceOrder> entries, Path path) {
         entries.forEach(
-                it -> {
-                    relevanceRepository.save(
-                            new Relevance(it.getContactPointId(), path.getId(), it.getPosition()));
-                });
+                it -> relevanceRepository.save(
+                            new Relevance(it.getContactPointId(), path.getId(), it.getPosition())));
     }
 
     private Path createNewPath(Set<Competence> competences) {
@@ -76,8 +75,12 @@ public class RelevanceService {
     }
 
     private Set<RelevanceCompetence> saveOrUpdateCompetences(Set<RelevanceCompetence> cps) {
-        return cps.stream().map(it -> relevanceCompetenceRepository.findByCompetence(it.getCompetence())
-                                    .orElseGet(() -> relevanceCompetenceRepository.save(it)))
+        return cps.stream()
+                .map(
+                        it ->
+                                relevanceCompetenceRepository
+                                        .findByCompetence(it.getCompetence())
+                                        .orElseGet(() -> relevanceCompetenceRepository.save(it)))
                 .collect(Collectors.toSet());
     }
 
@@ -100,8 +103,12 @@ public class RelevanceService {
     }
 
     private boolean hasMatchingCompetences(Path path, Set<Competence> selectedPath) {
-        List<String> pathCompetences = path.getCompetences().stream().map(RelevanceCompetence::getCompetence).collect(Collectors.toList());
-        List<String> selectedPathAsString = selectedPath.stream().map(String::valueOf).collect(Collectors.toList());
+        List<String> pathCompetences =
+                path.getCompetences().stream()
+                        .map(RelevanceCompetence::getCompetence)
+                        .collect(Collectors.toList());
+        List<String> selectedPathAsString =
+                selectedPath.stream().map(String::valueOf).collect(Collectors.toList());
         return new HashSet<>(pathCompetences).containsAll(selectedPathAsString);
     }
 }

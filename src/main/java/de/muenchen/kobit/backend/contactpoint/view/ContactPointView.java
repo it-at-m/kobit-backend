@@ -4,11 +4,9 @@ import de.muenchen.kobit.backend.competence.Competence;
 import de.muenchen.kobit.backend.contact.view.ContactView;
 import de.muenchen.kobit.backend.contactpoint.model.ContactPoint;
 import de.muenchen.kobit.backend.links.view.LinkView;
-
 import java.net.URL;
 import java.util.List;
 import java.util.UUID;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,7 +34,16 @@ public class ContactPointView {
                 this.name, this.shortCut, this.description, this.departments, this.image);
     }
 
-    public ContactPointView(UUID id, String name, String shortCut, String description, List<String> departments, List<ContactView> contact, List<Competence> competences, List<LinkView> links, URL image) {
+    public ContactPointView(
+            UUID id,
+            String name,
+            String shortCut,
+            String description,
+            List<String> departments,
+            List<ContactView> contact,
+            List<Competence> competences,
+            List<LinkView> links,
+            URL image) {
         this.id = id;
         this.name = name;
         this.shortCut = shortCut;
