@@ -64,6 +64,7 @@ public class ContactPointManipulationService {
         this.relevanceService = relevanceService;
     }
 
+    @Transactional
     public void updateContactPointCompetence(List<ListItemToCompetenceView> competenceViews)
             throws InvalidCompetenceException {
         List<Competence> competences =

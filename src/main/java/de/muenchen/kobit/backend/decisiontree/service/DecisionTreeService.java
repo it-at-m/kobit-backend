@@ -138,10 +138,12 @@ public class DecisionTreeService {
 
     private static ContactPointView findMatchingContactPoint(
             List<ContactPointView> contactPointViews, RelevanceOrder order) {
-        return contactPointViews.stream()
-                .filter(cp -> cp.getId() == order.getContactPointId())
+        ContactPointView view = contactPointViews.stream()
+                .filter(cp -> cp.getId().equals(order.getContactPointId()))
                 .findFirst()
                 .orElseThrow(
                         () -> new IllegalStateException("The ContactPoint should be present."));
+        view.setPosition(order.getPosition());
+        return view;
     }
 }

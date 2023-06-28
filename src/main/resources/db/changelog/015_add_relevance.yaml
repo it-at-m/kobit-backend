@@ -83,16 +83,12 @@ databaseChangeLog:
             tableName: relevance
             columns:
               - column:
-                  name: id
-                  type: uuid
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-              - column:
                   name: contact_point_id
                   type: uuid
                   constraints:
                     nullable: false
+                    primaryKey: true
+                    primaryKeyName: PK_RELEVANCE
                     foreignKeyName: FK_CONTACT_POINT_ID
                     references: contact_point(id)
               - column:
@@ -100,6 +96,8 @@ databaseChangeLog:
                   type: uuid
                   constraints:
                     nullable: false
+                    primaryKey: true
+                    primaryKeyName: PK_RELEVANCE
                     foreignKeyName: FK_PATH_ID
                     references: path(id)
               - column:

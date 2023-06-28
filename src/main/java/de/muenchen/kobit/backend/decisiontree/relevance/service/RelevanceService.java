@@ -5,23 +5,30 @@ import de.muenchen.kobit.backend.decisiontree.relevance.model.Path;
 import de.muenchen.kobit.backend.decisiontree.relevance.model.Relevance;
 import de.muenchen.kobit.backend.decisiontree.relevance.model.RelevanceCompetence;
 import de.muenchen.kobit.backend.decisiontree.relevance.repository.PathRepository;
+import de.muenchen.kobit.backend.decisiontree.relevance.repository.RelevanceCompetenceRepository;
 import de.muenchen.kobit.backend.decisiontree.relevance.repository.RelevanceRepository;
 import de.muenchen.kobit.backend.decisiontree.relevance.view.RelevanceOrder;
 import de.muenchen.kobit.backend.decisiontree.relevance.view.RelevanceView;
+
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class RelevanceService {
 
     private final RelevanceRepository relevanceRepository;
     private final PathRepository pathRepository;
+    private final RelevanceCompetenceRepository relevanceCompetenceRepository;
 
-    RelevanceService(RelevanceRepository relevanceRepository, PathRepository pathRepository) {
+    RelevanceService(RelevanceRepository relevanceRepository, PathRepository pathRepository, RelevanceCompetenceRepository relevanceCompetenceRepository) {
         this.relevanceRepository = relevanceRepository;
         this.pathRepository = pathRepository;
+        this.relevanceCompetenceRepository = relevanceCompetenceRepository;
     }
 
     public List<RelevanceOrder> getOrderOrNull(Set<Competence> competences) {
@@ -35,6 +42,7 @@ public class RelevanceService {
         }
     }
 
+    @Transactional
     public void setRelevanceOrder(RelevanceView relevanceView) {
         Path matchingPath = findExistingPathOrNull(relevanceView.getPath());
         if (matchingPath == null) {
@@ -59,19 +67,25 @@ public class RelevanceService {
     }
 
     private Path createNewPath(Set<Competence> competences) {
-        Set<RelevanceCompetence> cp =
+        Set<RelevanceCompetence> cps =
                 competences.stream()
                         .map(Enum::toString)
                         .map(RelevanceCompetence::new)
                         .collect(Collectors.toSet());
-        return pathRepository.save(new Path(cp));
+        return pathRepository.save(new Path(saveOrUpdateCompetences(cps)));
+    }
+
+    private Set<RelevanceCompetence> saveOrUpdateCompetences(Set<RelevanceCompetence> cps) {
+        return cps.stream().map(it -> relevanceCompetenceRepository.findByCompetence(it.getCompetence())
+                                    .orElseGet(() -> relevanceCompetenceRepository.save(it)))
+                .collect(Collectors.toSet());
     }
 
     private Path findExistingPathOrNull(Set<Competence> selectedPath) {
         List<Path> existingPaths = pathRepository.findAll();
         List<Path> matchingPaths =
                 existingPaths.stream()
-                        .filter(it -> it.getCompetences().containsAll(selectedPath))
+                        .filter(it -> hasMatchingCompetences(it, selectedPath))
                         .collect(Collectors.toList());
         if (matchingPaths.size() > 0) {
             return matchingPaths.stream()
@@ -83,5 +97,11 @@ public class RelevanceService {
         } else {
             return null;
         }
+    }
+
+    private boolean hasMatchingCompetences(Path path, Set<Competence> selectedPath) {
+        List<String> pathCompetences = path.getCompetences().stream().map(RelevanceCompetence::getCompetence).collect(Collectors.toList());
+        List<String> selectedPathAsString = selectedPath.stream().map(String::valueOf).collect(Collectors.toList());
+        return new HashSet<>(pathCompetences).containsAll(selectedPathAsString);
     }
 }
