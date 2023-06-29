@@ -61,8 +61,10 @@ public class RelevanceService {
 
     private void createNewRelevanceOrder(List<RelevanceOrder> entries, Path path) {
         entries.forEach(
-                it -> relevanceRepository.save(
-                            new Relevance(it.getContactPointId(), path.getId(), it.getPosition())));
+                it ->
+                        relevanceRepository.save(
+                                new Relevance(
+                                        it.getContactPointId(), path.getId(), it.getPosition())));
     }
 
     private Path createNewPath(Set<Competence> competences) {
