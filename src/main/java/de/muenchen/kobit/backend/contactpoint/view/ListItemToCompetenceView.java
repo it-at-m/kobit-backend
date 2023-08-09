@@ -9,11 +9,14 @@ public class ListItemToCompetenceView {
 
     private List<Competence> competences;
 
+    private int position;
+
     public ListItemToCompetenceView(
-            @NotNull ContactPointListItem listItem, List<Competence> competences) {
+            @NotNull ContactPointListItem listItem, List<Competence> competences, int position) {
         assert (listItem.id != null);
         this.listItem = listItem;
         this.competences = competences;
+        this.position = position;
     }
 
     public ListItemToCompetenceView() {}
@@ -33,5 +36,13 @@ public class ListItemToCompetenceView {
 
     public void setCompetences(List<Competence> competences) {
         this.competences = competences;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
     }
 }

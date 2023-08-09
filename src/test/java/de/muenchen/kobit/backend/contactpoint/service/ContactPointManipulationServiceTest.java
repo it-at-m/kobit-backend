@@ -14,6 +14,7 @@ import de.muenchen.kobit.backend.contact.view.ContactView;
 import de.muenchen.kobit.backend.contactpoint.model.ContactPoint;
 import de.muenchen.kobit.backend.contactpoint.repository.ContactPointRepository;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
+import de.muenchen.kobit.backend.decisiontree.relevance.service.RelevanceService;
 import de.muenchen.kobit.backend.links.model.Link;
 import de.muenchen.kobit.backend.links.service.LinkService;
 import de.muenchen.kobit.backend.links.view.LinkView;
@@ -36,6 +37,7 @@ class ContactPointManipulationServiceTest {
     private final CompetenceService competenceService = mock(CompetenceService.class);
     private final AdminService adminService = mock(AdminService.class);
     private final List<Validator> validators = List.of(mock(Validator.class));
+    private final RelevanceService relevanceService = mock(RelevanceService.class);
 
     private ContactPointManipulationService contactPointManipulationService;
 
@@ -48,7 +50,8 @@ class ContactPointManipulationServiceTest {
                         linkService,
                         competenceService,
                         adminService,
-                        validators);
+                        validators,
+                        relevanceService);
     }
 
     @Test

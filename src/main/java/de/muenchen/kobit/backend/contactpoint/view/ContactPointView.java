@@ -18,19 +18,40 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ContactPointView {
 
-    UUID id;
-    String name;
-    String shortCut;
-    String description;
-    List<String> departments;
-    List<ContactView> contact;
-    List<Competence> competences;
-    List<LinkView> links;
-
-    URL image;
+    private UUID id;
+    private String name;
+    private String shortCut;
+    private String description;
+    private List<String> departments;
+    private List<ContactView> contact;
+    private List<Competence> competences;
+    private List<LinkView> links;
+    private URL image;
+    private Integer position;
 
     public final ContactPoint toContactPoint() {
         return new ContactPoint(
                 this.name, this.shortCut, this.description, this.departments, this.image);
+    }
+
+    public ContactPointView(
+            UUID id,
+            String name,
+            String shortCut,
+            String description,
+            List<String> departments,
+            List<ContactView> contact,
+            List<Competence> competences,
+            List<LinkView> links,
+            URL image) {
+        this.id = id;
+        this.name = name;
+        this.shortCut = shortCut;
+        this.description = description;
+        this.departments = departments;
+        this.contact = contact;
+        this.competences = competences;
+        this.links = links;
+        this.image = image;
     }
 }
