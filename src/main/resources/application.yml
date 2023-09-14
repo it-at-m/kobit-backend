@@ -47,7 +47,7 @@ server:
 
 security:
   logging:
-    requests: none
+    requests: true
   oauth2:
     resource:
       user-info-uri: ${USER_URI}
