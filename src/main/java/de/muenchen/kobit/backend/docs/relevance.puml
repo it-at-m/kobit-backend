@@ -1,0 +1,33 @@
+@startuml
+
+class competence {
+    id: UUID
+    ---
+    competence: varchar
+}
+
+class path {
+    id: UUID
+    ---
+}
+
+class competencesToPath {
+    pathId: UUID
+    competenceId: UUID
+    ---
+}
+
+class relevance {
+    id: UUID
+    ---
+    contactPointId: UUID
+    pathId: UUID
+    position: int
+}
+
+competence "n" -r- "n" competencesToPath
+path "n" -l- "n" competencesToPath
+path "n" -- "n" relevance
+
+
+@enduml

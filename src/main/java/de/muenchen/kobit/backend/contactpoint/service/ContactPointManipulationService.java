@@ -12,6 +12,9 @@ import de.muenchen.kobit.backend.contactpoint.model.ContactPoint;
 import de.muenchen.kobit.backend.contactpoint.repository.ContactPointRepository;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
 import de.muenchen.kobit.backend.contactpoint.view.ListItemToCompetenceView;
+import de.muenchen.kobit.backend.decisiontree.relevance.service.RelevanceService;
+import de.muenchen.kobit.backend.decisiontree.relevance.view.RelevanceOrder;
+import de.muenchen.kobit.backend.decisiontree.relevance.view.RelevanceView;
 import de.muenchen.kobit.backend.links.model.Link;
 import de.muenchen.kobit.backend.links.service.LinkService;
 import de.muenchen.kobit.backend.links.view.LinkView;
@@ -21,6 +24,7 @@ import de.muenchen.kobit.backend.validation.exception.contactpoint.InvalidCompet
 import de.muenchen.kobit.backend.validation.exception.contactpoint.InvalidContactPointException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -39,6 +43,7 @@ public class ContactPointManipulationService {
     private final CompetenceService competenceService;
 
     private final AdminService adminService;
+    private final RelevanceService relevanceService;
 
     private final List<ContactPointValidator> validators;
 
@@ -48,15 +53,18 @@ public class ContactPointManipulationService {
             LinkService linkService,
             CompetenceService competenceService,
             AdminService adminService,
-            List<ContactPointValidator> validators) {
+            List<ContactPointValidator> validators,
+            RelevanceService relevanceService) {
         this.contactPointRepository = contactPointRepository;
         this.contactService = contactService;
         this.linkService = linkService;
         this.competenceService = competenceService;
         this.adminService = adminService;
         this.validators = validators;
+        this.relevanceService = relevanceService;
     }
 
+    @Transactional
     public void updateContactPointCompetence(List<ListItemToCompetenceView> competenceViews)
             throws InvalidCompetenceException {
         List<Competence> competences =
@@ -68,8 +76,22 @@ public class ContactPointManipulationService {
                                                 "There must be an single entity present!"))
                         .getCompetences();
         removeContactPointsForCompetence(competences);
+        updateRelevance(competenceViews, competences);
         competenceViews.forEach(
                 it -> saveNewCompetencePair(it.getListItem().getId(), it.getCompetences()));
+    }
+
+    private void updateRelevance(
+            List<ListItemToCompetenceView> competenceViews, List<Competence> competences) {
+        relevanceService.setRelevanceOrder(
+                new RelevanceView(
+                        new HashSet<>(competences),
+                        competenceViews.stream()
+                                .map(
+                                        it ->
+                                                new RelevanceOrder(
+                                                        it.getListItem().getId(), it.getPosition()))
+                                .collect(Collectors.toList())));
     }
 
     @Transactional
@@ -116,7 +138,8 @@ public class ContactPointManipulationService {
     }
 
     private void removeContactPointsForCompetence(List<Competence> competences) {
-        var existingCompetences = competenceService.findAllContactPointsForCompetences(competences);
+        List<ContactPointView> existingCompetences =
+                competenceService.findAllContactPointsForCompetences(competences);
         existingCompetences.forEach(
                 it ->
                         competenceService.deleteCompetenceAndContactPointPair(

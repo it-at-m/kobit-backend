@@ -8,6 +8,7 @@ import de.muenchen.kobit.backend.competence.Competence;
 import de.muenchen.kobit.backend.competence.service.CompetenceService;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
 import de.muenchen.kobit.backend.decisiontree.branches.*;
+import de.muenchen.kobit.backend.decisiontree.relevance.service.RelevanceService;
 import de.muenchen.kobit.backend.decisiontree.view.DecisionPoint;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -25,6 +26,7 @@ class DecisionTreeServiceTest {
     private final HealthIssuesBranch healthIssuesBranch = mock(HealthIssuesBranch.class);
     private final Root root = mock(Root.class);
     private final CompetenceService competenceService = mock(CompetenceService.class);
+    private final RelevanceService relevanceService = mock(RelevanceService.class);
 
     private DecisionTreeService decisionTreeService;
 
@@ -38,7 +40,8 @@ class DecisionTreeServiceTest {
                         discriminationBranch,
                         healthIssuesBranch,
                         root,
-                        competenceService);
+                        competenceService,
+                        relevanceService);
     }
 
     @Test
