@@ -41,10 +41,7 @@ public class UserDataResolver {
 
     private User readUserFromToken(Authentication authentication) {
         if (authentication instanceof JwtAuthenticationToken) {
-            log.info("Authentication instance of JwtAuthenticationToken");
-            final JwtAuthenticationToken jwtToken = (JwtAuthenticationToken) authentication;      
-            // Logging the length of the token here
-            log.info("Token length: {}", jwtToken.getToken().getTokenValue().length());
+            final JwtAuthenticationToken jwtToken = (JwtAuthenticationToken) authentication;
             Map<String, Object> tokenAttributes = jwtToken.getTokenAttributes();
             try {
                 return new User(
@@ -52,11 +49,9 @@ public class UserDataResolver {
                         getDepartment(jwtToken.getToken().getTokenValue()),
                         getRoles(tokenAttributes));
             } catch (JsonProcessingException e) {
-                log.error("Error processing token attributes: {}", e.getMessage());
                 throw new RuntimeException(e);
             }
         } else {
-            log.error("Authentication not via token, throwing RuntimeException");
             throw new RuntimeException("Only authentication via token is allowed!");
         }
     }

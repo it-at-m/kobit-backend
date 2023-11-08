@@ -18,7 +18,7 @@ import de.muenchen.kobit.backend.decisiontree.relevance.view.RelevanceView;
 import de.muenchen.kobit.backend.links.model.Link;
 import de.muenchen.kobit.backend.links.service.LinkService;
 import de.muenchen.kobit.backend.links.view.LinkView;
-import de.muenchen.kobit.backend.validation.Validator;
+import de.muenchen.kobit.backend.validation.ContactPointValidator;
 import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
 import de.muenchen.kobit.backend.validation.exception.contactpoint.InvalidCompetenceException;
 import de.muenchen.kobit.backend.validation.exception.contactpoint.InvalidContactPointException;
@@ -45,7 +45,7 @@ public class ContactPointManipulationService {
     private final AdminService adminService;
     private final RelevanceService relevanceService;
 
-    private final List<Validator> validators;
+    private final List<ContactPointValidator> validators;
 
     ContactPointManipulationService(
             ContactPointRepository contactPointRepository,
@@ -53,7 +53,7 @@ public class ContactPointManipulationService {
             LinkService linkService,
             CompetenceService competenceService,
             AdminService adminService,
-            List<Validator> validators,
+            List<ContactPointValidator> validators,
             RelevanceService relevanceService) {
         this.contactPointRepository = contactPointRepository;
         this.contactService = contactService;
@@ -100,7 +100,7 @@ public class ContactPointManipulationService {
         if (contactPointView.getLinks() == null) {
             contactPointView.setLinks(Collections.emptyList());
         }
-        for (Validator validator : validators) {
+        for (ContactPointValidator validator : validators) {
             validator.validate(contactPointView);
         }
         if (!isUserAuthorized(contactPointView.getDepartments())) {
