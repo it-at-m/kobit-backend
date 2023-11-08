@@ -47,7 +47,7 @@ server:
 
 security:
   logging:
-    requests: true
+    requests: false
   oauth2:
     resource:
       user-info-uri: ${USER_URI}
@@ -80,4 +80,3 @@ info.application.version: @project.version@
 tomcat:
   gracefulshutdown:
     enabled: false
-    max-http-header-size: 102400
