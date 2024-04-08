@@ -34,7 +34,7 @@ class ValidateContentItemTest {
                 assertThrows(
                         InvalidContentItemException.class,
                         () -> validateContentItem.validate(null));
-        assertThat(exception.getMessage()).isEqualTo("ContentItemView can not be null!");
+        assertThat(exception.getMessage()).isEqualTo("ContentItemView can not be null.");
     }
 
     @Test
@@ -47,7 +47,7 @@ class ValidateContentItemTest {
                         InvalidContentItemException.class,
                         () -> validateContentItem.validate(contentItemView));
         assertThat(exception.getMessage())
-                .isEqualTo("Header must be at least 5 characters and not more than 5000!");
+                .isEqualTo("Header must be at least 5 characters and not more than 5000.");
     }
 
     @Test
@@ -169,7 +169,7 @@ class ValidateContentItemTest {
                         InvalidContentItemException.class,
                         () -> validateContentItem.validate(contentItemView));
         assertThat(exception.getMessage())
-                .isEqualTo("Header must be at least 5 characters and not more than 5000!");
+                .isEqualTo("Header must be at least 5 characters and not more than 5000.");
     }
 
     @Test
@@ -260,6 +260,6 @@ class ValidateContentItemTest {
                         InvalidContentItemException.class,
                         () -> validateContentItem.validate(contentItemView));
         assertThat(exception.getMessage())
-                .isEqualTo("Header must be at least 5 characters and not more than 5000!");
+                .isEqualTo("Header must be at least 5 characters and not more than 5000.");
     }
 }

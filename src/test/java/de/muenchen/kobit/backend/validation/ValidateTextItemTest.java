@@ -207,7 +207,7 @@ public class ValidateTextItemTest {
                         InvalidTextItemException.class,
                         () -> validateTextItem.validate(textItemView));
         assertThat(exception.getMessage())
-                .isEqualTo("Header must be at least 3 characters and not more than 250!");
+                .isEqualTo("Header must be at least 3 characters and not more than 250.");
     }
 
     void validateTest_headerOutOfRangeTooLong() {
@@ -226,7 +226,7 @@ public class ValidateTextItemTest {
                         InvalidTextItemException.class,
                         () -> validateTextItem.validate(textItemView));
         assertThat(exception.getMessage())
-                .isEqualTo("Header must be at least 3 characters and not more than 250!");
+                .isEqualTo("Header must be at least 3 characters and not more than 250.");
     }
 
     @Test
@@ -241,7 +241,7 @@ public class ValidateTextItemTest {
                         InvalidTextItemException.class,
                         () -> validateTextItem.validate(textItemView));
         assertThat(exception.getMessage())
-                .isEqualTo("Entry must be at least 5 characters and not more than 1500!");
+                .isEqualTo("Entry must be at least 5 characters and not more than 1500.");
     }
 
     @Test
@@ -279,7 +279,7 @@ public class ValidateTextItemTest {
                         InvalidTextItemException.class,
                         () -> validateTextItem.validate(textItemView));
         assertThat(exception.getMessage())
-                .isEqualTo("Entry must be at least 5 characters and not more than 1500!");
+                .isEqualTo("Entry must be at least 5 characters and not more than 1500.");
     }
 
     @Test
