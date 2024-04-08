@@ -42,7 +42,7 @@ public class UserDataResolver {
     private User readUserFromToken(Authentication authentication) {
         if (authentication instanceof JwtAuthenticationToken) {
             log.info("Authentication instance of JwtAuthenticationToken");
-            final JwtAuthenticationToken jwtToken = (JwtAuthenticationToken) authentication;      
+            final JwtAuthenticationToken jwtToken = (JwtAuthenticationToken) authentication;
             // Logging the length of the token here
             log.info("Token length: {}", jwtToken.getToken().getTokenValue().length());
             Map<String, Object> tokenAttributes = jwtToken.getTokenAttributes();
