@@ -32,23 +32,12 @@ class ContactPointToViewMapperTest {
     @BeforeEach
     void init() {
         clearAllCaches();
-
-        // Mocking the necessary dependencies for ContactService
-        ContactRepository contactRepository = Mockito.mock(ContactRepository.class);
-        contactService =
-                new ContactService(
-                        contactRepository); // Assuming ContactService accepts ContactRepository in
-        // its constructor
+        mapper = new ContactPointToViewMapper(competenceRepository, contactService, linkService);
 
         // Mock the necessary method to return a list of contacts
         List<Contact> mockContacts = List.of(new Contact(UUID.randomUUID(), "test@example.com"));
-        Mockito.when(contactRepository.findAllByContactPointId(Mockito.any(UUID.class)))
+        Mockito.when(contactService.getContactsByContactPointId(Mockito.any(UUID.class)))
                 .thenReturn(mockContacts);
-
-        // Initialize other mocks
-        competenceRepository = Mockito.mock(CompetenceRepository.class);
-        linkService = Mockito.mock(LinkService.class);
-        mapper = new ContactPointToViewMapper(competenceRepository, contactService, linkService);
     }
 
     @Test
