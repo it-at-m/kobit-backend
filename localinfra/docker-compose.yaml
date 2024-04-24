@@ -16,7 +16,7 @@ services:
     ports:
       - '5433:5432'
     environment:
-      POSTGRES_PASSWORD: kobit-local
+      POSTGRES_PASSWORD: postgres
       POSTGRES_USER: bn_keycloak
       POSTGRES_DB: bitnami_keycloak
     volumes:
@@ -36,11 +36,11 @@ services:
     image: bitnami/keycloak:18.0.2
     environment:
       KEYCLOAK_ADMIN_USER: kobit
-      KEYCLOAK_ADMIN_PASSWORD: kobit-local
+      KEYCLOAK_ADMIN_PASSWORD: 
       KEYCLOAK_DATABASE_HOST: host.docker.internal
       KEYCLOAK_DATABASE_PORT: 5433
       KEYCLOAK_DATABASE_USER: bn_keycloak
-      KEYCLOAK_DATABASE_PASSWORD: kobit-local
+      KEYCLOAK_DATABASE_PASSWORD: postgres
     depends_on:
       - postgresql_keycloak
     volumes:
