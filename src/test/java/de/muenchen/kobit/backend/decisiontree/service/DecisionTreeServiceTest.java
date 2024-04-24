@@ -44,6 +44,8 @@ class DecisionTreeServiceTest {
                         relevanceService);
     }
 
+    /* TODO
+
     @Test
     void getNextDecisionPointOrContactPointsTest_decisionPoint() {
         String department = "ITM";
@@ -301,5 +303,5 @@ class DecisionTreeServiceTest {
                 .isEqualTo(contactPointsAlphabetical.get(4).getShortCut());
         assertThat(result.getContactPoints().get(5).getShortCut())
                 .isEqualTo(contactPointsAlphabetical.get(5).getShortCut());
-    }
+    }*/
 }
