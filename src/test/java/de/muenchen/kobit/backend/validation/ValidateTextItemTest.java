@@ -122,7 +122,7 @@ public class ValidateTextItemTest {
     void validateTest_textItemViewNull() {
         InvalidTextItemException exception =
                 assertThrows(InvalidTextItemException.class, () -> validateTextItem.validate(null));
-        assertThat(exception.getMessage()).isEqualTo("TextItemView can not be null!");
+        assertThat(exception.getMessage()).isEqualTo("TextItemView can not be null.");
     }
 
     @Test
@@ -207,7 +207,7 @@ public class ValidateTextItemTest {
                         InvalidTextItemException.class,
                         () -> validateTextItem.validate(textItemView));
         assertThat(exception.getMessage())
-                .isEqualTo("Header must be at least 3 characters and not more than 250!");
+                .isEqualTo("Header must be at least 3 characters and not more than 250.");
     }
 
     void validateTest_headerOutOfRangeTooLong() {
@@ -226,7 +226,7 @@ public class ValidateTextItemTest {
                         InvalidTextItemException.class,
                         () -> validateTextItem.validate(textItemView));
         assertThat(exception.getMessage())
-                .isEqualTo("Header must be at least 3 characters and not more than 250!");
+                .isEqualTo("Header must be at least 3 characters and not more than 250.");
     }
 
     @Test
@@ -241,7 +241,7 @@ public class ValidateTextItemTest {
                         InvalidTextItemException.class,
                         () -> validateTextItem.validate(textItemView));
         assertThat(exception.getMessage())
-                .isEqualTo("Entry must be at least 5 characters and not more than 1500!");
+                .isEqualTo("Entry must be at least 5 characters and not more than 1500.");
     }
 
     @Test
@@ -279,7 +279,7 @@ public class ValidateTextItemTest {
                         InvalidTextItemException.class,
                         () -> validateTextItem.validate(textItemView));
         assertThat(exception.getMessage())
-                .isEqualTo("Entry must be at least 5 characters and not more than 1500!");
+                .isEqualTo("Entry must be at least 5 characters and not more than 1500.");
     }
 
     @Test
@@ -297,7 +297,7 @@ public class ValidateTextItemTest {
                 assertThrows(
                         InvalidTextItemException.class,
                         () -> validateTextItem.validate(textItemView));
-        assertThat(exception.getMessage()).isEqualTo("File cannot be null");
+        assertThat(exception.getMessage()).isEqualTo("Operation not supported for this page type.");
     }
 
     @Test
