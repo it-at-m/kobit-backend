@@ -29,7 +29,7 @@ public class ValidateContactPoint implements ContactPointValidator<ContactPointV
         }
         if (isNameOutOfRange(contactPointView.getName())) {
             throw new InvalidContactPointException(
-                    "Name must be at least 4 characters and not more than 100!");
+                    "Name must be at least 4 characters and not more than 100.");
         }
         if (isShortCutOutOfRange(contactPointView.getShortCut())) {
             throw new InvalidContactPointException(

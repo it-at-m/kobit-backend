@@ -72,7 +72,7 @@ class ValidateLinksTest {
         InvalidLinkException exception =
                 assertThrows(
                         InvalidLinkException.class, () -> validateLinks.validate(contactPointView));
-        assertThat(exception.getMessage()).isEqualTo("Link url is not valid!");
+        assertThat(exception.getMessage()).isEqualTo("Link url is not valid.");
     }
 
     @Test
@@ -93,7 +93,7 @@ class ValidateLinksTest {
         InvalidLinkException exception =
                 assertThrows(
                         InvalidLinkException.class, () -> validateLinks.validate(contactPointView));
-        assertThat(exception.getMessage()).isEqualTo("Link fields name and url can not be null!");
+        assertThat(exception.getMessage()).isEqualTo("Link fields name and url can not be null.");
     }
 
     @Test
@@ -114,6 +114,6 @@ class ValidateLinksTest {
         InvalidLinkException exception =
                 assertThrows(
                         InvalidLinkException.class, () -> validateLinks.validate(contactPointView));
-        assertThat(exception.getMessage()).isEqualTo("Link fields name and url can not be null!");
+        assertThat(exception.getMessage()).isEqualTo("Link fields name and url can not be null.");
     }
 }

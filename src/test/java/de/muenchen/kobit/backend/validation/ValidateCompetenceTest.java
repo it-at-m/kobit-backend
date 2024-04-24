@@ -73,6 +73,6 @@ class ValidateCompetenceTest {
                 assertThrows(
                         InvalidCompetenceException.class,
                         () -> validateCompetence.validate(contactPointView));
-        assertThat(exception.getMessage()).isEqualTo("Competences can not be null!");
+        assertThat(exception.getMessage()).isEqualTo("At least one Competence is needed!");
     }
 }
