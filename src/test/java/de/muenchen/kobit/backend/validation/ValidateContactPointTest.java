@@ -228,7 +228,7 @@ class ValidateContactPointTest {
                         InvalidContactPointException.class,
                         () -> validateContactPoint.validate(contactPointView));
         assertThat(exception.getMessage())
-                .isEqualTo("Name must be at least 4 characters and not more than 100!");
+                .isEqualTo("Name must be at least 4 characters and not more than 100.");
     }
 
     @Test
