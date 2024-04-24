@@ -122,7 +122,7 @@ public class ValidateTextItemTest {
     void validateTest_textItemViewNull() {
         InvalidTextItemException exception =
                 assertThrows(InvalidTextItemException.class, () -> validateTextItem.validate(null));
-        assertThat(exception.getMessage()).isEqualTo("TextItemView can not be null!");
+        assertThat(exception.getMessage()).isEqualTo("TextItemView can not be null.");
     }
 
     @Test
@@ -207,7 +207,7 @@ public class ValidateTextItemTest {
                         InvalidTextItemException.class,
                         () -> validateTextItem.validate(textItemView));
         assertThat(exception.getMessage())
-                .isEqualTo("Header must be at least 3 characters and not more than 250!");
+                .isEqualTo("Header must be at least 3 characters and not more than 250.");
     }
 
     void validateTest_headerOutOfRangeTooLong() {
@@ -226,7 +226,7 @@ public class ValidateTextItemTest {
                         InvalidTextItemException.class,
                         () -> validateTextItem.validate(textItemView));
         assertThat(exception.getMessage())
-                .isEqualTo("Header must be at least 3 characters and not more than 250!");
+                .isEqualTo("Header must be at least 3 characters and not more than 250.");
     }
 
     @Test
@@ -241,7 +241,7 @@ public class ValidateTextItemTest {
                         InvalidTextItemException.class,
                         () -> validateTextItem.validate(textItemView));
         assertThat(exception.getMessage())
-                .isEqualTo("Entry must be at least 5 characters and not more than 1500!");
+                .isEqualTo("Entry must be at least 5 characters and not more than 1500.");
     }
 
     @Test
@@ -250,25 +250,24 @@ public class ValidateTextItemTest {
         textItemView.setHeader("This is a Header"); // header length is less than the minimum
         textItemView.setEntry(
                 "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod"
-                    + " tempor invidunt ut labore et dolore magna aliquyam erat, sed diam"
-                    + " voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet"
-                    + " clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit"
-                    + " amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam"
-                    + " nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed"
-                    + " diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum."
-                    + " Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor"
-                    + " sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed"
-                    + " diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam"
-                    + " erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea"
-                    + " rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum"
-                    + " dolor sit amet. \n"
+                    + " tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua."
+                    + " At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd"
+                    + " gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem"
+                    + " ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod"
+                    + " tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua."
+                    + " At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd"
+                    + " gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem"
+                    + " ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod"
+                    + " tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua."
+                    + " At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd"
+                    + " gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. \n"
                     + "\n"
                     + "Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse"
                     + " molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero"
                     + " eros et accumsan et iusto odio dignissim qui blandit praesent luptatum"
                     + " zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum"
-                    + " dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh"
-                    + " euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. \n"
+                    + " dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod"
+                    + " tincidunt ut laoreet dolore magna aliquam erat volutpat. \n"
                     + "\n"
                     + "Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper"
                     + " suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel"
@@ -280,7 +279,7 @@ public class ValidateTextItemTest {
                         InvalidTextItemException.class,
                         () -> validateTextItem.validate(textItemView));
         assertThat(exception.getMessage())
-                .isEqualTo("Entry must be at least 5 characters and not more than 1500!");
+                .isEqualTo("Entry must be at least 5 characters and not more than 1500.");
     }
 
     @Test
@@ -298,7 +297,7 @@ public class ValidateTextItemTest {
                 assertThrows(
                         InvalidTextItemException.class,
                         () -> validateTextItem.validate(textItemView));
-        assertThat(exception.getMessage()).isEqualTo("File cannot be null");
+        assertThat(exception.getMessage()).isEqualTo("Operation not supported for this page type.");
     }
 
     @Test

@@ -18,9 +18,9 @@ public enum Competence {
             "Herabwürdigung von Menschen oder eine Schlechterbehandlung ohne Grund"),
     SEXUAL_HARASSMENT(
             "Sexuelle Belästigung",
-            "Jedes unerwünschte, sexuell bestimmte, körperliche, verbale oder nonverbale"
-                + " Verhalten, das bezweckt oder bewirkt, dass die Würde der betreffenden Person"
-                + " verletzt wird."),
+            "Jedes unerwünschte, sexuell bestimmte, körperliche, verbale oder nonverbale Verhalten,"
+                    + " das bezweckt oder bewirkt, dass die Würde der betreffenden Person verletzt"
+                    + " wird."),
     DOMESTIC_VIOLENCE(
             "Häusliche Gewalt",
             "Häusliche Gewalt ist jede Art körperlicher, seelischer oder sexueller Misshandlung"
