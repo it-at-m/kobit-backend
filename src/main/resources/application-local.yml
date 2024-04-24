@@ -1,9 +1,9 @@
 spring:
 
   datasource:
-    url: ${DATABASE_ADDRESS}
-    username: ${DATABASE_USERNAME}
-    password: ${DATABASE_PASSWORD}
+    url: jdbc:postgresql://localhost:5432/kobit_local
+    username: postgres
+    password: postgres
 
 
   http:
