@@ -6,8 +6,8 @@ services:
     ports:
       - '5432:5432'
     environment:
-      POSTGRES_PASSWORD: kobit-local
-      POSTGRES_USER: kobit
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
       POSTGRES_DB: kobit_local
     volumes:
       - ./postgres:/var/lib/postgres/data
@@ -26,7 +26,7 @@ services:
     depends_on:
       - postgresql
     environment:
-      PGADMIN_DEFAULT_PASSWORD: kobit-local
+      PGADMIN_DEFAULT_PASSWORD: postgres
       PGADMIN_DEFAULT_EMAIL: kobit@local.com
     ports:
       - '80:80'
