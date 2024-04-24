@@ -33,33 +33,28 @@ class ContactPointToViewMapperTest {
     void init() {
         clearAllCaches();
         mapper = new ContactPointToViewMapper(competenceRepository, contactService, linkService);
+
+        // Mock the necessary method to return a list of contacts
+        List<Contact> mockContacts = List.of(new Contact(UUID.randomUUID(), "test@example.com"));
+        Mockito.when(contactService.getContactsByContactPointId(Mockito.any(UUID.class)))
+                .thenReturn(mockContacts);
     }
 
     @Test
     void contactPointToView_ObjectTest() throws MalformedURLException {
-
         URL imageUrl = new URL("https://text.com/image.jpg");
+        UUID contactPointId = UUID.randomUUID();
         ContactPoint contactPoint =
                 new ContactPoint(
-                        UUID.randomUUID(),
-                        "test",
-                        "test",
-                        "Beschreibung",
-                        List.of("test"),
-                        imageUrl);
+                        contactPointId, "test", "test", "Beschreibung", List.of("test"), imageUrl);
 
-        List<Contact> contacts = List.of(new Contact(contactPoint.getId(), "mail"));
-        List<LinkView> links = List.of(new LinkView(contactPoint.getId(), "test", "test", false));
+        List<LinkView> links = List.of(new LinkView(contactPointId, "test", "test", false));
         List<CompetenceToContactPoint> competenceToContactPoint =
                 List.of(
-                        new CompetenceToContactPoint(
-                                contactPoint.getId(), Competence.DISCRIMINATION),
-                        new CompetenceToContactPoint(contactPoint.getId(), Competence.EMPLOYEE));
-        Mockito.when(contactService.getContactsByContactPointId(contactPoint.getId()))
-                .thenReturn(contacts);
-        Mockito.when(linkService.getLinkViewsByContactPointId(contactPoint.getId()))
-                .thenReturn(links);
-        Mockito.when(competenceRepository.findAllByContactPointId(contactPoint.getId()))
+                        new CompetenceToContactPoint(contactPointId, Competence.DISCRIMINATION),
+                        new CompetenceToContactPoint(contactPointId, Competence.EMPLOYEE));
+        Mockito.when(linkService.getLinkViewsByContactPointId(contactPointId)).thenReturn(links);
+        Mockito.when(competenceRepository.findAllByContactPointId(contactPointId))
                 .thenReturn(competenceToContactPoint);
 
         ContactPointView result = mapper.contactPointToView(contactPoint);
