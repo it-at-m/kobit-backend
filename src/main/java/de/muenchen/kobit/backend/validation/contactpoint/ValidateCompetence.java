@@ -10,9 +10,10 @@ public class ValidateCompetence implements ContactPointValidator<ContactPointVie
     @Override
     public void validate(ContactPointView contactPointView) throws InvalidCompetenceException {
         if (contactPointView.getId() == null) {
-            return;  // Optionally, handle or log cases where the ID is null if needed
+            return; // Optionally, handle or log cases where the ID is null if needed
         }
-        if (contactPointView.getCompetences() == null || contactPointView.getCompetences().isEmpty()) {
+        if (contactPointView.getCompetences() == null
+                || contactPointView.getCompetences().isEmpty()) {
             throw new InvalidCompetenceException("At least one Competence is needed!");
         }
     }
