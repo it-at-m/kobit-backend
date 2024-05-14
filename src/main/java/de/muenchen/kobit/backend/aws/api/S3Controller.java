@@ -3,12 +3,16 @@ package de.muenchen.kobit.backend.aws.api;
 import de.muenchen.kobit.backend.aws.service.S3DeletionService;
 import de.muenchen.kobit.backend.aws.service.S3ManipulationService;
 import de.muenchen.kobit.backend.aws.service.S3UploadService;
+import de.muenchen.kobit.backend.admin.service.AdminService;
 import de.muenchen.kobit.backend.validation.exception.S3FileValidationException;
+
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,17 +23,21 @@ public class S3Controller {
     private final S3UploadService s3UploadService;
     private final S3DeletionService s3DeletionService;
     private final S3ManipulationService s3ManipulationService;
+    private final AdminService adminService;
 
-    S3Controller(
+    public S3Controller(
             S3UploadService s3UploadService,
             S3DeletionService s3DeletionService,
-            S3ManipulationService s3ManipulationService) {
+            S3ManipulationService s3ManipulationService,
+            AdminService adminService) {
         this.s3UploadService = s3UploadService;
         this.s3DeletionService = s3DeletionService;
         this.s3ManipulationService = s3ManipulationService;
+        this.adminService = adminService;
     }
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("@adminService.isUserKobitAdmin() or @adminService.isUserDepartmentAdmin()")
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file)
             throws IOException, S3FileValidationException, NoSuchAlgorithmException {
 
@@ -38,6 +46,7 @@ public class S3Controller {
     }
 
     @DeleteMapping("/delete")
+    @PreAuthorize("@adminService.isUserKobitAdmin() or @adminService.isUserDepartmentAdmin()")
     public void deleteFile(@RequestParam(value = "link", required = false) String link) {
         s3DeletionService.deleteFileByLink(link);
     }
