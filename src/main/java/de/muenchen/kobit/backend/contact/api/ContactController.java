@@ -4,7 +4,6 @@ import de.muenchen.kobit.backend.admin.service.AdminService;
 import de.muenchen.kobit.backend.contact.model.Contact;
 import de.muenchen.kobit.backend.contact.service.ContactService;
 import de.muenchen.kobit.backend.contact.view.ChangeContactWrapper;
-
 import java.util.List;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;

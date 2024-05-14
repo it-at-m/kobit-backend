@@ -1,17 +1,17 @@
 package de.muenchen.kobit.backend.additional.pagecontent.api;
 
-import de.muenchen.kobit.backend.admin.service.AdminService;
 import de.muenchen.kobit.backend.additional.pagecontent.model.PageType;
 import de.muenchen.kobit.backend.additional.pagecontent.service.*;
 import de.muenchen.kobit.backend.additional.pagecontent.view.ContentItemView;
 import de.muenchen.kobit.backend.additional.pagecontent.view.ItemWrapper;
 import de.muenchen.kobit.backend.additional.pagecontent.view.TextItemView;
+import de.muenchen.kobit.backend.admin.service.AdminService;
 import de.muenchen.kobit.backend.validation.exception.S3FileValidationException;
 import java.io.IOException;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j

@@ -36,14 +36,14 @@ public class ContactPointController {
     private final ContactPointManipulationService manipulationService;
     private final ContactPointCreationService creationService;
     private final ContactPointDeletionService deletionService;
-    private final AdminService adminService;  // Inject AdminService
+    private final AdminService adminService; // Inject AdminService
 
     public ContactPointController(
             ContactPointService contactPointService,
             ContactPointManipulationService manipulationService,
             ContactPointCreationService creationService,
             ContactPointDeletionService deletionService,
-            AdminService adminService) {  // Constructor injection of AdminService
+            AdminService adminService) { // Constructor injection of AdminService
         this.contactPointService = contactPointService;
         this.manipulationService = manipulationService;
         this.creationService = creationService;

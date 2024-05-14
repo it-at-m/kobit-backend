@@ -3,7 +3,6 @@ package de.muenchen.kobit.backend.links.api;
 import de.muenchen.kobit.backend.admin.service.AdminService;
 import de.muenchen.kobit.backend.links.service.LinkService;
 import de.muenchen.kobit.backend.links.view.LinkView;
-
 import java.util.List;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;

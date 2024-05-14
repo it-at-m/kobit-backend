@@ -1,15 +1,13 @@
 package de.muenchen.kobit.backend.aws.api;
 
+import de.muenchen.kobit.backend.admin.service.AdminService;
 import de.muenchen.kobit.backend.aws.service.S3DeletionService;
 import de.muenchen.kobit.backend.aws.service.S3ManipulationService;
 import de.muenchen.kobit.backend.aws.service.S3UploadService;
-import de.muenchen.kobit.backend.admin.service.AdminService;
 import de.muenchen.kobit.backend.validation.exception.S3FileValidationException;
-
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
