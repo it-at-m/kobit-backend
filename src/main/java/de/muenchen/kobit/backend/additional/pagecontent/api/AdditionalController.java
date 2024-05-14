@@ -1,21 +1,20 @@
 package de.muenchen.kobit.backend.additional.pagecontent.api;
 
+import de.muenchen.kobit.backend.admin.service.AdminService;
 import de.muenchen.kobit.backend.additional.pagecontent.model.PageType;
 import de.muenchen.kobit.backend.additional.pagecontent.service.*;
 import de.muenchen.kobit.backend.additional.pagecontent.view.ContentItemView;
 import de.muenchen.kobit.backend.additional.pagecontent.view.ItemWrapper;
 import de.muenchen.kobit.backend.additional.pagecontent.view.TextItemView;
 import de.muenchen.kobit.backend.validation.exception.S3FileValidationException;
+
 import java.io.IOException;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
@@ -27,21 +26,25 @@ public class AdditionalController {
     private final TextItemManipulationService textItemManipulationService;
     private final TextItemDeletionService textItemDeletionService;
     private final TextItemCreationService textItemCreationService;
+    private final AdminService adminService; // Inject AdminService
 
     AdditionalController(
             ItemService itemService,
             ContentItemManipulationService contentItemManipulationService,
             TextItemManipulationService textItemManipulationService,
             TextItemDeletionService textItemDeletionService,
-            TextItemCreationService textItemCreationService) {
+            TextItemCreationService textItemCreationService,
+            AdminService adminService) { // Include AdminService in the constructor
         this.itemService = itemService;
         this.contentItemManipulationService = contentItemManipulationService;
         this.textItemManipulationService = textItemManipulationService;
         this.textItemDeletionService = textItemDeletionService;
         this.textItemCreationService = textItemCreationService;
+        this.adminService = adminService;
     }
 
     @PostMapping(value = "/{pageType}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("@adminService.isUserKobitAdmin()") // Protect with central admin check
     public TextItemView createTextItem(
             @PathVariable PageType pageType, @RequestBody TextItemView textItemView)
             throws IOException, S3FileValidationException {
@@ -51,11 +54,12 @@ public class AdditionalController {
     }
 
     @GetMapping("/{pageType}")
-    ItemWrapper getPageByType(@PathVariable PageType pageType) {
+    public ItemWrapper getPageByType(@PathVariable PageType pageType) {
         return itemService.getItemsForPage(pageType);
     }
 
     @PutMapping("/{pageType}/text-item/{id}")
+    @PreAuthorize("@adminService.isUserKobitAdmin()") // Protect with central admin check
     public TextItemView updateTextItem(
             @PathVariable PageType pageType,
             @PathVariable UUID id,
@@ -66,6 +70,7 @@ public class AdditionalController {
     }
 
     @PutMapping("/{pageType}/content-item/{id}")
+    @PreAuthorize("@adminService.isUserKobitAdmin()") // Protect with central admin check
     public ContentItemView updateContentItem(
             @PathVariable PageType pageType,
             @PathVariable UUID id,
@@ -77,6 +82,7 @@ public class AdditionalController {
     }
 
     @DeleteMapping("/{pageType}/text-item/{id}")
+    @PreAuthorize("@adminService.isUserKobitAdmin()") // Protect with central admin check
     public void deleteTextItem(
             @PathVariable PageType pageType,
             @PathVariable UUID id,
