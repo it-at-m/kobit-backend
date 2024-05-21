@@ -1,5 +1,6 @@
 package de.muenchen.kobit.backend.contactpoint.api;
 
+import de.muenchen.kobit.backend.admin.service.AdminService;
 import de.muenchen.kobit.backend.contactpoint.ContactPointNotFoundException;
 import de.muenchen.kobit.backend.contactpoint.service.ContactPointCreationService;
 import de.muenchen.kobit.backend.contactpoint.service.ContactPointDeletionService;
@@ -16,6 +17,7 @@ import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,16 +36,19 @@ public class ContactPointController {
     private final ContactPointManipulationService manipulationService;
     private final ContactPointCreationService creationService;
     private final ContactPointDeletionService deletionService;
+    private final AdminService adminService; // Inject AdminService
 
-    ContactPointController(
+    public ContactPointController(
             ContactPointService contactPointService,
             ContactPointManipulationService manipulationService,
             ContactPointCreationService creationService,
-            ContactPointDeletionService deletionService) {
+            ContactPointDeletionService deletionService,
+            AdminService adminService) { // Constructor injection of AdminService
         this.contactPointService = contactPointService;
         this.manipulationService = manipulationService;
         this.creationService = creationService;
         this.deletionService = deletionService;
+        this.adminService = adminService;
     }
 
     @GetMapping("/anlaufstellen")
@@ -60,19 +65,21 @@ public class ContactPointController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("anlaufstellen/find/{shortcut}")
+    @GetMapping("/anlaufstellen/find/{shortcut}")
     public ContactPointView getContactPointByShortCut(@PathVariable String shortcut)
             throws ContactPointNotFoundException {
         return contactPointService.findByShortCut(shortcut);
     }
 
     @PostMapping("/anlaufstellen")
+    @PreAuthorize("@adminService.isUserKobitAdmin() or @adminService.isUserDepartmentAdmin()")
     public ContactPointView createContactPoint(@RequestBody ContactPointView view)
             throws ContactPointValidationException {
         return creationService.createContactPoint(view);
     }
 
     @PutMapping("/anlaufstellen/{id}")
+    @PreAuthorize("@adminService.isUserKobitAdmin() or @adminService.isUserDepartmentAdmin()")
     public ContactPointView setContactPoint(
             @PathVariable("id") UUID id, @RequestBody ContactPointView view)
             throws ContactPointValidationException {
@@ -80,12 +87,14 @@ public class ContactPointController {
     }
 
     @PutMapping("/anlaufstellen/competences")
+    @PreAuthorize("@adminService.isUserKobitAdmin() or @adminService.isUserDepartmentAdmin()")
     public void setContactPoints(@RequestBody List<ListItemToCompetenceView> views)
             throws ContactPointValidationException {
         manipulationService.updateContactPointCompetence(views);
     }
 
     @DeleteMapping("/anlaufstellen/{id}")
+    @PreAuthorize("@adminService.isUserKobitAdmin() or @adminService.isUserDepartmentAdmin()")
     public void deleteContactPoint(@PathVariable("id") UUID id) {
         deletionService.deleteContactPointView(id);
     }
