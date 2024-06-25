@@ -77,7 +77,7 @@ public class EmailService {
 
             helperCopy.setFrom(noReplyMail);
             helperCopy.setTo(email.getFrom());
-            helperCopy.setSubject("KoBIT Kopie: " + email.getSubject());
+            helperCopy.setSubject("UFO Kopie: " + email.getSubject());
             helperCopy.setText(getMailTxext(email), true);
 
             mailSender.send(msgCopy);
