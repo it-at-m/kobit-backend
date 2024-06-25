@@ -16,13 +16,13 @@ public class SwaggerConfig {
                 .info(
                         new Info()
                                 .version(this.getClass().getPackage().getImplementationVersion())
-                                .title("KoBIT Backend Service")
+                                .title("UFO Backend Service")
                                 .contact(
                                         new Contact()
                                                 .name("Patrick Bussler")
                                                 .email("patrick.bussler@meunchen.de"))
                                 .description(
-                                        "Das ist das Backend für dei KoBIT App aus dem die Daten"
+                                        "Das ist das Backend für dei UFO App aus dem die Daten"
                                                 + " geliefert werden."));
     }
 }
