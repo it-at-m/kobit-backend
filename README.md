@@ -1,4 +1,4 @@
-# KoBITApp Backend
+# UFO APP Backend
 
 ### Description English
 
@@ -8,9 +8,9 @@
 
 Conflict Resolution Web Application for government organisations and businesses
 
-The KoBITApp helps an employee who has a problem/conflict by providing an overview of the employer contact points, offering support for the right employer contact points in the respective situation, and centrally providing information and opportunities for reflection on the topic of conflicts.
+The UFOApp helps an employee who has a problem/conflict by providing an overview of the employer contact points, offering support for the right employer contact points in the respective situation, and centrally providing information and opportunities for reflection on the topic of conflicts.
 
-The KoBITApp is user-centric, low-threshold offering, contribution to digitization.
+The UFOApp is user-centric, low-threshold offering, contribution to digitization.
 
 **Framework**
 
@@ -34,9 +34,9 @@ Prerequisite digital accessibility and mobile-first
 
 Konfliktbegleitungs Web Application für staatliche Organisationen und Unternehmen
 
-Die KoBITApp hilft dem Nutzer, der ein Problem/Konflikt hat, indem sie eine Übersicht über die Anlaufstellen gibt, Unterstützung der richtigen Anlaufstellen in der jeweiligen Situation bietet und zentral Informationen und Reflektionsmöglichkeit rund um das Thema Konflikte bietet.
+Die UFOApp hilft dem Nutzer, der ein Problem/Konflikt hat, indem sie eine Übersicht über die Anlaufstellen gibt, Unterstützung der richtigen Anlaufstellen in der jeweiligen Situation bietet und zentral Informationen und Reflektionsmöglichkeit rund um das Thema Konflikte bietet.
 
-Die KoBITApp ist nutzerzentriert, niederschwelliges Angebot, Beitrag zur Digitalisierung
+Die UFOApp ist nutzerzentriert, niederschwelliges Angebot, Beitrag zur Digitalisierung
 
 **Rahmenbedingungen**
 
