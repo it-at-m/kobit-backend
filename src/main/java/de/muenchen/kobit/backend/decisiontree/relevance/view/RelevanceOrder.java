@@ -36,9 +36,11 @@ public class RelevanceOrder implements Comparable<RelevanceOrder> {
 
     @Override
     public String toString() {
-        return "RelevanceOrder{" +
-                "contactPointId=" + contactPointId +
-                ", position=" + position +
-                '}';
+        return "RelevanceOrder{"
+                + "contactPointId="
+                + contactPointId
+                + ", position="
+                + position
+                + '}';
     }
 }

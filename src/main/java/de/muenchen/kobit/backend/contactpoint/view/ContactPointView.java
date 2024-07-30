@@ -7,7 +7,6 @@ import de.muenchen.kobit.backend.links.view.LinkView;
 import java.net.URL;
 import java.util.List;
 import java.util.UUID;
-
 import lombok.*;
 
 @Getter

@@ -16,9 +16,7 @@ import de.muenchen.kobit.backend.decisiontree.view.DecisionPoint;
 import java.text.Collator;
 import java.util.*;
 import java.util.stream.Collectors;
-
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -140,7 +138,10 @@ public class DecisionTreeService {
 
     private static ContactPointView findMatchingContactPoint(
             List<ContactPointView> contactPointViews, RelevanceOrder order) {
-        log.debug("findMatchingContactPoint | contactPointViews {}; order: {}", contactPointViews.toString(), order.toString());
+        log.debug(
+                "findMatchingContactPoint | contactPointViews {}; order: {}",
+                contactPointViews.toString(),
+                order.toString());
         ContactPointView view =
                 contactPointViews.stream()
                         .filter(cp -> cp.getId().equals(order.getContactPointId()))

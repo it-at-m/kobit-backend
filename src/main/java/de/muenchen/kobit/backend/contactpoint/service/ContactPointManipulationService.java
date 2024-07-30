@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -40,7 +39,8 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class ContactPointManipulationService {
 
-    private static final Logger log = LoggerFactory.getLogger(ContactPointManipulationService.class);
+    private static final Logger log =
+            LoggerFactory.getLogger(ContactPointManipulationService.class);
     private final ContactPointRepository contactPointRepository;
     private final ContactService contactService;
     private final LinkService linkService;
@@ -80,7 +80,8 @@ public class ContactPointManipulationService {
                                                 "There must be an single entity present!"))
                         .getCompetences();
         log.debug("updateContactPointCompetence | competences: {}", competences.toString());
-        log.debug("updateContactPointCompetence | competencesViews: {}", competenceViews.toString());
+        log.debug(
+                "updateContactPointCompetence | competencesViews: {}", competenceViews.toString());
         removeContactPointsForCompetence(competences);
         updateRelevance(competenceViews, competences);
         competenceViews.forEach(
