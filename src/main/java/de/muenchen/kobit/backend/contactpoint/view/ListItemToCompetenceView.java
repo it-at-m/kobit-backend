@@ -1,9 +1,12 @@
 package de.muenchen.kobit.backend.contactpoint.view;
 
 import de.muenchen.kobit.backend.competence.Competence;
+import lombok.ToString;
+
 import java.util.List;
 import javax.validation.constraints.NotNull;
 
+@ToString
 public class ListItemToCompetenceView {
     private ContactPointListItem listItem;
 
