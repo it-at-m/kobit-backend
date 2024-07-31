@@ -32,11 +32,11 @@ public class TreeController {
     }
 
     @PostMapping(value = "/nextAll")
-    public DecisionContactPointWrapper getAllNextDecisionOrContactPoints(@RequestBody List<Competence> competences, @Department String department) {
+    public DecisionContactPointWrapper getAllNextDecisionOrContactPoints(
+            @RequestBody List<Competence> competences, @Department String department) {
         if (competences.isEmpty()) {
             return decisionTreeService.getRoot();
         }
         return decisionTreeService.getNextDecisionPointOrContactPoints(competences, null);
     }
-
 }
