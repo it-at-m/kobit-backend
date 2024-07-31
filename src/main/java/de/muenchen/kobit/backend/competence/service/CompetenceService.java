@@ -18,12 +18,16 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CompetenceService {
 
+    private static final Logger log = LoggerFactory.getLogger(CompetenceService.class);
     private final CompetenceRepository competenceRepository;
     private final ContactPointRepository contactPointRepository;
     private final ContactPointToViewMapper mapper;
@@ -65,6 +69,15 @@ public class CompetenceService {
     }
 
     private List<ContactPoint> getMatchingContactPoints(String department, Set<UUID> keys) {
+        log.debug("getMatchingContactPoints | department {}", department);
+        if ( department == null) {
+            return keys.stream()
+                    .map(
+                            contactPointRepository::findContactPointByIdLike)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .collect(toList());
+        }
         return keys.stream()
                 .map(
                         it ->

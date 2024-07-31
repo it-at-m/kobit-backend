@@ -79,6 +79,7 @@ public class ContactPointManipulationService {
                                         new InvalidCompetenceException(
                                                 "There must be an single entity present!"))
                         .getCompetences();
+        log.debug("updateContactPointCompetence | competences-size: {}", competences.size());
         log.debug("updateContactPointCompetence | competences: {}", competences.toString());
         log.debug(
                 "updateContactPointCompetence | competencesViews: {}", competenceViews.toString());

@@ -30,4 +30,13 @@ public class TreeController {
         }
         return decisionTreeService.getNextDecisionPointOrContactPoints(competences, department);
     }
+
+    @PostMapping(value = "/nextAll")
+    public DecisionContactPointWrapper getAllNextDecisionOrContactPoints(@RequestBody List<Competence> competences, @Department String department) {
+        if (competences.isEmpty()) {
+            return decisionTreeService.getRoot();
+        }
+        return decisionTreeService.getNextDecisionPointOrContactPoints(competences, null);
+    }
+
 }

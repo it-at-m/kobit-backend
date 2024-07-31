@@ -31,5 +31,14 @@ public interface ContactPointRepository extends JpaRepository<ContactPoint, UUID
     Optional<ContactPoint> findContactPointByIdAndDepartmentLike(
             @Param("id") UUID id, @Param("department") String department);
 
+
+    @Query(
+            nativeQuery = true,
+            value =
+                    "SELECT * FROM {h-schema}contact_point as p LEFT JOIN {h-schema}departments d"
+                            + " on p.id = d.contact_point_id WHERE p.id = :id")
+    Optional<ContactPoint> findContactPointByIdLike(
+            @Param("id") UUID id);
+
     List<ContactPoint> findAllByIdIn(Set<UUID> ids);
 }
