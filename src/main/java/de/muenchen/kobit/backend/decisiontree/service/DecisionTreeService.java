@@ -14,16 +14,14 @@ import de.muenchen.kobit.backend.decisiontree.relevance.view.RelevanceOrder;
 import de.muenchen.kobit.backend.decisiontree.view.DecisionContactPointWrapper;
 import de.muenchen.kobit.backend.decisiontree.view.DecisionPoint;
 import java.text.Collator;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Slf4j
 public class DecisionTreeService {
 
     private static final List<Competence> competenceWithoutQuestions =
@@ -119,12 +117,14 @@ public class DecisionTreeService {
             List<ContactPointView> contactPointViews, List<Competence> selectedCompetences) {
         List<RelevanceOrder> order =
                 relevanceService.getOrderOrNull(new HashSet<>(selectedCompetences));
+        log.debug("getLastElement | contactPointViews size: {}", contactPointViews.size());
         if (order == null) {
             return orderAlphabetically(contactPointViews);
         } else {
             Collections.sort(order);
             return order.stream()
                     .map(it -> findMatchingContactPoint(contactPointViews, it))
+                    .filter(Objects::nonNull)
                     .collect(Collectors.toList());
         }
     }
@@ -138,15 +138,21 @@ public class DecisionTreeService {
 
     private static ContactPointView findMatchingContactPoint(
             List<ContactPointView> contactPointViews, RelevanceOrder order) {
+        log.debug(
+                "findMatchingContactPoint | contactPointViews {}; order: {}",
+                contactPointViews.toString(),
+                order.toString());
         ContactPointView view =
                 contactPointViews.stream()
                         .filter(cp -> cp.getId().equals(order.getContactPointId()))
+                        .peek(cp -> log.debug("Filtered contactPointId: {}", cp.getId()))
                         .findFirst()
-                        .orElseThrow(
-                                () ->
-                                        new IllegalStateException(
-                                                "The ContactPoint should be present."));
-        view.setPosition(order.getPosition());
+                        .orElse(null);
+        if (view != null) {
+            log.debug("Found matching contactPointId: {}", view.getId());
+            view.setPosition(order.getPosition());
+        }
+
         return view;
     }
 }

@@ -33,4 +33,14 @@ public class RelevanceOrder implements Comparable<RelevanceOrder> {
     public int compareTo(RelevanceOrder o) {
         return getPosition().compareTo(o.position);
     }
+
+    @Override
+    public String toString() {
+        return "RelevanceOrder{"
+                + "contactPointId="
+                + contactPointId
+                + ", position="
+                + position
+                + '}';
+    }
 }

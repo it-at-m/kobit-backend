@@ -1,7 +1,9 @@
 package de.muenchen.kobit.backend.competence;
 
 import de.muenchen.kobit.backend.competence.view.CompetenceView;
+import lombok.ToString;
 
+@ToString
 public enum Competence {
 
     // Conflict Points

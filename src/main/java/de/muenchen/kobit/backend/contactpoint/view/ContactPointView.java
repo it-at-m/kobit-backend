@@ -7,15 +7,13 @@ import de.muenchen.kobit.backend.links.view.LinkView;
 import java.net.URL;
 import java.util.List;
 import java.util.UUID;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class ContactPointView {
 
     private UUID id;
