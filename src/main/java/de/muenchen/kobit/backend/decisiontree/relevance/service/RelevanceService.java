@@ -119,6 +119,4 @@ public class RelevanceService {
                 selectedPath.stream().map(String::valueOf).collect(Collectors.toList());
         return new HashSet<>(pathCompetences).containsAll(selectedPathAsString);
     }
-
-
 }

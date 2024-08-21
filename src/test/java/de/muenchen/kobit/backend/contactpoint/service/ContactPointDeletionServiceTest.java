@@ -27,7 +27,11 @@ class ContactPointDeletionServiceTest {
         // clearAllCaches();
         deletionService =
                 new ContactPointDeletionService(
-                        contactPointRepository, contactService, linkService, competenceService, relevanceService);
+                        contactPointRepository,
+                        contactService,
+                        linkService,
+                        competenceService,
+                        relevanceService);
     }
 
     @Test

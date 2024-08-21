@@ -6,7 +6,6 @@ import de.muenchen.kobit.backend.contactpoint.repository.ContactPointRepository;
 import de.muenchen.kobit.backend.decisiontree.relevance.service.RelevanceService;
 import de.muenchen.kobit.backend.links.service.LinkService;
 import java.util.UUID;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -26,13 +25,13 @@ public class ContactPointDeletionService {
             ContactPointRepository contactPointRepository,
             ContactService contactService,
             LinkService linkService,
-            CompetenceService competenceService, RelevanceService relevanceService) {
+            CompetenceService competenceService,
+            RelevanceService relevanceService) {
         this.contactPointRepository = contactPointRepository;
         this.contactService = contactService;
         this.linkService = linkService;
         this.competenceService = competenceService;
         this.relevanceService = relevanceService;
-
     }
 
     @Transactional
@@ -60,6 +59,7 @@ public class ContactPointDeletionService {
     private void deleteContactPoint(UUID id) {
         contactPointRepository.deleteById(id);
     }
+
     private void deleteRelevance(UUID id) {
         relevanceService.deleteAllRelevancesByContactId(id);
     }
