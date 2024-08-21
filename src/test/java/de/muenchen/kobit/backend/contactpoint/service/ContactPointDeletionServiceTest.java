@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 import de.muenchen.kobit.backend.competence.service.CompetenceService;
 import de.muenchen.kobit.backend.contact.service.ContactService;
 import de.muenchen.kobit.backend.contactpoint.repository.ContactPointRepository;
+import de.muenchen.kobit.backend.decisiontree.relevance.service.RelevanceService;
 import de.muenchen.kobit.backend.links.service.LinkService;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +18,7 @@ class ContactPointDeletionServiceTest {
     private final ContactService contactService = mock(ContactService.class);
     private final LinkService linkService = mock(LinkService.class);
     private final CompetenceService competenceService = mock(CompetenceService.class);
+    private final RelevanceService relevanceService = mock(RelevanceService.class);
 
     private ContactPointDeletionService deletionService;
 
@@ -25,7 +27,11 @@ class ContactPointDeletionServiceTest {
         // clearAllCaches();
         deletionService =
                 new ContactPointDeletionService(
-                        contactPointRepository, contactService, linkService, competenceService);
+                        contactPointRepository,
+                        contactService,
+                        linkService,
+                        competenceService,
+                        relevanceService);
     }
 
     @Test
@@ -35,5 +41,6 @@ class ContactPointDeletionServiceTest {
         verify(competenceService).deleteCompetencesByContactPointId(id);
         verify(linkService).deleteLinkByContactPointId(id);
         verify(contactService).deleteContactsByContactPointId(id);
+        verify(relevanceService).deleteAllRelevancesByContactId(id);
     }
 }
