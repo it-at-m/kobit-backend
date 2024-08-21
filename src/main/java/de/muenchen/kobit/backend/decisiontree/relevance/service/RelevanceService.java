@@ -12,6 +12,7 @@ import de.muenchen.kobit.backend.decisiontree.relevance.view.RelevanceView;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,6 +55,11 @@ public class RelevanceService {
         }
     }
 
+    @Transactional
+    public void deleteAllRelevancesByContactId(UUID contactId) {
+        relevanceRepository.deleteAllByContactPointId(contactId);
+    }
+
     private void updateRelevance(List<RelevanceOrder> entries, Path path) {
         relevanceRepository.deleteByPathId(path.getId());
         createNewRelevanceOrder(entries, path);
@@ -92,7 +98,7 @@ public class RelevanceService {
                 existingPaths.stream()
                         .filter(it -> hasMatchingCompetences(it, selectedPath))
                         .collect(Collectors.toList());
-        if (matchingPaths.size() > 0) {
+        if (!matchingPaths.isEmpty()) {
             return matchingPaths.stream()
                     .findFirst()
                     .orElseThrow(
@@ -113,4 +119,6 @@ public class RelevanceService {
                 selectedPath.stream().map(String::valueOf).collect(Collectors.toList());
         return new HashSet<>(pathCompetences).containsAll(selectedPathAsString);
     }
+
+
 }

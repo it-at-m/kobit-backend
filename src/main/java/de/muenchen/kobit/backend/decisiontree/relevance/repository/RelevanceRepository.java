@@ -10,5 +10,7 @@ public interface RelevanceRepository extends JpaRepository<Relevance, RelevanceI
 
     void deleteByPathId(UUID pathId);
 
+    void deleteAllByContactPointId(UUID contactPointId);
+
     List<Relevance> findAllByPathId(UUID pathId);
 }
