@@ -4,6 +4,8 @@ import de.muenchen.kobit.backend.competence.Competence;
 import de.muenchen.kobit.backend.decisiontree.view.DecisionPoint;
 import java.util.HashMap;
 import java.util.List;
+
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,6 +17,7 @@ public class DiscriminationBranch {
     private final String kindOfSexualDiscrimination =
             "Mann-Frau Diskriminierung oder LGBTIQ* Diskriminierung?";
 
+    // Welche Rolle haben Sie?
     private final DecisionPoint n1 =
             new DecisionPoint(
                     Competence.DISCRIMINATION,
@@ -24,21 +27,28 @@ public class DiscriminationBranch {
                             Competence.EXECUTIVE.toCompetenceView(),
                             Competence.JUNIOR.toCompetenceView()));
 
+
+    // Aus welchem grund fühlen Sie sich diskrimiert?
     private final DecisionPoint n2 =
             new DecisionPoint(
                     Competence.EMPLOYEE,
                     kindOfDiscrimination,
                     List.of(
                             Competence.ETHNIC_RACIAL.toCompetenceView(),
+                            Competence.AGE.toCompetenceView(),
                             Competence.DISABLED.toCompetenceView(),
-                            Competence.SEXUAL_IDENTITY.toCompetenceView()));
+                            Competence.SEXUALITY.toCompetenceView(),
+                            Competence.SEXUAL_IDENTITY.toCompetenceView()
+                            ));
     private final DecisionPoint n3 =
             new DecisionPoint(
                     Competence.JUNIOR,
                     kindOfDiscrimination,
                     List.of(
                             Competence.ETHNIC_RACIAL.toCompetenceView(),
+                            Competence.AGE.toCompetenceView(),
                             Competence.DISABLED.toCompetenceView(),
+                            Competence.SEXUALITY.toCompetenceView(),
                             Competence.SEXUAL_IDENTITY.toCompetenceView()));
 
     private final DecisionPoint n4 =
@@ -47,9 +57,13 @@ public class DiscriminationBranch {
                     kindOfDiscrimination,
                     List.of(
                             Competence.ETHNIC_RACIAL.toCompetenceView(),
+                            Competence.AGE.toCompetenceView(),
                             Competence.DISABLED.toCompetenceView(),
+                            Competence.SEXUALITY.toCompetenceView(),
                             Competence.SEXUAL_IDENTITY.toCompetenceView()));
 
+
+    // other
     private final DecisionPoint n5 =
             new DecisionPoint(
                     Competence.SEXUAL_IDENTITY,

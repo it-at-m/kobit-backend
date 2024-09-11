@@ -67,11 +67,12 @@ public enum Competence {
 
     // reasons of discrimination
     ETHNIC_RACIAL(
-            "Diskriminierung aufgrund ethnischer oder rassistischer Motive, Religion oder"
-                    + " Weltanschauung, Alter",
+            "wegen rassistischer Motive, der ethnischen Herkunft, Religion, Weltanschauung",
             ""),
-    DISABLED("Diskriminierung aufgrund Behinderung", ""),
-    SEXUAL_IDENTITY("Diskriminierung aufgrund sexueller oder geschlechtlicher Identität", ""),
+    DISABLED("aufgrund Behinderung", ""),
+    SEXUAL_IDENTITY("wegen der sexuellen Identität", ""),
+    AGE("wegen Alter", ""),
+    SEXUALITY("wegen des Geschlechts", ""),
 
     // sexual discrimination
     EQUALITY("Gleichstellung Mann Frau", ""),
