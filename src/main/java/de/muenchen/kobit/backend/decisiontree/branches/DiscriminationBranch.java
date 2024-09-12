@@ -4,16 +4,13 @@ import de.muenchen.kobit.backend.competence.Competence;
 import de.muenchen.kobit.backend.decisiontree.view.DecisionPoint;
 import java.util.HashMap;
 import java.util.List;
-
-import org.checkerframework.checker.units.qual.C;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DiscriminationBranch {
 
     private final String roleQuestion = "Welche Rolle haben Sie?";
-    private final String kindOfDiscrimination =
-            "Aus welchem Grund fühlen Sie sich diskriminiert?";
+    private final String kindOfDiscrimination = "Aus welchem Grund fühlen Sie sich diskriminiert?";
     private final String kindOfSexualDiscrimination =
             "Mann-Frau Diskriminierung oder LGBTIQ* Diskriminierung?";
 
@@ -27,7 +24,6 @@ public class DiscriminationBranch {
                             Competence.EXECUTIVE.toCompetenceView(),
                             Competence.JUNIOR.toCompetenceView()));
 
-
     // Aus welchem grund fühlen Sie sich diskrimiert?
     private final DecisionPoint n2 =
             new DecisionPoint(
@@ -38,8 +34,7 @@ public class DiscriminationBranch {
                             Competence.AGE.toCompetenceView(),
                             Competence.DISABLED.toCompetenceView(),
                             Competence.SEXUALITY.toCompetenceView(),
-                            Competence.SEXUAL_IDENTITY.toCompetenceView()
-                            ));
+                            Competence.SEXUAL_IDENTITY.toCompetenceView()));
     private final DecisionPoint n3 =
             new DecisionPoint(
                     Competence.JUNIOR,
@@ -61,7 +56,6 @@ public class DiscriminationBranch {
                             Competence.DISABLED.toCompetenceView(),
                             Competence.SEXUALITY.toCompetenceView(),
                             Competence.SEXUAL_IDENTITY.toCompetenceView()));
-
 
     // other
     private final DecisionPoint n5 =

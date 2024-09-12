@@ -67,8 +67,7 @@ public enum Competence {
 
     // reasons of discrimination
     ETHNIC_RACIAL(
-            "wegen rassistischer Motive, der ethnischen Herkunft, Religion, Weltanschauung",
-            ""),
+            "wegen rassistischer Motive, der ethnischen Herkunft, Religion, Weltanschauung", ""),
     DISABLED("aufgrund Behinderung", ""),
     SEXUAL_IDENTITY("wegen der sexuellen Identität", ""),
     AGE("wegen Alter", ""),
