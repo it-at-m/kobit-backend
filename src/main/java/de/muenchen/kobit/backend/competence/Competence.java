@@ -78,9 +78,9 @@ public enum Competence {
     LGBTIQ("LGBTIQ*", ""),
 
     // Health Issues
-    ADDICTION("Suchtproblem", ""),
-    PHYSICAL("körperliches Problem", ""),
-    PSYCHOLOGICAL("psychisches Problem", "");
+    ADDICTION("Sucht", ""),
+    PHYSICAL("Körperliche Probleme", ""),
+    PSYCHOLOGICAL("Psychische Probleme", "");
 
     public final String germanDescription;
     public final String shortDescription;
