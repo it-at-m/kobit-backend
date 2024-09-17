@@ -79,8 +79,8 @@ public enum Competence {
 
     // Health Issues
     ADDICTION("Suchtproblem", ""),
-    PHYSICAL("körperliches Problem", ""),
-    PSYCHOLOGICAL("psychisches Problem", "");
+    PHYSICAL("Körperliche Probleme", ""),
+    PSYCHOLOGICAL("Psychische Probleme", "");
 
     public final String germanDescription;
     public final String shortDescription;
