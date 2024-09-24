@@ -70,7 +70,7 @@ class MobbingBranchTest {
                                                 Competence.STRESS_MEDIUM,
                                                 Competence.STRESS_HIGH)))
                 .isTrue();
-        assertThat(result.getQuestion()).isEqualTo("Wie hoch ist ihre persönliche Belastung?");
+        assertThat(result.getQuestion()).isEqualTo("Wie hoch ist Ihre persönliche Belastung?");
     }
 
     @Test
