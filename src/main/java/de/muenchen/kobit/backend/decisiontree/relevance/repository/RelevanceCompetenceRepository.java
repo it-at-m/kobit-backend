@@ -10,6 +10,4 @@ import org.springframework.stereotype.Repository;
 public interface RelevanceCompetenceRepository extends JpaRepository<RelevanceCompetence, UUID> {
 
     Optional<RelevanceCompetence> findByCompetence(String competence);
-
-
 }

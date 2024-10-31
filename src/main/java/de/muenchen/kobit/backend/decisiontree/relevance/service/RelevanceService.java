@@ -9,7 +9,6 @@ import de.muenchen.kobit.backend.decisiontree.relevance.repository.RelevanceComp
 import de.muenchen.kobit.backend.decisiontree.relevance.repository.RelevanceRepository;
 import de.muenchen.kobit.backend.decisiontree.relevance.view.RelevanceOrder;
 import de.muenchen.kobit.backend.decisiontree.relevance.view.RelevanceView;
-
 import java.util.*;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -35,7 +34,6 @@ public class RelevanceService {
         return relevanceRepository.findAllByContactPointId(contactPointId);
     }
 
-
     public Set<RelevanceCompetence> getAllRelevanceCompetencesByPathId(UUID pathId) {
         Optional<Path> path = pathRepository.findById(pathId);
 
@@ -45,8 +43,6 @@ public class RelevanceService {
 
         return new HashSet<>();
     }
-
-
 
     public List<RelevanceOrder> getOrderOrNull(Set<Competence> competences) {
         Path path = findExistingPathOrNull(competences);

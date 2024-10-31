@@ -11,8 +11,6 @@ import de.muenchen.kobit.backend.contact.service.ContactPointToViewMapper;
 import de.muenchen.kobit.backend.contactpoint.model.ContactPoint;
 import de.muenchen.kobit.backend.contactpoint.repository.ContactPointRepository;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
-
-import java.lang.reflect.Array;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -20,8 +18,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import de.muenchen.kobit.backend.decisiontree.relevance.model.RelevanceCompetence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -91,7 +87,7 @@ public class CompetenceService {
     }
 
     // Extremly hacky workaround for trashy datastructure - please improve in the future
-    public Competence getCompetenceByEnumString(String enumAsString){
+    public Competence getCompetenceByEnumString(String enumAsString) {
         String splittedString = enumAsString.split("\\.")[1].split("\\(")[0];
 
         log.debug("getCompetenceByEnumString | splittedString {}", splittedString);
