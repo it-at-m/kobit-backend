@@ -9,10 +9,8 @@ import de.muenchen.kobit.backend.decisiontree.relevance.repository.RelevanceComp
 import de.muenchen.kobit.backend.decisiontree.relevance.repository.RelevanceRepository;
 import de.muenchen.kobit.backend.decisiontree.relevance.view.RelevanceOrder;
 import de.muenchen.kobit.backend.decisiontree.relevance.view.RelevanceView;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+
+import java.util.*;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +31,23 @@ public class RelevanceService {
         this.relevanceCompetenceRepository = relevanceCompetenceRepository;
     }
 
+    public List<Relevance> getAllRelevancesByContactPointId(UUID contactPointId) {
+        return relevanceRepository.findAllByContactPointId(contactPointId);
+    }
+
+
+    public Set<RelevanceCompetence> getAllRelevanceCompetencesByPathId(UUID pathId) {
+        Optional<Path> path = pathRepository.findById(pathId);
+
+        if (path.isPresent()) {
+            return path.get().getCompetences();
+        }
+
+        return new HashSet<>();
+    }
+
+
+
     public List<RelevanceOrder> getOrderOrNull(Set<Competence> competences) {
         Path path = findExistingPathOrNull(competences);
         if (path == null) {
@@ -42,6 +57,10 @@ public class RelevanceService {
                     .map(it -> new RelevanceOrder(it.getContactPointId(), it.getPosition()))
                     .collect(Collectors.toList());
         }
+    }
+
+    public Path getPath(Set<Competence> competences) {
+        return findExistingPathOrNull(competences);
     }
 
     @Transactional
