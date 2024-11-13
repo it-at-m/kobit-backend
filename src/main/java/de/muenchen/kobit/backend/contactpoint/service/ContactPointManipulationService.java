@@ -100,10 +100,11 @@ public class ContactPointManipulationService {
                                 it.getCompetences())); // set new competences for all
     }
 
-    private void removeUnusedCompetences(ContactPointListItem contactPointListItem, List<Competence> competences) {
+    private void removeUnusedCompetences(
+            ContactPointListItem contactPointListItem, List<Competence> competences) {
         log.debug("removeUnusedCompetences | competences: {}", competences.toString());
         Path currentPath = relevanceService.getPath(new HashSet<>(competences));
-        if (currentPath ==null) {
+        if (currentPath == null) {
             return;
         }
         log.debug("removeUnusedCompetences | currentPath: {}", currentPath.toString());
