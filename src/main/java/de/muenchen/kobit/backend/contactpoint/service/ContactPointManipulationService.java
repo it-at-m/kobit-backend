@@ -10,7 +10,6 @@ import de.muenchen.kobit.backend.contact.view.ChangeContactWrapper;
 import de.muenchen.kobit.backend.contact.view.ContactView;
 import de.muenchen.kobit.backend.contactpoint.model.ContactPoint;
 import de.muenchen.kobit.backend.contactpoint.repository.ContactPointRepository;
-import de.muenchen.kobit.backend.contactpoint.view.ContactPointListItem;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
 import de.muenchen.kobit.backend.contactpoint.view.ListItemToCompetenceView;
 import de.muenchen.kobit.backend.decisiontree.relevance.model.Path;
@@ -90,19 +89,18 @@ public class ContactPointManipulationService {
          * competences of 4. from the contactpoint A
          */
 
-        // TODO - find out which cp was deleted by comparing the paths - much like in updating relevances - does this only need to be executed for deleted cps?
+        // TODO - find out which cp was deleted by comparing the paths - much like in updating
+        // relevances - does this only need to be executed for deleted cps?
 
         List<UUID> cpToUpdate = getContactPointsToUpdate(competenceViews, competences);
 
         log.debug("updateContactPointCompetence | cps: {}", cpToUpdate.toString());
 
-        cpToUpdate.forEach(
-                cp -> removeUnusedCompetences(cp, competences)
-        );
+        cpToUpdate.forEach(cp -> removeUnusedCompetences(cp, competences));
 
         /* competenceViews.forEach(
-                competenceView ->
-                        removeUnusedCompetences(competenceView.getListItem(), competences));*/
+        competenceView ->
+                removeUnusedCompetences(competenceView.getListItem(), competences));*/
 
         updateRelevance(competenceViews, competences);
         competenceViews.forEach(
@@ -112,16 +110,23 @@ public class ContactPointManipulationService {
                                 it.getCompetences())); // set new competences for all
     }
 
-    private List<UUID> getContactPointsToUpdate(List<ListItemToCompetenceView> competenceViews, List<Competence> competences)  {
+    private List<UUID> getContactPointsToUpdate(
+            List<ListItemToCompetenceView> competenceViews, List<Competence> competences) {
         Path currentPath = relevanceService.getPath(new HashSet<>(competences));
         if (currentPath == null) {
             return Collections.emptyList();
         }
 
-        List<UUID> currentCPIds = relevanceService.getAllRelevancesByPathId(currentPath.getId()).stream().map(Relevance::getContactPointId).collect(Collectors.toList());
+        List<UUID> currentCPIds =
+                relevanceService.getAllRelevancesByPathId(currentPath.getId()).stream()
+                        .map(Relevance::getContactPointId)
+                        .collect(Collectors.toList());
         log.debug("getContactPointsToUpdate | currentCPIds: {}", currentCPIds);
 
-        List<UUID> receivedCPIds = competenceViews.stream().map(cpv -> cpv.getListItem().getId()).collect(Collectors.toList());
+        List<UUID> receivedCPIds =
+                competenceViews.stream()
+                        .map(cpv -> cpv.getListItem().getId())
+                        .collect(Collectors.toList());
         log.debug("getContactPointsToUpdate | receivedCPIds: {}", receivedCPIds);
 
         currentCPIds.removeAll(receivedCPIds);
@@ -129,8 +134,7 @@ public class ContactPointManipulationService {
         return currentCPIds;
     }
 
-    private void removeUnusedCompetences(
-            UUID cpID, List<Competence> competences) {
+    private void removeUnusedCompetences(UUID cpID, List<Competence> competences) {
         log.debug("removeUnusedCompetences | competences: {}", competences.toString());
         Path currentPath = relevanceService.getPath(new HashSet<>(competences));
         if (currentPath == null) {
@@ -139,9 +143,7 @@ public class ContactPointManipulationService {
         log.debug("removeUnusedCompetences | currentPath: {}", currentPath.getId().toString());
 
         Set<RelevanceCompetence> otherRelevanceCompetences =
-                relevanceService
-                        .getAllRelevancesByContactPointId(cpID)
-                        .stream()
+                relevanceService.getAllRelevancesByContactPointId(cpID).stream()
                         .filter(relevance -> !relevance.getPathId().equals(currentPath.getId()))
                         .map(
                                 relevance ->
@@ -149,10 +151,16 @@ public class ContactPointManipulationService {
                                                 relevance.getPathId()))
                         .flatMap(Collection::stream)
                         .collect(Collectors.toSet());
-        log.debug("removeUnusedCompetences | otherRelevanceCompetences: {}", otherRelevanceCompetences.stream().map(RelevanceCompetence::getId).collect(Collectors.toList()));
+        log.debug(
+                "removeUnusedCompetences | otherRelevanceCompetences: {}",
+                otherRelevanceCompetences.stream()
+                        .map(RelevanceCompetence::getId)
+                        .collect(Collectors.toList()));
 
         HashSet<RelevanceCompetence> toRemove = new HashSet<>(currentPath.getCompetences());
-        log.debug("removeUnusedCompetences | toRemove: {}", toRemove.stream().map(RelevanceCompetence::getId).collect(Collectors.toList()));
+        log.debug(
+                "removeUnusedCompetences | toRemove: {}",
+                toRemove.stream().map(RelevanceCompetence::getId).collect(Collectors.toList()));
 
         toRemove.removeAll(otherRelevanceCompetences);
 
@@ -174,8 +182,7 @@ public class ContactPointManipulationService {
                 "removeUnusedCompetences | competencesToRemove: {}",
                 competencesToRemove.toString());
 
-        competenceService.deleteCompetenceAndContactPointPair(
-                cpID, competencesToRemove);
+        competenceService.deleteCompetenceAndContactPointPair(cpID, competencesToRemove);
     }
 
     private void updateRelevance(

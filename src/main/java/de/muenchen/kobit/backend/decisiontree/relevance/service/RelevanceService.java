@@ -33,6 +33,7 @@ public class RelevanceService {
     public List<Relevance> getAllRelevancesByContactPointId(UUID contactPointId) {
         return relevanceRepository.findAllByContactPointId(contactPointId);
     }
+
     public List<Relevance> getAllRelevancesByPathId(UUID pathId) {
         return relevanceRepository.findAllByPathId(pathId);
     }
