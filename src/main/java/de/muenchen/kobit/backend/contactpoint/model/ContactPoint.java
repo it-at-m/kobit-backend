@@ -4,6 +4,7 @@ import de.muenchen.kobit.backend.contactpoint.view.ContactPointListItem;
 import java.net.URL;
 import java.util.List;
 import java.util.UUID;
+import javax.annotation.Nullable;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -54,6 +55,7 @@ public class ContactPoint {
 
     // Add Image Link as a column
     @Column(name = "image")
+    @Nullable
     private URL image;
 
     public ContactPoint(

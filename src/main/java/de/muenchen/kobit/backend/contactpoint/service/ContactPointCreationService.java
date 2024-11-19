@@ -12,7 +12,7 @@ import de.muenchen.kobit.backend.contactpoint.repository.ContactPointRepository;
 import de.muenchen.kobit.backend.contactpoint.view.ContactPointView;
 import de.muenchen.kobit.backend.links.service.LinkService;
 import de.muenchen.kobit.backend.links.view.LinkView;
-import de.muenchen.kobit.backend.validation.Validator;
+import de.muenchen.kobit.backend.validation.ContactPointValidator;
 import de.muenchen.kobit.backend.validation.exception.ContactPointValidationException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,7 +32,7 @@ public class ContactPointCreationService {
     private final LinkService linkService;
     private final CompetenceService competenceService;
     private final AdminService adminService;
-    private final List<Validator> validators;
+    private final List<ContactPointValidator> validators;
 
     ContactPointCreationService(
             ContactPointRepository contactPointRepository,
@@ -40,7 +40,7 @@ public class ContactPointCreationService {
             LinkService linkService,
             CompetenceService competenceService,
             AdminService adminService,
-            List<Validator> validators) {
+            List<ContactPointValidator> validators) {
         this.contactPointRepository = contactPointRepository;
         this.contactService = contactService;
         this.linkService = linkService;
@@ -59,7 +59,7 @@ public class ContactPointCreationService {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "The User has not the needed permission!");
         }
-        for (Validator validator : validators) {
+        for (ContactPointValidator validator : validators) {
             validator.validate(contactPointView);
         }
         ContactPoint newContactPoint = createNewContactPoint(contactPointView);

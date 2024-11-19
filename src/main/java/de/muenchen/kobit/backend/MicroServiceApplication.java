@@ -9,6 +9,7 @@ import feign.Feign;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
 import io.swagger.v3.oas.annotations.Hidden;
+import java.util.TimeZone;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -37,6 +38,7 @@ public class MicroServiceApplication implements WebMvcConfigurer {
 
     public static void main(String[] args) {
         System.setProperty("org.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH", "true");
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         SpringApplication.run(MicroServiceApplication.class, args);
     }
 
