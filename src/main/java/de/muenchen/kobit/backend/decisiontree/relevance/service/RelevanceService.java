@@ -11,9 +11,12 @@ import de.muenchen.kobit.backend.decisiontree.relevance.view.RelevanceOrder;
 import de.muenchen.kobit.backend.decisiontree.relevance.view.RelevanceView;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 public class RelevanceService {
 
@@ -48,13 +51,21 @@ public class RelevanceService {
         return new HashSet<>();
     }
 
+    public List<UUID> getAllContactPointIdsByPathId(UUID pathId) {
+        return relevanceRepository.findAllByPathId(pathId).stream().map(Relevance::getContactPointId).collect(Collectors.toList());
+    }
+
     public List<RelevanceOrder> getOrderOrNull(Set<Competence> competences) {
         Path path = findExistingPathOrNull(competences);
         if (path == null) {
+            log.debug("getOrderOrNull | path is null");
             return null;
         } else {
+            log.debug("getOrderOrNull | path is: {}", path.getId());
+
             return relevanceRepository.findAllByPathId(path.getId()).stream()
-                    .map(it -> new RelevanceOrder(it.getContactPointId(), it.getPosition()))
+                    .map(relevance -> new RelevanceOrder(relevance.getContactPointId(), relevance.getPosition()))
+                    .peek(relevanceOrder -> log.debug("getOrderOrNull | cpID: {}, position: {}", relevanceOrder.getContactPointId(), relevanceOrder.getPosition()))
                     .collect(Collectors.toList());
         }
     }
@@ -117,6 +128,9 @@ public class RelevanceService {
                 existingPaths.stream()
                         .filter(it -> hasMatchingCompetences(it, selectedPath))
                         .collect(Collectors.toList());
+
+        log.debug("findExistingPathOrNull | found paths: {}", matchingPaths.size());
+
         if (!matchingPaths.isEmpty()) {
             return matchingPaths.stream()
                     .findFirst()
