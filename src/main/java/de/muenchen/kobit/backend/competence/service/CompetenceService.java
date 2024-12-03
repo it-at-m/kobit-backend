@@ -44,9 +44,6 @@ public class CompetenceService {
     public List<ContactPointView> findAllContactPointsForCompetences(List<UUID> foundCPs,
             List<Competence> competences, String department) {
         Set<UUID> keys = new HashSet<>(foundCPs);
-        if (isSpecialCase(competences)) {
-            keys.addAll(specialCaseContactPoints(competences));
-        }
 
         return getMatchingContactPoints(department, keys).stream()
                 .map(mapper::contactPointToView)
@@ -126,32 +123,5 @@ public class CompetenceService {
             }
         }
         return matchingKeys;
-    }
-
-    /**
-     * @param competences - list of competences selected in the decision tree
-     * @return true if a special case is given A special case are some contact points for juniors.
-     *     These are not only responsible for the Juniors, they are also responsible if an executive
-     *     or employee has a problem with a junior.
-     */
-    private boolean isSpecialCase(List<Competence> competences) {
-        return ((competences.contains(Competence.EXECUTIVE)
-                        && competences.contains(Competence.OPPOSITE_JUNIOR))
-                || (competences.contains(Competence.EMPLOYEE)
-                        && competences.contains(Competence.OPPOSITE_JUNIOR)));
-    }
-
-    private Set<UUID> specialCaseContactPoints(List<Competence> competences) {
-        if (competences.contains(Competence.EXECUTIVE)
-                && competences.contains(Competence.OPPOSITE_JUNIOR)) {
-            competences.remove(Competence.EXECUTIVE);
-            competences.add(Competence.EXECUTIVE_JUNIOR);
-        }
-        if (competences.contains(Competence.EMPLOYEE)
-                && competences.contains(Competence.OPPOSITE_JUNIOR)) {
-            competences.remove(Competence.EMPLOYEE);
-            competences.add(Competence.EMPLOYEE_JUNIOR);
-        }
-        return getContactPointIds(competences);
     }
 }
