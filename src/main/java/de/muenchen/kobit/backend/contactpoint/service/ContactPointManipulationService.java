@@ -89,12 +89,9 @@ public class ContactPointManipulationService {
          * competences of 4. from the contactpoint A
          */
 
-        // TODO - find out which cp was deleted by comparing the paths - much like in updating
-        // relevances - does this only need to be executed for deleted cps?
-
         List<UUID> cpToUpdate = getContactPointsToUpdate(competenceViews, competences);
 
-        log.debug("updateContactPointCompetence | cps: {}", cpToUpdate.toString());
+        log.debug("updateContactPointCompetence | CPs to update: {}", cpToUpdate.toString());
 
         cpToUpdate.forEach(cp -> removeUnusedCompetences(cp, competences));
 
@@ -102,12 +99,12 @@ public class ContactPointManipulationService {
         competenceView ->
                 removeUnusedCompetences(competenceView.getListItem(), competences));*/
 
-        updateRelevance(competenceViews, competences);
         competenceViews.forEach(
-                it ->
+                listItemToCompetenceView ->
                         saveNewCompetencePair(
-                                it.getListItem().getId(),
-                                it.getCompetences())); // set new competences for all
+                                listItemToCompetenceView.getListItem().getId(),
+                                listItemToCompetenceView.getCompetences())); // set new competences for all
+        updateRelevance(competenceViews, competences);
     }
 
     private List<UUID> getContactPointsToUpdate(
@@ -116,6 +113,7 @@ public class ContactPointManipulationService {
         if (currentPath == null) {
             return Collections.emptyList();
         }
+        log.debug("cpManipulation | pathID: {}", currentPath.getId());
 
         List<UUID> currentCPIds =
                 relevanceService.getAllRelevancesByPathId(currentPath.getId()).stream()
@@ -239,15 +237,6 @@ public class ContactPointManipulationService {
             throw new InvalidContactPointException(
                     "PathId and Id in the ContactPointView were not identical!");
         }
-    }
-
-    private void removeContactPointsForCompetence(List<Competence> competences) {
-        List<ContactPointView> existingCompetences =
-                competenceService.findAllContactPointsForCompetences(competences);
-        existingCompetences.forEach(
-                it ->
-                        competenceService.deleteCompetenceAndContactPointPair(
-                                it.getId(), competences));
     }
 
     private void saveNewCompetencePair(UUID id, List<Competence> competences) {
