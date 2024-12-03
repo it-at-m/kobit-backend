@@ -18,6 +18,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -40,23 +41,14 @@ public class CompetenceService {
         this.mapper = mapper;
     }
 
-    public List<ContactPointView> findAllContactPointsForCompetences(
+    public List<ContactPointView> findAllContactPointsForCompetences(List<UUID> foundCPs,
             List<Competence> competences, String department) {
-        Set<UUID> keys = getContactPointIds(competences);
+        Set<UUID> keys = new HashSet<>(foundCPs);
         if (isSpecialCase(competences)) {
             keys.addAll(specialCaseContactPoints(competences));
         }
-        return getMatchingContactPoints(department, keys).stream()
-                .map(mapper::contactPointToView)
-                .collect(Collectors.toList());
-    }
 
-    public List<ContactPointView> findAllContactPointsForCompetences(List<Competence> competences) {
-        Set<UUID> keys = getContactPointIds(competences);
-        if (isSpecialCase(competences)) {
-            keys.addAll(specialCaseContactPoints(competences));
-        }
-        return contactPointRepository.findAllByIdIn(keys).stream()
+        return getMatchingContactPoints(department, keys).stream()
                 .map(mapper::contactPointToView)
                 .collect(Collectors.toList());
     }
@@ -68,6 +60,7 @@ public class CompetenceService {
     }
 
     private List<ContactPoint> getMatchingContactPoints(String department, Set<UUID> keys) {
+
         log.debug("getMatchingContactPoints | department {}", department);
         if (department == null) {
             return keys.stream()
@@ -107,6 +100,7 @@ public class CompetenceService {
                 it -> competenceRepository.deleteByContactPointIdAndCompetence(contactPointId, it));
     }
 
+    @Transactional
     public void createCompetenceToContactPoint(UUID contactPointId, Competence competence) {
         createCompetenceToContactPoint(new CompetenceToContactPoint(contactPointId, competence));
     }
