@@ -18,7 +18,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -41,8 +40,8 @@ public class CompetenceService {
         this.mapper = mapper;
     }
 
-    public List<ContactPointView> findAllContactPointsForCompetences(List<UUID> foundCPs,
-            List<Competence> competences, String department) {
+    public List<ContactPointView> findAllContactPointsForCompetences(
+            List<UUID> foundCPs, List<Competence> competences, String department) {
         Set<UUID> keys = new HashSet<>(foundCPs);
 
         return getMatchingContactPoints(department, keys).stream()

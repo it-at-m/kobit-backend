@@ -88,7 +88,6 @@ public class ContactPointManipulationService {
          * all competences COM of Path P 4. Subtract all competences (of 2.) from COM 5. Remove the
          * competences of 4. from the contactpoint A
          */
-
         List<UUID> cpToUpdate = getContactPointsToUpdate(competenceViews, competences);
 
         log.debug("updateContactPointCompetence | CPs to update: {}", cpToUpdate.toString());
@@ -103,7 +102,8 @@ public class ContactPointManipulationService {
                 listItemToCompetenceView ->
                         saveNewCompetencePair(
                                 listItemToCompetenceView.getListItem().getId(),
-                                listItemToCompetenceView.getCompetences())); // set new competences for all
+                                listItemToCompetenceView
+                                        .getCompetences())); // set new competences for all
         updateRelevance(competenceViews, competences);
     }
 

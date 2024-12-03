@@ -81,18 +81,27 @@ public class DecisionTreeService {
 
             List<UUID> foundCPIds = new ArrayList<>();
             if (path != null) {
-                 foundCPIds.addAll(relevanceService.getAllContactPointIdsByPathId(path.getId()));
-                 log.debug("getNextDecisionPointOrContactPoints | found CPs by Path: {}", foundCPIds.size());
+                foundCPIds.addAll(relevanceService.getAllContactPointIdsByPathId(path.getId()));
+                log.debug(
+                        "getNextDecisionPointOrContactPoints | found CPs by Path: {}",
+                        foundCPIds.size());
             }
 
-            List<ContactPointView> foundCPs = competenceService.findAllContactPointsForCompetences(foundCPIds, selectedCompetences, department);
+            List<ContactPointView> foundCPs =
+                    competenceService.findAllContactPointsForCompetences(
+                            foundCPIds, selectedCompetences, department);
 
-            log.debug("getNextDecisionPointOrContactPoints | foundCPs: {} - {}", foundCPs.size(), foundCPs.stream().map(ContactPointView::getId).collect(Collectors.toList()));
+            log.debug(
+                    "getNextDecisionPointOrContactPoints | foundCPs: {} - {}",
+                    foundCPs.size(),
+                    foundCPs.stream().map(ContactPointView::getId).collect(Collectors.toList()));
 
-            List<ContactPointView> orderedResults = order(foundCPs,selectedCompetences);
+            List<ContactPointView> orderedResults = order(foundCPs, selectedCompetences);
 
-            log.debug("getNextDecisionPointOrContactPoints | ordered results: {}", orderedResults.size());
-            return new DecisionContactPointWrapper( orderedResults);
+            log.debug(
+                    "getNextDecisionPointOrContactPoints | ordered results: {}",
+                    orderedResults.size());
+            return new DecisionContactPointWrapper(orderedResults);
         } else {
             return new DecisionContactPointWrapper(result);
         }
@@ -126,7 +135,8 @@ public class DecisionTreeService {
         return selectedCompetences.get(selectedCompetences.size() - 1);
     }
 
-    private List<ContactPointView> order(List<ContactPointView> contactPointViews, List<Competence> selectedCompetences) {
+    private List<ContactPointView> order(
+            List<ContactPointView> contactPointViews, List<Competence> selectedCompetences) {
         List<RelevanceOrder> order =
                 relevanceService.getOrderOrNull(new HashSet<>(selectedCompetences));
         log.debug("order | contactPointViews size: {}", contactPointViews.size());
@@ -136,7 +146,9 @@ public class DecisionTreeService {
         } else {
             Collections.sort(order);
             return order.stream()
-                    .map(relevanceOrder -> findMatchingContactPoint(contactPointViews, relevanceOrder))
+                    .map(
+                            relevanceOrder ->
+                                    findMatchingContactPoint(contactPointViews, relevanceOrder))
                     .filter(Objects::nonNull)
                     .peek(cp -> log.debug("order | stream: {}", cp.getId()))
                     .collect(Collectors.toList());
