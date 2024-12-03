@@ -11,7 +11,6 @@ import de.muenchen.kobit.backend.decisiontree.relevance.view.RelevanceOrder;
 import de.muenchen.kobit.backend.decisiontree.relevance.view.RelevanceView;
 import java.util.*;
 import java.util.stream.Collectors;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,7 +51,9 @@ public class RelevanceService {
     }
 
     public List<UUID> getAllContactPointIdsByPathId(UUID pathId) {
-        return relevanceRepository.findAllByPathId(pathId).stream().map(Relevance::getContactPointId).collect(Collectors.toList());
+        return relevanceRepository.findAllByPathId(pathId).stream()
+                .map(Relevance::getContactPointId)
+                .collect(Collectors.toList());
     }
 
     public List<RelevanceOrder> getOrderOrNull(Set<Competence> competences) {
@@ -64,8 +65,16 @@ public class RelevanceService {
             log.debug("getOrderOrNull | path is: {}", path.getId());
 
             return relevanceRepository.findAllByPathId(path.getId()).stream()
-                    .map(relevance -> new RelevanceOrder(relevance.getContactPointId(), relevance.getPosition()))
-                    .peek(relevanceOrder -> log.debug("getOrderOrNull | cpID: {}, position: {}", relevanceOrder.getContactPointId(), relevanceOrder.getPosition()))
+                    .map(
+                            relevance ->
+                                    new RelevanceOrder(
+                                            relevance.getContactPointId(), relevance.getPosition()))
+                    .peek(
+                            relevanceOrder ->
+                                    log.debug(
+                                            "getOrderOrNull | cpID: {}, position: {}",
+                                            relevanceOrder.getContactPointId(),
+                                            relevanceOrder.getPosition()))
                     .collect(Collectors.toList());
         }
     }
@@ -124,6 +133,9 @@ public class RelevanceService {
 
     private Path findExistingPathOrNull(Set<Competence> selectedPath) {
         List<Path> existingPaths = pathRepository.findAll();
+        log.debug(
+                "findExisitingPathOrNull | competences: {}",
+                selectedPath.stream().map(Competence::toString).collect(Collectors.toList()));
         List<Path> matchingPaths =
                 existingPaths.stream()
                         .filter(it -> hasMatchingCompetences(it, selectedPath))
