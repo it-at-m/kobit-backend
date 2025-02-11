@@ -23,7 +23,7 @@ class DiscriminationBranchTest {
         var competence = Competence.DISCRIMINATION;
         var result = discriminationBranch.getNextNode(competence);
         assertThat(result.getQuestion()).isEqualTo("Welche Rolle haben Sie?");
-        assertThat(result.getAnswerOptions().size()).isEqualTo(2);
+        assertThat(result.getAnswerOptions().size()).isEqualTo(3);
         assertThat(
                         result.getAnswerOptions().stream()
                                 .map(CompetenceView::getCompetence)
@@ -37,8 +37,8 @@ class DiscriminationBranchTest {
         var competence = Competence.JUNIOR;
         var result = discriminationBranch.getNextNode(competence);
         assertThat(result.getQuestion())
-                .isEqualTo("Aus welchem Grund werden Sie/fühlen Sie sich diskriminiert?");
-        assertThat(result.getAnswerOptions().size()).isEqualTo(3);
+                .isEqualTo("Aus welchem Grund fühlen Sie sich diskriminiert?");
+        assertThat(result.getAnswerOptions().size()).isEqualTo(5);
         assertThat(
                         result.getAnswerOptions().stream()
                                 .map(CompetenceView::getCompetence)
@@ -48,21 +48,6 @@ class DiscriminationBranchTest {
                                                 Competence.ETHNIC_RACIAL,
                                                 Competence.DISABLED,
                                                 Competence.SEXUAL_IDENTITY)))
-                .isTrue();
-    }
-
-    @Test
-    void getNextNodeTest_sexual() {
-        var competence = Competence.SEXUAL_IDENTITY;
-        var result = discriminationBranch.getNextNode(competence);
-        assertThat(result.getQuestion())
-                .isEqualTo("Mann-Frau Diskriminierung oder LGBTIQ* Diskriminierung?");
-        assertThat(result.getAnswerOptions().size()).isEqualTo(2);
-        assertThat(
-                        result.getAnswerOptions().stream()
-                                .map(CompetenceView::getCompetence)
-                                .collect(Collectors.toList())
-                                .containsAll(List.of(Competence.EQUALITY, Competence.LGBTIQ)))
                 .isTrue();
     }
 

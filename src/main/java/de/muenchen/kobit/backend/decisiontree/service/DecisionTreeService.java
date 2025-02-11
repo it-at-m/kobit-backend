@@ -9,6 +9,7 @@ import de.muenchen.kobit.backend.decisiontree.branches.HealthIssuesBranch;
 import de.muenchen.kobit.backend.decisiontree.branches.MobbingBranch;
 import de.muenchen.kobit.backend.decisiontree.branches.Root;
 import de.muenchen.kobit.backend.decisiontree.branches.WorkConflictBranch;
+import de.muenchen.kobit.backend.decisiontree.relevance.model.Path;
 import de.muenchen.kobit.backend.decisiontree.relevance.service.RelevanceService;
 import de.muenchen.kobit.backend.decisiontree.relevance.view.RelevanceOrder;
 import de.muenchen.kobit.backend.decisiontree.view.DecisionContactPointWrapper;
@@ -61,6 +62,7 @@ public class DecisionTreeService {
     @Transactional(readOnly = true)
     public DecisionContactPointWrapper getNextDecisionPointOrContactPoints(
             List<Competence> selectedCompetences, String department) {
+
         if (selectedCompetences.isEmpty()) {
             return getRoot();
         }
@@ -75,11 +77,31 @@ public class DecisionTreeService {
         Competence lastSelectedDecision = getLastElement(selectedCompetences);
         DecisionPoint result = getNextDecisionPointOrNull(lastSelectedDecision, rootSelection);
         if (result == null) {
-            return new DecisionContactPointWrapper(
-                    order(
-                            competenceService.findAllContactPointsForCompetences(
-                                    selectedCompetences, department),
-                            selectedCompetences));
+            Path path = relevanceService.getPath(new HashSet<>(selectedCompetences));
+
+            List<UUID> foundCPIds = new ArrayList<>();
+            if (path != null) {
+                foundCPIds.addAll(relevanceService.getAllContactPointIdsByPathId(path.getId()));
+                log.debug(
+                        "getNextDecisionPointOrContactPoints | found CPs by Path: {}",
+                        foundCPIds.size());
+            }
+
+            List<ContactPointView> foundCPs =
+                    competenceService.findAllContactPointsForCompetences(
+                            foundCPIds, selectedCompetences, department);
+
+            log.debug(
+                    "getNextDecisionPointOrContactPoints | foundCPs: {} - {}",
+                    foundCPs.size(),
+                    foundCPs.stream().map(ContactPointView::getId).collect(Collectors.toList()));
+
+            List<ContactPointView> orderedResults = order(foundCPs, selectedCompetences);
+
+            log.debug(
+                    "getNextDecisionPointOrContactPoints | ordered results: {}",
+                    orderedResults.size());
+            return new DecisionContactPointWrapper(orderedResults);
         } else {
             return new DecisionContactPointWrapper(result);
         }
@@ -117,14 +139,18 @@ public class DecisionTreeService {
             List<ContactPointView> contactPointViews, List<Competence> selectedCompetences) {
         List<RelevanceOrder> order =
                 relevanceService.getOrderOrNull(new HashSet<>(selectedCompetences));
-        log.debug("getLastElement | contactPointViews size: {}", contactPointViews.size());
+        log.debug("order | contactPointViews size: {}", contactPointViews.size());
+
         if (order == null) {
             return orderAlphabetically(contactPointViews);
         } else {
             Collections.sort(order);
             return order.stream()
-                    .map(it -> findMatchingContactPoint(contactPointViews, it))
+                    .map(
+                            relevanceOrder ->
+                                    findMatchingContactPoint(contactPointViews, relevanceOrder))
                     .filter(Objects::nonNull)
+                    .peek(cp -> log.debug("order | stream: {}", cp.getId()))
                     .collect(Collectors.toList());
         }
     }
@@ -137,20 +163,22 @@ public class DecisionTreeService {
     }
 
     private static ContactPointView findMatchingContactPoint(
-            List<ContactPointView> contactPointViews, RelevanceOrder order) {
+            List<ContactPointView> contactPointViews, RelevanceOrder relevanceOrder) {
+
         log.debug(
                 "findMatchingContactPoint | contactPointViews {}; order: {}",
-                contactPointViews.toString(),
-                order.toString());
+                contactPointViews.size(),
+                relevanceOrder.toString());
+
         ContactPointView view =
                 contactPointViews.stream()
-                        .filter(cp -> cp.getId().equals(order.getContactPointId()))
+                        .filter(cp -> cp.getId().equals(relevanceOrder.getContactPointId()))
                         .peek(cp -> log.debug("Filtered contactPointId: {}", cp.getId()))
                         .findFirst()
                         .orElse(null);
         if (view != null) {
             log.debug("Found matching contactPointId: {}", view.getId());
-            view.setPosition(order.getPosition());
+            view.setPosition(relevanceOrder.getPosition());
         }
 
         return view;

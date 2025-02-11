@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class HealthIssuesBranch {
 
-    private static final String kindOfHealthIssues = "Welches gesundheitliches Problem haben Sie?";
+    private static final String kindOfHealthIssues = "Welches gesundheitliche Problem haben Sie?";
 
     private final DecisionPoint n1 =
             new DecisionPoint(

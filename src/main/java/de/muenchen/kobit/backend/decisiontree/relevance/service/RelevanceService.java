@@ -9,14 +9,13 @@ import de.muenchen.kobit.backend.decisiontree.relevance.repository.RelevanceComp
 import de.muenchen.kobit.backend.decisiontree.relevance.repository.RelevanceRepository;
 import de.muenchen.kobit.backend.decisiontree.relevance.view.RelevanceOrder;
 import de.muenchen.kobit.backend.decisiontree.relevance.view.RelevanceView;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 public class RelevanceService {
 
@@ -33,15 +32,55 @@ public class RelevanceService {
         this.relevanceCompetenceRepository = relevanceCompetenceRepository;
     }
 
+    public List<Relevance> getAllRelevancesByContactPointId(UUID contactPointId) {
+        return relevanceRepository.findAllByContactPointId(contactPointId);
+    }
+
+    public List<Relevance> getAllRelevancesByPathId(UUID pathId) {
+        return relevanceRepository.findAllByPathId(pathId);
+    }
+
+    public Set<RelevanceCompetence> getAllRelevanceCompetencesByPathId(UUID pathId) {
+        Optional<Path> path = pathRepository.findById(pathId);
+
+        if (path.isPresent()) {
+            return path.get().getCompetences();
+        }
+
+        return new HashSet<>();
+    }
+
+    public List<UUID> getAllContactPointIdsByPathId(UUID pathId) {
+        return relevanceRepository.findAllByPathId(pathId).stream()
+                .map(Relevance::getContactPointId)
+                .collect(Collectors.toList());
+    }
+
     public List<RelevanceOrder> getOrderOrNull(Set<Competence> competences) {
         Path path = findExistingPathOrNull(competences);
         if (path == null) {
+            log.debug("getOrderOrNull | path is null");
             return null;
         } else {
+            log.debug("getOrderOrNull | path is: {}", path.getId());
+
             return relevanceRepository.findAllByPathId(path.getId()).stream()
-                    .map(it -> new RelevanceOrder(it.getContactPointId(), it.getPosition()))
+                    .map(
+                            relevance ->
+                                    new RelevanceOrder(
+                                            relevance.getContactPointId(), relevance.getPosition()))
+                    .peek(
+                            relevanceOrder ->
+                                    log.debug(
+                                            "getOrderOrNull | cpID: {}, position: {}",
+                                            relevanceOrder.getContactPointId(),
+                                            relevanceOrder.getPosition()))
                     .collect(Collectors.toList());
         }
+    }
+
+    public Path getPath(Set<Competence> competences) {
+        return findExistingPathOrNull(competences);
     }
 
     @Transactional
@@ -94,10 +133,16 @@ public class RelevanceService {
 
     private Path findExistingPathOrNull(Set<Competence> selectedPath) {
         List<Path> existingPaths = pathRepository.findAll();
+        log.debug(
+                "findExisitingPathOrNull | competences: {}",
+                selectedPath.stream().map(Competence::toString).collect(Collectors.toList()));
         List<Path> matchingPaths =
                 existingPaths.stream()
                         .filter(it -> hasMatchingCompetences(it, selectedPath))
                         .collect(Collectors.toList());
+
+        log.debug("findExistingPathOrNull | found paths: {}", matchingPaths.size());
+
         if (!matchingPaths.isEmpty()) {
             return matchingPaths.stream()
                     .findFirst()

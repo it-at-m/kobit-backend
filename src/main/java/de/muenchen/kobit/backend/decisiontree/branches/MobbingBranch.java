@@ -13,7 +13,7 @@ public class MobbingBranch {
 
     private final String whoIsMobbing = "Durch wen werden Sie gemobbt/fühlen Sie sich gemobbt?";
 
-    private final String stressQuestion = "Wie hoch ist ihre persönliche Belastung?";
+    private final String stressQuestion = "Wie hoch ist Ihre persönliche Belastung?";
 
     private final DecisionPoint n1 =
             new DecisionPoint(
@@ -21,8 +21,8 @@ public class MobbingBranch {
                     roleQuestion,
                     List.of(
                             Competence.EMPLOYEE.toCompetenceView(),
-                            Competence.JUNIOR.toCompetenceView(),
-                            Competence.EXECUTIVE.toCompetenceView()));
+                            Competence.EXECUTIVE.toCompetenceView(),
+                            Competence.JUNIOR.toCompetenceView()));
 
     private final DecisionPoint n2 =
             new DecisionPoint(

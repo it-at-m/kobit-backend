@@ -28,7 +28,7 @@ class HealthIssuesBranchTest {
         var competence = Competence.HEALTH_PROBLEMS;
         var result = healthIssuesBranch.getNextNode(competence);
 
-        assertThat(result.getQuestion()).isEqualTo("Welches gesundheitliches Problem haben Sie?");
+        assertThat(result.getQuestion()).isEqualTo("Welches gesundheitliche Problem haben Sie?");
         assertThat(result.getAnswerOptions().size()).isEqualTo(3);
     }
 }

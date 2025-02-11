@@ -80,3 +80,6 @@ info.application.version: @project.version@
 tomcat:
   gracefulshutdown:
     enabled: false
+
+logging:
+  config: ${LOGBACK_PATH:classpath:logback-spring.xml}

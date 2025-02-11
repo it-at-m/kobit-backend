@@ -67,20 +67,20 @@ public enum Competence {
 
     // reasons of discrimination
     ETHNIC_RACIAL(
-            "Diskriminierung aufgrund ethnischer oder rassistischer Motive, Religion oder"
-                    + " Weltanschauung, Alter",
-            ""),
-    DISABLED("Diskriminierung aufgrund Behinderung", ""),
-    SEXUAL_IDENTITY("Diskriminierung aufgrund sexueller oder geschlechtlicher Identität", ""),
+            "wegen rassistischer Motive, der ethnischen Herkunft, Religion, Weltanschauung", ""),
+    DISABLED("wegen Behinderung", ""),
+    SEXUAL_IDENTITY("wegen der sexuellen Identität", ""),
+    AGE("wegen des Alters", ""),
+    SEXUALITY("wegen des Geschlechts", ""),
 
     // sexual discrimination
     EQUALITY("Gleichstellung Mann Frau", ""),
     LGBTIQ("LGBTIQ*", ""),
 
     // Health Issues
-    ADDICTION("Suchtproblem", ""),
-    PHYSICAL("körperliches Problem", ""),
-    PSYCHOLOGICAL("psychisches Problem", "");
+    ADDICTION("Sucht", ""),
+    PHYSICAL("Körperliche Probleme", ""),
+    PSYCHOLOGICAL("Psychische Probleme", "");
 
     public final String germanDescription;
     public final String shortDescription;

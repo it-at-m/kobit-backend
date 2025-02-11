@@ -10,26 +10,30 @@ import org.springframework.stereotype.Component;
 public class DiscriminationBranch {
 
     private final String roleQuestion = "Welche Rolle haben Sie?";
-    private final String kindOfDiscrimination =
-            "Aus welchem Grund werden Sie/fühlen Sie sich diskriminiert?";
+    private final String kindOfDiscrimination = "Aus welchem Grund fühlen Sie sich diskriminiert?";
     private final String kindOfSexualDiscrimination =
             "Mann-Frau Diskriminierung oder LGBTIQ* Diskriminierung?";
 
+    // Welche Rolle haben Sie?
     private final DecisionPoint n1 =
             new DecisionPoint(
                     Competence.DISCRIMINATION,
                     roleQuestion,
                     List.of(
                             Competence.EMPLOYEE.toCompetenceView(),
+                            Competence.EXECUTIVE.toCompetenceView(),
                             Competence.JUNIOR.toCompetenceView()));
 
+    // Aus welchem grund fühlen Sie sich diskrimiert?
     private final DecisionPoint n2 =
             new DecisionPoint(
                     Competence.EMPLOYEE,
                     kindOfDiscrimination,
                     List.of(
                             Competence.ETHNIC_RACIAL.toCompetenceView(),
+                            Competence.AGE.toCompetenceView(),
                             Competence.DISABLED.toCompetenceView(),
+                            Competence.SEXUALITY.toCompetenceView(),
                             Competence.SEXUAL_IDENTITY.toCompetenceView()));
     private final DecisionPoint n3 =
             new DecisionPoint(
@@ -37,10 +41,24 @@ public class DiscriminationBranch {
                     kindOfDiscrimination,
                     List.of(
                             Competence.ETHNIC_RACIAL.toCompetenceView(),
+                            Competence.AGE.toCompetenceView(),
                             Competence.DISABLED.toCompetenceView(),
+                            Competence.SEXUALITY.toCompetenceView(),
                             Competence.SEXUAL_IDENTITY.toCompetenceView()));
 
     private final DecisionPoint n4 =
+            new DecisionPoint(
+                    Competence.EXECUTIVE,
+                    kindOfDiscrimination,
+                    List.of(
+                            Competence.ETHNIC_RACIAL.toCompetenceView(),
+                            Competence.AGE.toCompetenceView(),
+                            Competence.DISABLED.toCompetenceView(),
+                            Competence.SEXUALITY.toCompetenceView(),
+                            Competence.SEXUAL_IDENTITY.toCompetenceView()));
+
+    // other
+    private final DecisionPoint n5 =
             new DecisionPoint(
                     Competence.SEXUAL_IDENTITY,
                     kindOfSexualDiscrimination,

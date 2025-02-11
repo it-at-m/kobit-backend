@@ -21,8 +21,8 @@ public class WorkConflictBranch {
                     roleQuestion,
                     List.of(
                             Competence.EMPLOYEE.toCompetenceView(),
-                            Competence.JUNIOR.toCompetenceView(),
-                            Competence.EXECUTIVE.toCompetenceView()));
+                            Competence.EXECUTIVE.toCompetenceView(),
+                            Competence.JUNIOR.toCompetenceView()));
 
     private final DecisionPoint n2 =
             new DecisionPoint(
@@ -85,31 +85,6 @@ public class WorkConflictBranch {
                             Competence.STRESS_MEDIUM.toCompetenceView(),
                             Competence.STRESS_HIGH.toCompetenceView()));
 
-    private final DecisionPoint n9 =
-            new DecisionPoint(
-                    Competence.STRESS_HIGH,
-                    escalationIndex,
-                    List.of(
-                            Competence.ESCALATION_LOW.toCompetenceView(),
-                            Competence.ESCALATION_MEDIUM.toCompetenceView(),
-                            Competence.ESCALATION_HIGH.toCompetenceView()));
-    private final DecisionPoint n10 =
-            new DecisionPoint(
-                    Competence.STRESS_MEDIUM,
-                    escalationIndex,
-                    List.of(
-                            Competence.ESCALATION_LOW.toCompetenceView(),
-                            Competence.ESCALATION_MEDIUM.toCompetenceView(),
-                            Competence.ESCALATION_HIGH.toCompetenceView()));
-    private final DecisionPoint n11 =
-            new DecisionPoint(
-                    Competence.STRESS_LOW,
-                    escalationIndex,
-                    List.of(
-                            Competence.ESCALATION_LOW.toCompetenceView(),
-                            Competence.ESCALATION_MEDIUM.toCompetenceView(),
-                            Competence.ESCALATION_HIGH.toCompetenceView()));
-
     private final HashMap<Competence, DecisionPoint> branchMap = new HashMap<>();
 
     public WorkConflictBranch() {
@@ -121,9 +96,6 @@ public class WorkConflictBranch {
         branchMap.put(n6.getCompetence(), n6);
         branchMap.put(n7.getCompetence(), n7);
         branchMap.put(n8.getCompetence(), n8);
-        branchMap.put(n9.getCompetence(), n9);
-        branchMap.put(n10.getCompetence(), n10);
-        branchMap.put(n11.getCompetence(), n11);
     }
 
     public DecisionPoint getNextNode(Competence competence) {

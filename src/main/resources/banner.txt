@@ -21,4 +21,5 @@ KKKKKKKKK    KKKKKKK   ooooooooooo   BBBBBBBBBBBBBBBBB   IIIIIIIIII      TTTTTTT
 
  Application Name    : ${spring.application.name}
  Spring Boot Version : ${spring-boot.formatted-version}
+ Logback             : ${logging.config}
 ---------------------------------------------------------------------------------------------------------------------------------------------------

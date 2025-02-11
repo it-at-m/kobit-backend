@@ -41,22 +41,10 @@ public class CompetenceService {
     }
 
     public List<ContactPointView> findAllContactPointsForCompetences(
-            List<Competence> competences, String department) {
-        Set<UUID> keys = getContactPointIds(competences);
-        if (isSpecialCase(competences)) {
-            keys.addAll(specialCaseContactPoints(competences));
-        }
-        return getMatchingContactPoints(department, keys).stream()
-                .map(mapper::contactPointToView)
-                .collect(Collectors.toList());
-    }
+            List<UUID> foundCPs, List<Competence> competences, String department) {
+        Set<UUID> keys = new HashSet<>(foundCPs);
 
-    public List<ContactPointView> findAllContactPointsForCompetences(List<Competence> competences) {
-        Set<UUID> keys = getContactPointIds(competences);
-        if (isSpecialCase(competences)) {
-            keys.addAll(specialCaseContactPoints(competences));
-        }
-        return contactPointRepository.findAllByIdIn(keys).stream()
+        return getMatchingContactPoints(department, keys).stream()
                 .map(mapper::contactPointToView)
                 .collect(Collectors.toList());
     }
@@ -68,6 +56,7 @@ public class CompetenceService {
     }
 
     private List<ContactPoint> getMatchingContactPoints(String department, Set<UUID> keys) {
+
         log.debug("getMatchingContactPoints | department {}", department);
         if (department == null) {
             return keys.stream()
@@ -86,6 +75,15 @@ public class CompetenceService {
                 .collect(toList());
     }
 
+    // Extremly hacky workaround for trashy datastructure - please improve in the future
+    public Competence getCompetenceByEnumString(String enumAsString) {
+        String splittedString = enumAsString.split("\\.")[1].split("\\(")[0];
+
+        log.debug("getCompetenceByEnumString | splittedString {}", splittedString);
+
+        return Competence.valueOf(splittedString);
+    }
+
     @Transactional
     public void deleteCompetencesByContactPointId(UUID contactPointId) {
         competenceRepository.deleteAllByContactPointId(contactPointId);
@@ -98,6 +96,7 @@ public class CompetenceService {
                 it -> competenceRepository.deleteByContactPointIdAndCompetence(contactPointId, it));
     }
 
+    @Transactional
     public void createCompetenceToContactPoint(UUID contactPointId, Competence competence) {
         createCompetenceToContactPoint(new CompetenceToContactPoint(contactPointId, competence));
     }
@@ -123,32 +122,5 @@ public class CompetenceService {
             }
         }
         return matchingKeys;
-    }
-
-    /**
-     * @param competences - list of competences selected in the decision tree
-     * @return true if a special case is given A special case are some contact points for juniors.
-     *     These are not only responsible for the Juniors, they are also responsible if an executive
-     *     or employee has a problem with a junior.
-     */
-    private boolean isSpecialCase(List<Competence> competences) {
-        return ((competences.contains(Competence.EXECUTIVE)
-                        && competences.contains(Competence.OPPOSITE_JUNIOR))
-                || (competences.contains(Competence.EMPLOYEE)
-                        && competences.contains(Competence.OPPOSITE_JUNIOR)));
-    }
-
-    private Set<UUID> specialCaseContactPoints(List<Competence> competences) {
-        if (competences.contains(Competence.EXECUTIVE)
-                && competences.contains(Competence.OPPOSITE_JUNIOR)) {
-            competences.remove(Competence.EXECUTIVE);
-            competences.add(Competence.EXECUTIVE_JUNIOR);
-        }
-        if (competences.contains(Competence.EMPLOYEE)
-                && competences.contains(Competence.OPPOSITE_JUNIOR)) {
-            competences.remove(Competence.EMPLOYEE);
-            competences.add(Competence.EMPLOYEE_JUNIOR);
-        }
-        return getContactPointIds(competences);
     }
 }
