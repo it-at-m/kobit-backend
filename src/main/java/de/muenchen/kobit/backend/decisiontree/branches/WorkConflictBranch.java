@@ -21,8 +21,8 @@ public class WorkConflictBranch {
                     roleQuestion,
                     List.of(
                             Competence.EMPLOYEE.toCompetenceView(),
-                            Competence.JUNIOR.toCompetenceView(),
-                            Competence.EXECUTIVE.toCompetenceView()));
+                            Competence.EXECUTIVE.toCompetenceView(),
+                            Competence.JUNIOR.toCompetenceView()));
 
     private final DecisionPoint n2 =
             new DecisionPoint(
