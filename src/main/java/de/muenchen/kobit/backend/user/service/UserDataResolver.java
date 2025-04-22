@@ -100,7 +100,9 @@ public class UserDataResolver {
 
         if (dn != null) {
             String[] dnArr = dn.split(DN_SPLITTER);
-            return dnArr[dnArr.length - DN_DEPARTMENT_REVERSED_POS].split("=")[1];
+            if (dnArr.length - DN_DEPARTMENT_REVERSED_POS > 0) {
+                return dnArr[dnArr.length - DN_DEPARTMENT_REVERSED_POS].split("=")[1];
+            }
         }
 
         return userInfoView.getDepartment().toUpperCase().split(DEPARTMENT_SPLITTER)[0];
