@@ -16,5 +16,4 @@ public class UserInfoView {
     private String dn;
 
     public UserInfoView() {}
-
 }

@@ -30,7 +30,6 @@ public class UserDataResolver {
     private static final String DEPARTMENT_SPLITTER = "-";
     private static final int DN_DEPARTMENT_REVERSED_POS = 4;
 
-
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     private final UserInfoClient userInfoClient;
