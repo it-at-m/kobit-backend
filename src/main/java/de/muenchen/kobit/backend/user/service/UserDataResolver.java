@@ -96,9 +96,10 @@ public class UserDataResolver {
         // expected looks: DEPARTMENT-UNIT exp. ITM-KM55
         // dn = CN=tb.123456,OU=Users,OU=KUL,OU=Bereiche,DC=muenchen,DC=de
         // Take from the end!
-        String[] dnArr = userInfoView.getDn().split(DN_SPLITTER);
+        String dn = userInfoView.getDn();
 
-        if (dnArr.length - DN_DEPARTMENT_REVERSED_POS > 0) {
+        if (dn != null) {
+            String[] dnArr = dn.split(DN_SPLITTER);
             return dnArr[dnArr.length - DN_DEPARTMENT_REVERSED_POS].split("=")[1];
         }
 
