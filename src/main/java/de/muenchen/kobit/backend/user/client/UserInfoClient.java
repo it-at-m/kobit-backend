@@ -1,5 +1,5 @@
 package de.muenchen.kobit.backend.user.client;
-
+// LOGGING_LEVEL_DE_MUENCHEN_KOBIT_BACKEND_USER_CLIENT
 import de.muenchen.kobit.backend.user.model.UserInfoView;
 import feign.HeaderMap;
 import feign.Headers;
