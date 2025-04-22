@@ -7,6 +7,9 @@ import de.muenchen.kobit.backend.user.model.UserInfoView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -17,6 +20,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import static org.mockito.Mockito.mock;
 
@@ -47,8 +51,9 @@ public class UserDataResolverTest {
         SecurityContextHolder.setContext(securityContext);
     }
 
-    @Test
-    public void testGetCurrentUser() throws JsonProcessingException {
+    @ParameterizedTest
+    @MethodSource("provideUserInfoViews")
+    public void testGetCurrentUser(UserInfoView userInfoView, String expectedDepartment) throws JsonProcessingException {
         // Mocking SecurityContext and Authentication
         when(securityContext.getAuthentication()).thenReturn(jwtAuthenticationToken);
 
@@ -61,9 +66,7 @@ public class UserDataResolverTest {
         when(jwtAuthenticationToken.getToken()).thenReturn(jwt);
         when(jwt.getTokenValue()).thenReturn("mockTokenValue");
 
-
         // Mocking UserInfoClient response
-        UserInfoView userInfoView = new UserInfoView("ITM-KM55", "CN=tb.123456,OU=Users,OU=KUL,OU=Bereiche,DC=muenchen,DC=de");
         Map<String, Object> headerMap = new HashMap<>();
         headerMap.put("Authorization", "Bearer mockTokenValue");
         when(userInfoClient.getUserInformation(headerMap)).thenReturn(userInfoView);
@@ -74,9 +77,17 @@ public class UserDataResolverTest {
         // Assertions
         assertNotNull(user);
         assertEquals("test@example.com", user.getEmail());
-        assertEquals("KUL", user.getDepartment());
+        assertEquals(expectedDepartment, user.getDepartment());
         assertEquals(2, user.getRoles().size());
         assertTrue(user.getRoles().contains("ROLE_USER"));
         assertTrue(user.getRoles().contains("ROLE_ADMIN"));
+    }
+
+    private static Stream<Arguments> provideUserInfoViews() {
+        return Stream.of(
+                Arguments.of(new UserInfoView("ITM-ABC", "CN=tb.123456,OU=Users,OU=KUL,OU=Bereiche,DC=muenchen,DC=de"), "KUL"),
+                Arguments.of(new UserInfoView("HR-ABC", ""), "HR")
+
+        );
     }
 }
