@@ -105,6 +105,10 @@ public class UserDataResolver {
             }
         }
 
-        return userInfoView.getDepartment().toUpperCase().split(DEPARTMENT_SPLITTER)[0];
+        return userInfoView
+                .getDepartment()
+                .toUpperCase()
+                .split(DEPARTMENT_SPLITTER)[0]
+                .substring(0, 3);
     }
 }

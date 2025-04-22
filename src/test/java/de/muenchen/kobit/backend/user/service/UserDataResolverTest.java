@@ -83,6 +83,6 @@ public class UserDataResolverTest {
                                 "CN=tb.123456,OU=Users,OU=KUL,OU=Bereiche,DC=muenchen,DC=de"),
                         "KUL"),
                 Arguments.of(new UserInfoView("HR-ABC", null), "HR"),
-                Arguments.of(new UserInfoView("HR-ABC", "foo,bar"), "HR"));
+                Arguments.of(new UserInfoView("HRTT-ABC", "foo,bar"), "HRT"));
     }
 }
