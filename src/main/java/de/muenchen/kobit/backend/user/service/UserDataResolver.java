@@ -105,8 +105,8 @@ public class UserDataResolver {
             }
         }
 
-        String department = userInfoView.getDepartment().toUpperCase().split(DEPARTMENT_SPLITTER)[0];
-        return department
-                .substring(0, Math.min(department.length(), 3));
+        String department =
+                userInfoView.getDepartment().toUpperCase().split(DEPARTMENT_SPLITTER)[0];
+        return department.substring(0, Math.min(department.length(), 3));
     }
 }
