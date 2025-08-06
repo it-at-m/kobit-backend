@@ -9,6 +9,9 @@ import java.util.Objects;
 import javax.mail.MessagingException;
 import javax.mail.SendFailedException;
 import javax.mail.internet.MimeMessage;
+
+import de.muenchen.kobit.backend.viewcounter.model.ViewCounterCategory;
+import de.muenchen.kobit.backend.viewcounter.service.ViewCounterService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -21,13 +24,15 @@ public class EmailService {
 
     private final JavaMailSender mailSender;
     private final UserDataResolver userDataResolver;
+    private final ViewCounterService viewCounterService;
 
     @Value("${kobit.mail.from}")
     private String noReplyMail;
 
-    public EmailService(JavaMailSender mailSender, UserDataResolver userDataResolver) {
+    public EmailService(JavaMailSender mailSender, UserDataResolver userDataResolver, ViewCounterService viewCounterService) {
         this.mailSender = mailSender;
         this.userDataResolver = userDataResolver;
+        this.viewCounterService = viewCounterService;
     }
 
     public SenderMailAddress getMailOfUser() {
@@ -60,6 +65,8 @@ public class EmailService {
                 helper.setText(email.getMessage(), true);
 
                 mailSender.send(msg);
+
+                viewCounterService.incrementCounter(ViewCounterCategory.E_MAIL_SEND_COUNTER);
             } catch (MessagingException e) {
                 log.error("Error while sending mail!", e);
                 throw new SendFailedException("Message could not be send!");
