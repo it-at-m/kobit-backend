@@ -1,0 +1,39 @@
+databaseChangeLog:
+  - changeSet:
+      id: init-view-counter-email
+      author: langehm
+      preConditions:
+        - not:
+            - tableExists:
+                tableName: view_counter
+      changes:
+        - insert:
+            tableName: view_counter
+            columns:
+              - column:
+                  name: id
+                  value: "cc4a73d3-f59c-4075-9aa1-98dffbd6ec60"
+              - column:
+                  name: category
+                  value: "E_MAIL_SEND_COUNTER"
+              - column:
+                  name: value
+                  valueNumeric: 0
+              - column:
+                  name: deactivated_at
+                  value: null
+        - insert:
+            tableName: view_counter
+            columns:
+              - column:
+                  name: id
+                  value: "db956e18-26e4-43c0-b70f-0d9180f15de9"
+              - column:
+                  name: category
+                  value: "PAGE_VISITED_COUNTER"
+              - column:
+                  name: value
+                  valueNumeric: 0
+              - column:
+                  name: deactivated_at
+                  value: null
