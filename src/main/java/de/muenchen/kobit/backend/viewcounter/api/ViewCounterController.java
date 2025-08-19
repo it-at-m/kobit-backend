@@ -1,6 +1,5 @@
 package de.muenchen.kobit.backend.viewcounter.api;
 
-import de.muenchen.kobit.backend.admin.service.AdminService;
 import de.muenchen.kobit.backend.viewcounter.model.ViewCounterCategory;
 import de.muenchen.kobit.backend.viewcounter.service.ViewCounterService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ViewCounterController {
 
-    private final AdminService adminService;
     private final ViewCounterService viewCounterService;
 
     @GetMapping("/{category}")
