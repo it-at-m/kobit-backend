@@ -13,4 +13,6 @@ public interface ViewCounterRepository extends JpaRepository<ViewCounter, UUID> 
     Optional<ViewCounter> findByCategoryAndDeactivatedAtIsNull(ViewCounterCategory name);
 
     List<ViewCounter> findAllByCategory(ViewCounterCategory category);
+
+    List<ViewCounter> findAllByDeactivatedAtIsNull();
 }

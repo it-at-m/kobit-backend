@@ -5,10 +5,7 @@ import de.muenchen.kobit.backend.viewcounter.service.ViewCounterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/viewcounter")
@@ -29,5 +26,11 @@ public class ViewCounterController {
     public Long viewCounterSummarized(@PathVariable ViewCounterCategory category) {
         return viewCounterService.getViewCountsByCategory(category);
 
+    }
+
+    @PostMapping
+    @PreAuthorize("@adminService.isUserKobitAdmin()")
+    public void triggerViewCounterReport() {
+        viewCounterService.triggerViewCounterReporting();
     }
 }
