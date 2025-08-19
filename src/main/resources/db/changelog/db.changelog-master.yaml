@@ -44,3 +44,6 @@ databaseChangeLog:
   - include:
       file: 015_add_relevance.yaml
       relativeToChangelogFile: true
+  - include:
+      file: 016_add_view_counter.yaml
+      relativeToChangelogFile: true
