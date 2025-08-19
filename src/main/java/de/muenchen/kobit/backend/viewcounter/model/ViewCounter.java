@@ -21,6 +21,7 @@ public class ViewCounter {
     private UUID id;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(unique = true, nullable = false)
     private ViewCounterCategory category;
 

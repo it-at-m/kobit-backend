@@ -20,6 +20,8 @@ import javax.mail.Address;
 import javax.mail.MessagingException;
 import javax.mail.SendFailedException;
 import javax.mail.internet.MimeMessage;
+
+import de.muenchen.kobit.backend.viewcounter.service.ViewCounterService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,11 +49,13 @@ class EmailServiceIT {
 
     @Autowired private UserDataResolver userDataResolver;
 
+    @Autowired private ViewCounterService viewCounterService;
+
     private List<String> receiver;
 
     @BeforeEach
     void init() {
-        emailService = new EmailService(mailSender, userDataResolver);
+        emailService = new EmailService(mailSender, userDataResolver, viewCounterService);
         receiver = new ArrayList<>();
     }
 
