@@ -1,4 +1,5 @@
 package de.muenchen.kobit.backend.user.client;
+
 import de.muenchen.kobit.backend.user.model.UserInfoView;
 import feign.HeaderMap;
 import feign.Headers;

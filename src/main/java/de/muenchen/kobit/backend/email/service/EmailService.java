@@ -4,14 +4,13 @@ import de.muenchen.kobit.backend.email.model.Email;
 import de.muenchen.kobit.backend.email.model.SenderMailAddress;
 import de.muenchen.kobit.backend.user.model.User;
 import de.muenchen.kobit.backend.user.service.UserDataResolver;
+import de.muenchen.kobit.backend.viewcounter.model.ViewCounterCategory;
+import de.muenchen.kobit.backend.viewcounter.service.ViewCounterService;
 import java.util.List;
 import java.util.Objects;
 import javax.mail.MessagingException;
 import javax.mail.SendFailedException;
 import javax.mail.internet.MimeMessage;
-
-import de.muenchen.kobit.backend.viewcounter.model.ViewCounterCategory;
-import de.muenchen.kobit.backend.viewcounter.service.ViewCounterService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -29,7 +28,10 @@ public class EmailService {
     @Value("${kobit.mail.from}")
     private String noReplyMail;
 
-    public EmailService(JavaMailSender mailSender, UserDataResolver userDataResolver, ViewCounterService viewCounterService) {
+    public EmailService(
+            JavaMailSender mailSender,
+            UserDataResolver userDataResolver,
+            ViewCounterService viewCounterService) {
         this.mailSender = mailSender;
         this.userDataResolver = userDataResolver;
         this.viewCounterService = viewCounterService;

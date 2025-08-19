@@ -6,9 +6,8 @@ import static org.mockito.Mockito.when;
 
 import de.muenchen.kobit.backend.user.model.User;
 import de.muenchen.kobit.backend.user.service.UserDataResolver;
-import java.util.List;
-
 import de.muenchen.kobit.backend.viewcounter.service.ViewCounterService;
+import java.util.List;
 import lombok.val;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

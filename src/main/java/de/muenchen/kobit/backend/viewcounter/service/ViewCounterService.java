@@ -4,6 +4,10 @@ import de.muenchen.kobit.backend.email.model.ReportEmailService;
 import de.muenchen.kobit.backend.viewcounter.model.ViewCounter;
 import de.muenchen.kobit.backend.viewcounter.model.ViewCounterCategory;
 import de.muenchen.kobit.backend.viewcounter.repository.ViewCounterRepository;
+import java.time.YearMonth;
+import java.util.Arrays;
+import java.util.List;
+import javax.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +16,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-
-import javax.mail.MessagingException;
-import javax.swing.text.View;
-import java.time.YearMonth;
-import java.util.Arrays;
-import java.util.List;
 
 @Slf4j
 @Service
@@ -30,12 +28,18 @@ public class ViewCounterService {
 
     /**
      * Increments the viewCounter by one.
+     *
      * @param category the category of the viewCounter which should be incremented.
      */
     @Transactional
     public void incrementCounter(ViewCounterCategory category) {
-        ViewCounter viewCounter = viewCounterRepository.findByCategoryAndDeactivatedAtIsNull(category)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "View counter not found!"));
+        ViewCounter viewCounter =
+                viewCounterRepository
+                        .findByCategoryAndDeactivatedAtIsNull(category)
+                        .orElseThrow(
+                                () ->
+                                        new ResponseStatusException(
+                                                HttpStatus.NOT_FOUND, "View counter not found!"));
 
         viewCounter.incrementCounter();
         log.debug("Incremented {} counter to new value: {}", category, viewCounter.getValue());
@@ -44,18 +48,25 @@ public class ViewCounterService {
 
     /**
      * Fetches the value of a viewCounter.
+     *
      * @param category the wanted viewCounter.
      * @return the value of the fetched viewCounter.
      */
     public Long getCurrentViewCounterValue(ViewCounterCategory category) {
-        ViewCounter viewCounter = viewCounterRepository.findByCategoryAndDeactivatedAtIsNull(category)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "View counter not found!"));
+        ViewCounter viewCounter =
+                viewCounterRepository
+                        .findByCategoryAndDeactivatedAtIsNull(category)
+                        .orElseThrow(
+                                () ->
+                                        new ResponseStatusException(
+                                                HttpStatus.NOT_FOUND, "View counter not found!"));
 
         return viewCounter.getValue();
     }
 
     /**
      * Fetches all viewCounters.
+     *
      * @return the sum of all views
      */
     public Long getViewCountsByCategory(ViewCounterCategory category) {
@@ -69,7 +80,8 @@ public class ViewCounterService {
         try {
             reportEmailService.sendViewCounterReport(activeViewCounters, YearMonth.now());
         } catch (MessagingException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error while sending view counter report", e);
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR, "Error while sending view counter report", e);
         }
     }
 
@@ -80,15 +92,16 @@ public class ViewCounterService {
         activeViewCounters.forEach(ViewCounter::deactivate);
 
         // create new viewcounters
-        Arrays.stream(ViewCounterCategory.values()).forEach(category -> {
-            ViewCounter newViewCounter = new ViewCounter();
-            newViewCounter.setCategory(category);
-            viewCounterRepository.save(newViewCounter);
-        });
+        Arrays.stream(ViewCounterCategory.values())
+                .forEach(
+                        category -> {
+                            ViewCounter newViewCounter = new ViewCounter();
+                            newViewCounter.setCategory(category);
+                            viewCounterRepository.save(newViewCounter);
+                        });
 
         // send reportemail
-        reportEmailService.sendViewCounterReport(activeViewCounters, YearMonth.now().minusMonths(1));
+        reportEmailService.sendViewCounterReport(
+                activeViewCounters, YearMonth.now().minusMonths(1));
     }
-
-
 }

@@ -12,6 +12,7 @@ import de.muenchen.kobit.backend.MicroServiceApplication;
 import de.muenchen.kobit.backend.email.model.Email;
 import de.muenchen.kobit.backend.email.service.EmailService;
 import de.muenchen.kobit.backend.user.service.UserDataResolver;
+import de.muenchen.kobit.backend.viewcounter.service.ViewCounterService;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,8 +21,6 @@ import javax.mail.Address;
 import javax.mail.MessagingException;
 import javax.mail.SendFailedException;
 import javax.mail.internet.MimeMessage;
-
-import de.muenchen.kobit.backend.viewcounter.service.ViewCounterService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

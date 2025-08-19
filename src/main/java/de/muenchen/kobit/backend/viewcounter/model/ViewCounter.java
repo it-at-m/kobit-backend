@@ -1,14 +1,13 @@
 package de.muenchen.kobit.backend.viewcounter.model;
 
+import java.time.LocalDate;
+import java.util.UUID;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
-import java.util.UUID;
 
 @Data
 @Entity
@@ -34,7 +33,7 @@ public class ViewCounter {
 
     @PrePersist
     void prePersist() {
-        if (this.value == null){
+        if (this.value == null) {
             this.value = 0L;
         }
     }
@@ -49,9 +48,8 @@ public class ViewCounter {
     }
 
     public void incrementCounter() {
-        if (this.deactivatedAt == null){
+        if (this.deactivatedAt == null) {
             this.value++;
         }
     }
-
 }

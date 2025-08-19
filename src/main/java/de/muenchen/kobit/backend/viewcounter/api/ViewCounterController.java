@@ -18,14 +18,12 @@ public class ViewCounterController {
     @PreAuthorize("@adminService.isUserKobitAdmin()")
     public Long viewCounter(@PathVariable ViewCounterCategory category) {
         return viewCounterService.getCurrentViewCounterValue(category);
-
     }
 
     @GetMapping("/sum/{category}")
     @PreAuthorize("@adminService.isUserKobitAdmin()")
     public Long viewCounterSummarized(@PathVariable ViewCounterCategory category) {
         return viewCounterService.getViewCountsByCategory(category);
-
     }
 
     @PostMapping

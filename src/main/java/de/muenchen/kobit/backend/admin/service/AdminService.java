@@ -2,11 +2,9 @@ package de.muenchen.kobit.backend.admin.service;
 
 import de.muenchen.kobit.backend.admin.model.AdminUserView;
 import de.muenchen.kobit.backend.user.service.UserDataResolver;
-import java.util.List;
-
 import de.muenchen.kobit.backend.viewcounter.model.ViewCounterCategory;
 import de.muenchen.kobit.backend.viewcounter.service.ViewCounterService;
-import lombok.AllArgsConstructor;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
