@@ -10,6 +10,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 @FeignClient("userInformation")
 public interface UserInfoClient {
 
+    // Configured in MainAppClass
     @RequestLine("GET")
     @Headers("Content-Type: application/json")
     UserInfoView getUserInformation(@HeaderMap Map<String, Object> headers);

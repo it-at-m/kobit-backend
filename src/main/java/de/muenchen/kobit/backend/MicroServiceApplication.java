@@ -16,6 +16,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.util.UrlPathHelper;
@@ -33,6 +34,7 @@ import org.springframework.web.util.UrlPathHelper;
         })
 @EnableAutoConfiguration
 @Hidden
+@EnableScheduling
 public class MicroServiceApplication implements WebMvcConfigurer {
 
     public static void main(String[] args) {

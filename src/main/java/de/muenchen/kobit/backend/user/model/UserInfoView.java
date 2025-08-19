@@ -1,23 +1,19 @@
 package de.muenchen.kobit.backend.user.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Setter
+@Getter
+@AllArgsConstructor
 public class UserInfoView {
 
     private String department;
 
-    public UserInfoView(String department) {
-        this.department = department;
-    }
+    private String dn;
 
     public UserInfoView() {}
-
-    public String getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
-    }
 }

@@ -36,6 +36,8 @@ spring:
 kobit:
   mail:
     from: ${NO_REPLY_MAIL}
+    report-mail-receivers: ${REPORT_MAIL_RECEIVERS}
+    report-cron: ${REPORT_CRON}
 
 server:
   port: 8080

@@ -4,6 +4,8 @@ import de.muenchen.kobit.backend.email.model.Email;
 import de.muenchen.kobit.backend.email.model.SenderMailAddress;
 import de.muenchen.kobit.backend.user.model.User;
 import de.muenchen.kobit.backend.user.service.UserDataResolver;
+import de.muenchen.kobit.backend.viewcounter.model.ViewCounterCategory;
+import de.muenchen.kobit.backend.viewcounter.service.ViewCounterService;
 import java.util.List;
 import java.util.Objects;
 import javax.mail.MessagingException;
@@ -21,13 +23,18 @@ public class EmailService {
 
     private final JavaMailSender mailSender;
     private final UserDataResolver userDataResolver;
+    private final ViewCounterService viewCounterService;
 
     @Value("${kobit.mail.from}")
     private String noReplyMail;
 
-    public EmailService(JavaMailSender mailSender, UserDataResolver userDataResolver) {
+    public EmailService(
+            JavaMailSender mailSender,
+            UserDataResolver userDataResolver,
+            ViewCounterService viewCounterService) {
         this.mailSender = mailSender;
         this.userDataResolver = userDataResolver;
+        this.viewCounterService = viewCounterService;
     }
 
     public SenderMailAddress getMailOfUser() {
@@ -60,6 +67,8 @@ public class EmailService {
                 helper.setText(email.getMessage(), true);
 
                 mailSender.send(msg);
+
+                viewCounterService.incrementCounter(ViewCounterCategory.E_MAIL_SEND_COUNTER);
             } catch (MessagingException e) {
                 log.error("Error while sending mail!", e);
                 throw new SendFailedException("Message could not be send!");

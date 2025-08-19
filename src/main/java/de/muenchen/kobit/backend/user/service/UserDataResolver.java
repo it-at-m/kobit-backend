@@ -26,6 +26,9 @@ public class UserDataResolver {
     private static final String RESOURCE_FIELD = "resource_access";
     private static final String KOBIT_FIELD = "kobit";
     private static final String ROLES_FIELD = "roles";
+    private static final String DN_SPLITTER = ",";
+    private static final String DEPARTMENT_SPLITTER = "-";
+    private static final int DN_DEPARTMENT_REVERSED_POS = 4;
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -91,7 +94,19 @@ public class UserDataResolver {
         UserInfoView userInfoView = userInfoClient.getUserInformation(headerMap);
         // splits the two parts of the department
         // expected looks: DEPARTMENT-UNIT exp. ITM-KM55
-        String splitter = "-";
-        return userInfoView.getDepartment().toUpperCase().split(splitter)[0];
+        // dn = CN=tb.123456,OU=Users,OU=KUL,OU=Bereiche,DC=muenchen,DC=de
+        // Take from the end!
+        String dn = userInfoView.getDn();
+
+        if (dn != null) {
+            String[] dnArr = dn.split(DN_SPLITTER);
+            if (dnArr.length - DN_DEPARTMENT_REVERSED_POS > 0) {
+                return dnArr[dnArr.length - DN_DEPARTMENT_REVERSED_POS].split("=")[1];
+            }
+        }
+
+        String department =
+                userInfoView.getDepartment().toUpperCase().split(DEPARTMENT_SPLITTER)[0];
+        return department.substring(0, Math.min(department.length(), 3));
     }
 }

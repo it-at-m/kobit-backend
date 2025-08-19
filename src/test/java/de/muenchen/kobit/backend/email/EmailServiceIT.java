@@ -12,6 +12,7 @@ import de.muenchen.kobit.backend.MicroServiceApplication;
 import de.muenchen.kobit.backend.email.model.Email;
 import de.muenchen.kobit.backend.email.service.EmailService;
 import de.muenchen.kobit.backend.user.service.UserDataResolver;
+import de.muenchen.kobit.backend.viewcounter.service.ViewCounterService;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -47,11 +48,13 @@ class EmailServiceIT {
 
     @Autowired private UserDataResolver userDataResolver;
 
+    @Autowired private ViewCounterService viewCounterService;
+
     private List<String> receiver;
 
     @BeforeEach
     void init() {
-        emailService = new EmailService(mailSender, userDataResolver);
+        emailService = new EmailService(mailSender, userDataResolver, viewCounterService);
         receiver = new ArrayList<>();
     }
 
