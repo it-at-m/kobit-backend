@@ -5,7 +5,8 @@ import lombok.Getter;
 @Getter
 public enum ViewCounterCategory {
     E_MAIL_SEND_COUNTER("Anzahl versendeter E-Mails"),
-    PAGE_VISITED_COUNTER("Anzahl der Seitenaufrufe");
+    PAGE_VISITED_COUNTER("Anzahl der Seitenaufrufe"),
+    ADMIN_PAGE_VISITED_COUNTER("Anzahl der Seitenaufrufe durch Admin");
 
     private final String description;
 

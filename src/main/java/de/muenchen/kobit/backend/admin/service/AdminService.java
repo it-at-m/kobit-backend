@@ -25,7 +25,11 @@ public class AdminService {
                 getUserRoles().stream()
                         .anyMatch(it -> it.equals(DEPARTMENT_ADMIN) || it.equals(KOBIT_ADMIN));
 
-        viewCounterService.incrementCounter(ViewCounterCategory.PAGE_VISITED_COUNTER);
+        if (isAdmin) {
+            viewCounterService.incrementCounter(ViewCounterCategory.ADMIN_PAGE_VISITED_COUNTER);
+        } else {
+            viewCounterService.incrementCounter(ViewCounterCategory.PAGE_VISITED_COUNTER);
+        }
 
         return isAdmin;
     }
