@@ -1,11 +1,12 @@
 databaseChangeLog:
   - changeSet:
-      id: view-counter-table-add
+      id: view-counter-insert
       author: langehm
       preConditions:
         - not:
-            - tableExists:
-                tableName: view_counter
+            - sqlCheck:
+                expectedResult: "1"
+                sql: SELECT COUNT(*) FROM view_counter WHERE category = 'ADMIN_PAGE_VISITED_COUNTER'
       changes:
         - insert:
             tableName: view_counter
@@ -20,5 +21,6 @@ databaseChangeLog:
                   name: value
                   valueNumeric: "0"
       rollback:
-        - dropTable:
+        - delete:
             tableName: view_counter
+            where: category = 'ADMIN_PAGE_VISITED_COUNTER'
