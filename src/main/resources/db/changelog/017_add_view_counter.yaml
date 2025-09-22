@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: view-counter-table-add
+      author: langehm
+      preConditions:
+        - not:
+            - tableExists:
+                tableName: view_counter
+      changes:
+        - insert:
+            tableName: view_counter
+            columns:
+              - column:
+                  name: id
+                  value: "6c8b0d1c-eb40-4793-93b2-61aa29a001ee"
+              - column:
+                  name: category
+                  value: "ADMIN_PAGE_VISITED_COUNTER"
+              - column:
+                  name: value
+                  valueNumeric: "0"
+      rollback:
+        - dropTable:
+            tableName: view_counter
