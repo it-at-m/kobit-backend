@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: view-counter-insert
+      author: langehm
+      preConditions:
+        - not:
+            - sqlCheck:
+                expectedResult: "1"
+                sql: SELECT COUNT(*) FROM view_counter WHERE category = 'ADMIN_PAGE_VISITED_COUNTER'
+      changes:
+        - insert:
+            tableName: view_counter
+            columns:
+              - column:
+                  name: id
+                  value: "6c8b0d1c-eb40-4793-93b2-61aa29a001ee"
+              - column:
+                  name: category
+                  value: "ADMIN_PAGE_VISITED_COUNTER"
+              - column:
+                  name: value
+                  valueNumeric: "0"
+      rollback:
+        - delete:
+            tableName: view_counter
+            where: category = 'ADMIN_PAGE_VISITED_COUNTER'
