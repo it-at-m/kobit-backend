@@ -87,9 +87,11 @@ public class ViewCounterService {
 
     @Scheduled(cron = "${kobit.mail.report-cron}", zone = "Europe/Berlin")
     public void viewCounterReporting() throws MessagingException {
+        log.debug("Running cron job");
         // deactivate current-viewcounters
         List<ViewCounter> activeViewCounters = viewCounterRepository.findAllByDeactivatedAtIsNull();
         activeViewCounters.forEach(ViewCounter::deactivate);
+        viewCounterRepository.saveAll(activeViewCounters);
 
         // create new viewcounters
         Arrays.stream(ViewCounterCategory.values())
