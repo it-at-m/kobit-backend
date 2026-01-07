@@ -90,6 +90,7 @@ public class ViewCounterService {
         // deactivate current-viewcounters
         List<ViewCounter> activeViewCounters = viewCounterRepository.findAllByDeactivatedAtIsNull();
         activeViewCounters.forEach(ViewCounter::deactivate);
+        viewCounterRepository.saveAll(activeViewCounters);
 
         // create new viewcounters
         Arrays.stream(ViewCounterCategory.values())
