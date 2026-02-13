@@ -14,7 +14,7 @@
         <java.version>11</java.version>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <spring.boot.version>2.7.10</spring.boot.version>
+        <spring.boot.version>2.7.18</spring.boot.version>
         <spring.cloud.version>2021.0.5</spring.cloud.version>
         <open.api.version>1.6.15</open.api.version>
         <logstash.logback.version>7.3</logstash.logback.version>
